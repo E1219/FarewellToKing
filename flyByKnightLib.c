@@ -2,7 +2,7 @@
 
 void emptyBoard(char board [STDBOARD]){
 	int i;
-	for(i = A1; i < H8; i++){
+	for(i = 0; i < STDBOARD; i++){
 		board[i] = EMPTY;
 	}
 
@@ -10,7 +10,7 @@ void emptyBoard(char board [STDBOARD]){
 }
 void standardBoard(char board [STDBOARD]){
 	int i;
-	for(i = A1; i < H8; i++){
+	for(i = A1; i < STDBOARD; i++){
 		board[i] = EMPTY;
 	}
 	for(i = A2; i<=H2; i++){
@@ -41,6 +41,77 @@ void standardBoard(char board [STDBOARD]){
 	return;
 }
 
+char placePiece(char board[STDBOARD], char newPiece, char position){
+	char old = board[position];
+	board[position] = newPiece;
+
+	return old;
+}
+
+MASK64 boardMask(char board[STDBOARD]){
+
+	MASK64 mask = 0;
+
+	int i;
+	for(i=A1;i<STDBOARD;i++){
+		if((board[i] & TYPEMASK) != EMPTY){
+			mask = mask |  (1ULL << i);
+		}
+	}
+	return mask;
+}
+
+MASK64 whiteMask(char board[STDBOARD]){
+
+	MASK64 mask = 0;
+
+	int i;
+	for(i=A1;i<STDBOARD;i++){
+		if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == WHITE)
+			mask = mask | (1ULL << i);
+	}
+	return mask;
+}
+
+MASK64 blackMask(char board[STDBOARD]){
+
+	MASK64 mask = 0;
+
+	int i;
+	for(i=A1;i<STDBOARD;i++){
+		if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == BLACK)
+			mask = mask | (1ULL << i);
+	}
+	return mask;
+}
+void printMask(long long int mask, char output[]){
+	char ret[144];	//(2*8 columns + '\r\n')*8rows 
+	
+	int i;
+	for(i = 0; i<144; i++)
+		ret[i] = ' ';
+	for(i = 0; i<8; i++){
+		ret[(i*(17)+15)] = '\r';
+		ret[(i*(17)+16)] = '\n';
+	}	
+
+	for(i = A1; i<STDBOARD; i++){
+		char name = ' ';
+		if((mask & (1ULL<<i)) != 0)
+			name = '1';
+		else
+			name = (((i+(i/8))%2)?'.':'#');
+
+		int j = STDBOARD-i-1;
+		int k = (-(j%8)+7);
+		j= j + (k-(j%8));
+		ret[((j*2) + (j/8))] = name;
+	
+	}
+	ret[143] = '\0';
+	for(i = 0; i < 144; i++)
+		output[i]=ret[i];
+}
 void printBoard(char board [STDBOARD], char output[]){
 	char ret[144];	//(2*8 columns + '\r\n')*8rows 
 	
@@ -52,7 +123,7 @@ void printBoard(char board [STDBOARD], char output[]){
 		ret[(i*(17)+16)] = '\n';
 	}	
 
-	for(i = 0; i<STDBOARD; i++){
+	for(i = A1; i<STDBOARD; i++){
 		char name;	
 		switch ((board[i] & (TYPEMASK | COLORMASK))){
 			case (KING | WHITE):

@@ -1,3 +1,10 @@
+//
+//FlyByKnightLibDef.h
+//FlyByKnightLib 0.0.1 - Chess Library
+//Edward Sandor
+//November 2014
+//
+
 #ifndef FLYBYKNIGHTLIBDEF_H
 #define FLYBYKNIGHTLIBDEF_H
 #include "stdint.h"

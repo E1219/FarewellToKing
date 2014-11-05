@@ -1,3 +1,10 @@
+//
+//FlyByKnightLib.h
+//FlyByKnightLib 0.0.1 - Chess Library
+//Edward Sandor
+//November 2014
+//
+
 #ifndef FLYBYKNIGHTLIB_H
 #define FLYBYKNIGHTLIB_H
 #include "flyByKnightLibDef.h"
@@ -18,5 +25,9 @@ MASK64 blackMask(char board[STDBOARD]);
 void printMask(long long int mask, char output[]);
 //return char array of formatted printout drawing board 
 void printBoard(char board[STDBOARD], char output[]);
+
+//return mask with basic legal moves, no checks for revealed check, castle, or en pasant 
+MASK64 moveMask(char piece, char position, MASK64 boardM, MASK64 opponentM);
+
 
 #endif

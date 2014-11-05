@@ -1,3 +1,10 @@
+//
+//FlyByKnightLib.c
+//FlyByKnightLib 0.0.1 - Chess Library
+//Edward Sandor
+//November 2014
+//
+
 #include "flyByKnightLib.h"
 
 void emptyBoard(char board [STDBOARD]){
@@ -182,4 +189,52 @@ void printBoard(char board [STDBOARD], char output[]){
 	ret[143] = '\0';
 	for(i = 0; i < 144; i++)
 		output[i]=ret[i];
+}
+
+MASK64 moveMask(char piece, char position, MASK64 boardM, MASK64 opponentM){
+	MASK64 mask = 0;
+	if((piece&TYPEMASK) == KNIGHT){  //generate mask if piece is a knight
+		int test = position+17;
+		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position-17;
+		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position+15;
+		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position-15;
+		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position+10;
+		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position-10;
+		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position+ 6;
+		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+		test = position- 6;
+		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
+			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+			mask |= (1ULL << test);
+		}
+	}
+
+	return mask;
 }

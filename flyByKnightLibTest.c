@@ -8,17 +8,17 @@
 #include "flyByKnightLib.h"
 
 int main(){
-	char testSquare = B4;
+	char testSquare = D4;
 	char board[STDBOARD];
 
-	emptyBoard(board);
+	standardBoard(board);
 
 	char output[256];
-	placePiece(board, KNIGHT|WHITE, testSquare);
-	placePiece(board, PAWN  |WHITE, C2);
+	placePiece(board, NOTMOVED|QUEEN|WHITE, testSquare);
+	//placePiece(board, SPARE|WHITE, G7);
 
 	printBoard(board, output);
-	printf("%s\n", output); 
+	printf("\n%s\n", output); 
 	
 	MASK64 boardM = boardMask(board);
 	MASK64 opponentM = blackMask(board);

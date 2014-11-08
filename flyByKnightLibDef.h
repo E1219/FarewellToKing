@@ -11,6 +11,8 @@
 
 //game definition table
 #define MASK64    uint64_t
+#define PIECE_T   char
+#define POS_T  char
 #define STDBOARD  64
 //color definition table
 #define COLORMASK 0x01

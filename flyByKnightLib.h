@@ -10,24 +10,23 @@
 #include "flyByKnightLibDef.h"
 
 //set all squares of board to bx00001110
-void emptyBoard(char board[STDBOARD]);
+void emptyBoard(PIECE_T board[STDBOARD]);
 //place pieces in a standand new game configuration
-void standardBoard(char board[STDBOARD]);
+void standardBoard(PIECE_T board[STDBOARD]);
 //places new piece to specified postition on supplied board.  Returns contents of square repleaced.
-char placePiece(char board[STDBOARD], char newPiece, char position); 
+PIECE_T placePiece(PIECE_T board[STDBOARD], PIECE_T * newPiece, POS_T * position); 
 //returns 64 bit integer representing board positions occupied by a piece
-MASK64 boardMask(char board[STDBOARD]);
+MASK64 boardMask(PIECE_T board[STDBOARD]);
 //returns 64 bit integer representing board positions occupied by a white piece
-MASK64 whiteMask(char board[STDBOARD]);
+MASK64 whiteMask(PIECE_T board[STDBOARD]);
 //returns 64 bit integer representing board positions occupied by a black piece
-MASK64 blackMask(char board[STDBOARD]);
-//return char array of formatted printout of board mask 
-void printMask(long long int mask, char output[]);
-//return char array of formatted printout drawing board 
-void printBoard(char board[STDBOARD], char output[]);
+MASK64 blackMask(PIECE_T board[STDBOARD]);
+//return PIECE_T array of formatted printout of board mask 
+void printMask(MASK64 * mask, PIECE_T output[]);
+//return PIECE_T array of formatted printout drawing board 
+void printBoard(PIECE_T board[STDBOARD], char output[]);
 
 //return mask with basic legal moves, no checks for revealed check, castle, or en pasant 
-MASK64 moveMask(char piece, char position, MASK64 boardM, MASK64 opponentM);
-
+MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM);
 
 #endif

@@ -7,7 +7,7 @@
 
 #include "flyByKnightLib.h"
 
-void emptyBoard(char board [STDBOARD]){
+void emptyBoard(PIECE_T board [STDBOARD]){
 	int i;
 	for(i = 0; i < STDBOARD; i++){
 		board[i] = EMPTY;
@@ -15,7 +15,7 @@ void emptyBoard(char board [STDBOARD]){
 
 	return;
 }
-void standardBoard(char board [STDBOARD]){
+void standardBoard(PIECE_T board [STDBOARD]){
 	int i;
 	for(i = A1; i < STDBOARD; i++){
 		board[i] = EMPTY;
@@ -48,14 +48,14 @@ void standardBoard(char board [STDBOARD]){
 	return;
 }
 
-char placePiece(char board[STDBOARD], char newPiece, char position){
-	char old = board[position];
-	board[position] = newPiece;
+PIECE_T placePiece(PIECE_T board[STDBOARD], PIECE_T * newPiece, POS_T * position){
+	PIECE_T old = board[*position];
+	board[*position] =(* newPiece);
 
 	return old;
 }
 
-MASK64 boardMask(char board[STDBOARD]){
+MASK64 boardMask(PIECE_T board[STDBOARD]){
 
 	MASK64 mask = 0;
 
@@ -68,7 +68,7 @@ MASK64 boardMask(char board[STDBOARD]){
 	return mask;
 }
 
-MASK64 whiteMask(char board[STDBOARD]){
+MASK64 whiteMask(PIECE_T board[STDBOARD]){
 
 	MASK64 mask = 0;
 
@@ -79,8 +79,7 @@ MASK64 whiteMask(char board[STDBOARD]){
 	}
 	return mask;
 }
-
-MASK64 blackMask(char board[STDBOARD]){
+MASK64 blackMask(PIECE_T board[STDBOARD]){
 
 	MASK64 mask = 0;
 
@@ -91,7 +90,7 @@ MASK64 blackMask(char board[STDBOARD]){
 	}
 	return mask;
 }
-void printMask(long long int mask, char output[]){
+void printMask(MASK64 * mask, PIECE_T output[]){
 	char ret[210];	//(2*8 columns + '\r\n')*8rows 
 	
 	int i;
@@ -106,7 +105,7 @@ void printMask(long long int mask, char output[]){
 
 	for(i = A1; i<STDBOARD; i++){
 		char name = ' ';
-		if((mask & (1ULL<<i)) != 0)
+		if((* mask & (1ULL<<i)) != 0)
 			name = '1';
 		else
 			name = (((i+(i/8))%2)?'.':'#');
@@ -124,7 +123,7 @@ void printMask(long long int mask, char output[]){
 	for(i = 0; i < 210; i++)
 		output[i]=ret[i];
 }
-void printBoard(char board [STDBOARD], char output[]){
+void printBoard(PIECE_T board [STDBOARD], char output[]){
 	char ret[210];	//('a  ' + 2*8 columns + '\r\n')*10rows 
 	
 	int i;
@@ -200,132 +199,132 @@ ret[((i*2) + (i/8)+(i/8+1)*3)] = 'a' + i-8-STDBOARD;
 		output[i]=ret[i];
 }
 
-MASK64 moveMask(char piece, char position, MASK64 boardM, MASK64 opponentM){
+MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM){
 	MASK64 mask = 0;
-	if((piece&TYPEMASK) == PAWN){
-		int direction = ((piece&COLORMASK) == WHITE)?1:-1; //change direction based on color
-		int test = position + direction*8; //forward/back 1
+	if(((*piece)&TYPEMASK) == PAWN){
+		int direction = (((*piece)&COLORMASK) == WHITE)?1:-1; //change direction based on color
+		int test = *position + direction*8; //forward/back 1
 
-		if(test < STDBOARD && test >= 0 && ((boardM & 1ULL << test) == 0)){
+		if(test < STDBOARD && test >= 0 && ((*boardM & 1ULL << test) == 0)){
 			mask |= (1ULL << test);
 		
-		test = position + direction*16; //forward/back 2
+		test = *position + direction*16; //forward/back 2
 
-			if(((piece&MOVEDMASK) == NOTMOVED) && test < STDBOARD && test >= 0 && ((boardM & 1ULL << test) == 0)){
+			if((((*piece)&MOVEDMASK) == NOTMOVED) && test < STDBOARD && test >= 0 && ((*boardM & 1ULL << test) == 0)){
 				mask |= (1ULL << test);
 			}
 		}
-		test = position + direction*9; //capture up-right/down-left diagnol
-		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
-			(opponentM & 1ULL << test) !=0) {
+		test = *position + direction*9; //capture up-right/down-left diagnol
+		if(test < STDBOARD && test >=0 && (test%8) > (*position%8) && 
+			(*opponentM & 1ULL << test) !=0) {
 			mask |= (1ULL << test);
 		}
-		test = position + direction*7; //capture up-left/down-right diagnol
-		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
-			(opponentM & 1ULL << test) !=0) {
+		test = *position + direction*7; //capture up-left/down-right diagnol
+		if(test < STDBOARD && test >=0 && (test%8) < (*position%8) && 
+			(*opponentM & 1ULL << test) !=0) {
 			mask |= (1ULL << test);
 		}
 
 	}
-	else if((piece&TYPEMASK) == KNIGHT){  //generate mask if piece is a knight
-		int test = position+17; //up two and right one
-		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+	else if(((*piece)&TYPEMASK) == KNIGHT){  //generate mask if (*piece) is a knight
+		int test = *position+17; //up two and right one
+		if(test < STDBOARD && test >=0 && (test%8) > (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position-17; //down two and left one
-		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position-17; //down two and left one
+		if(test < STDBOARD && test >=0 && (test%8) < (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position+15; //up two and left one
-		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position+15; //up two and left one
+		if(test < STDBOARD && test >=0 && (test%8) < (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position-15; //down two and right one
-		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position-15; //down two and right one
+		if(test < STDBOARD && test >=0 && (test%8) > (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position+10; //right two and up one
-		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position+10; //right two and up one
+		if(test < STDBOARD && test >=0 && (test%8) > (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position-10; //left two and down one
-		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position-10; //left two and down one
+		if(test < STDBOARD && test >=0 && (test%8) < (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position+ 6; //left two and up one
-		if(test < STDBOARD && test >=0 && (test%8) < (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position+ 6; //left two and up one
+		if(test < STDBOARD && test >=0 && (test%8) < (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
-		test = position- 6;  //right two and down one
-		if(test < STDBOARD && test >=0 && (test%8) > (position%8) && 
-			((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)) {
+		test = *position- 6;  //right two and down one
+		if(test < STDBOARD && test >=0 && (test%8) > (*position%8) && 
+			((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)) {
 			mask |= (1ULL << test);
 		}
 	}
-	else if(((piece&TYPEMASK)== BISHOP) || ((piece&TYPEMASK) == ROOK) || ((piece&TYPEMASK) == QUEEN)|| ((piece&TYPEMASK) == KING)){
-		if((piece&TYPEMASK) != ROOK){
-			int test = position + 9; //up-right diagnol
-			while(test < STDBOARD && test >=0 && (test%8) > (position%8) &&	((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+	else if((((*piece)&TYPEMASK)== BISHOP) || (((*piece)&TYPEMASK) == ROOK) || (((*piece)&TYPEMASK) == QUEEN)|| (((*piece)&TYPEMASK) == KING)){
+		if(((*piece)&TYPEMASK) != ROOK){
+			int test = *position + 9; //up-right diagnol
+			while(test < STDBOARD && test >=0 && (test%8) > (*position%8) &&	((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test += 9;
 			}
-			test = position - 9; //down-left diagnol
-			while(test < STDBOARD && test >=0 && (test%8) < (position%8) &&	((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+			test = *position - 9; //down-left diagnol
+			while(test < STDBOARD && test >=0 && (test%8) < (*position%8) &&	((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test -= 9;
 			}
-			test = position + 7; //up-left diagnol
-			while(test < STDBOARD && test >=0 && (test%8) < (position%8) &&	((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+			test = *position + 7; //up-left diagnol
+			while(test < STDBOARD && test >=0 && (test%8) < (*position%8) &&	((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test += 7;
 			}
-			test = position - 7; //down-right diagnol
-			while(test < STDBOARD && test >=0 && (test%8) > (position%8) &&	((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+			test = *position - 7; //down-right diagnol
+			while(test < STDBOARD && test >=0 && (test%8) > (*position%8) &&	((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test -= 7;
 			}
 		}
-		if((piece&TYPEMASK) != BISHOP){
-			int test = position + 1; //right horizontal 
-			while(test < STDBOARD && test >=0 && (test%8) > (position%8) &&	((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+		if(((*piece)&TYPEMASK) != BISHOP){
+			int test = *position + 1; //right horizontal 
+			while(test < STDBOARD && test >=0 && (test%8) > (*position%8) &&	((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test += 1;
 			}
-			test = position - 1; //left horizontal 
-			while(test < STDBOARD && test >=0 && (test%8) < (position%8) &&	((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+			test = *position - 1; //left horizontal 
+			while(test < STDBOARD && test >=0 && (test%8) < (*position%8) &&	((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test -= 1;
 			}
-			test = position + 8; //up vertical
-			while(test < STDBOARD && test >=0 && ((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+			test = *position + 8; //up vertical
+			while(test < STDBOARD && test >=0 && ((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test += 8;
 			}
-			test = position - 8; //down vertical 
-			while(test < STDBOARD && test >=0 && ((boardM & 1ULL << test) == 0 || (opponentM & 1ULL << test) !=0)){
+			test = *position - 8; //down vertical 
+			while(test < STDBOARD && test >=0 && ((*boardM & 1ULL << test) == 0 || (*opponentM & 1ULL << test) !=0)){
 				mask |= (1ULL << test);
-				if((piece&TYPEMASK) == KING || (boardM & 1ULL << test) != 0)
+				if(((*piece)&TYPEMASK) == KING || (*boardM & 1ULL << test) != 0)
 					break;
 				test -= 8;
 			}

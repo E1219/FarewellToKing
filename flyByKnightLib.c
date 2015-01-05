@@ -2,20 +2,45 @@
 //FlyByKnightLib.c
 //FlyByKnightLib 0.0.1 - Chess Library
 //Edward Sandor
-//November 2014
+//November 2014 - 2015
 //
 
 #include <stdio.h>
 #include "flyByKnightLib.h"
 
+void beginStandardGame(Game * game){
+
+    standardBoard(game->board);
+
+    game->turn = WHITE;
+    
+    updateMasks(game);
+}
+void updateMasks(Game * game){
+    
+    MASK64 tmp;
+    
+    game->boardM = boardMask(game->board);
+    game->whiteM = whiteMask(game->board);    
+    game->blackM = blackMask(game->board);
+
+    int i;
+    for(i = 0; i < STDBOARD; i++){
+        TURN_T colorp = (game->board[i] & COLORMASK);
+        MASK64 moves = moveMask(&game->board[i], (POS_T *)&i, (colorp == game->turn || ((game->board[i] & TYPEMASK) == PAWN))?(&game->boardM):((colorp != WHITE)?(&game->blackM):(&game->whiteM)), (colorp == WHITE)?(&game->blackM):(&game->whiteM));
+        game->moveM[i] = moves;
+    }
+}
 void emptyBoard(PIECE_T board [STDBOARD]){
     int i;
+
     for(i = 0; i < STDBOARD; i++){
         board[i] = EMPTY;
     }
-
+    
     return;
 }
+
 void standardBoard(PIECE_T board [STDBOARD]){
     int i;
     for(i = A1; i < STDBOARD; i++){
@@ -66,6 +91,7 @@ MASK64 boardMask(PIECE_T board[STDBOARD]){
             mask = mask |  (1ULL << i);
         }
     }
+   
     return mask;
 }
 
@@ -216,13 +242,11 @@ MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opp
             }
         }
         test = *position + direction*9; //capture up-right/down-left diagnol
-        if(test < STDBOARD && test >=0 && (test%8) > (*position%8) && 
-            (*opponentM & 1ULL << test) !=0) {
+        if(test < STDBOARD && test >=0 && (*opponentM & 1ULL << test) !=0) {
             mask |= (1ULL << test);
         }
         test = *position + direction*7; //capture up-left/down-right diagnol
-        if(test < STDBOARD && test >=0 && (test%8) < (*position%8) && 
-            (*opponentM & 1ULL << test) !=0) {
+        if(test < STDBOARD && test >=0 && (*opponentM & 1ULL << test) !=0) {
             mask |= (1ULL << test);
         }
 

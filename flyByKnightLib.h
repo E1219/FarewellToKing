@@ -2,21 +2,26 @@
 //FlyByKnightLib.h
 //FlyByKnightLib 0.0.1 - Chess Library
 //Edward Sandor
-//November 2014
+//November 2014 - 2015
 //
 
 #ifndef FLYBYKNIGHTLIB_H
 #define FLYBYKNIGHTLIB_H
 #include "flyByKnightLibDef.h"
 
-struct game{
+typedef struct Game_s{
    PIECE_T board[STDBOARD]; 
    MASK64 boardM;
    MASK64 whiteM;
-   MASK64 moveM;
-   
-}
+   MASK64 blackM;
+   MASK64 moveM[STDBOARD];
+   TURN_T turn; 
+}Game;
 
+//initializes values of Game structure, game, for a standard game of chess 
+void beginStandardGame(Game * game);
+//call to update all game masks in the proper order after setup, moving piece, or board modification.
+void updateMasks(Game * game);
 //set all squares of board to bx00001110
 void emptyBoard(PIECE_T board[STDBOARD]);
 //place pieces in a standand new game configuration

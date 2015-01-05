@@ -2,7 +2,7 @@
 //FlyByKnightLibDef.h
 //FlyByKnightLib 0.0.1 - Chess Library
 //Edward Sandor
-//November 2014
+//November 2014 - 2015
 //
 
 #ifndef FLYBYKNIGHTLIBDEF_H
@@ -13,6 +13,7 @@
 #define MASK64    uint64_t
 #define PIECE_T   char
 #define POS_T     char
+#define TURN_T    char
 #define STDBOARD  64
 //color definition table
 #define COLORMASK 0x01

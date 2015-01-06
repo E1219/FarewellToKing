@@ -11,6 +11,8 @@
 
 typedef struct Game_s{
    PIECE_T board[STDBOARD]; 
+   POS_T wKing;
+   POS_T bKing;
    MASK64 boardM;
    MASK64 whiteM;
    MASK64 blackM;
@@ -42,14 +44,6 @@ void printBoard(PIECE_T board[STDBOARD], char output[]);
 //returns mask with basic legal moves, no checks for revealed check, castle, or en pasant.
 MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM);
 
-//method fills array moveM with potential moves for each piece on the board
-//PIECE_T board: array of the board size that contains a description of each piece on the board 
-//MASK64  moveM[STDBOARD]: an array for everyboard positions describing potential moves, will be overwritten by this method
-//MASK64  boardM: a mask describing the position of all pieces on the board
-//MASK64  whiteM: a mask describing the position of white pieces on the board
-//MASK64  blackM: a mask describing the position of black pieces on the board
-void makeMoveMask(PIECE_T board[STDBOARD], PIECE_T moveM[STDBOARD], MASK64 * boardM, MASK64 * whiteM, MASK64 * blackM);
-
 //returns mask describing a path to a specified square clear of pieces of the color of the piece moving.  
 //PIECE_T piece:  the piece of interest
 //POS_T   target: the destination square for piece of interest
@@ -60,6 +54,6 @@ MASK64 pathMask(PIECE_T * piece, POS_T * target, POS_T * source, MASK64 * moves)
 //method strips moves from the move mask for any piece whose movment would result in exposed check
 //PIECE_T board: array of the board size that contains a description of each piece on 
 //MASK64  moveM[STDBOARD]: an array for everyboard positions describing potential moves, will be overwritten by this method
-void stripExposedCheck(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * playerM); 
+CHECK_T stripCheck(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * playerM, POS_T * kingPos); 
 
 #endif

@@ -24,12 +24,22 @@ void updateMasks(Game * game){
     game->whiteM = whiteMask(game->board);    
     game->blackM = blackMask(game->board);
 
-    int i;
+    POS_T i;
     for(i = 0; i < STDBOARD; i++){
         TURN_T colorp = (game->board[i] & COLORMASK);
-        MASK64 moves = moveMask(&game->board[i], (POS_T *)&i, (colorp == game->turn || ((game->board[i] & TYPEMASK) == PAWN))?(&game->boardM):((colorp != WHITE)?(&game->blackM):(&game->whiteM)), (colorp == WHITE)?(&game->blackM):(&game->whiteM));
-        game->moveM[i] = moves;
+        if((game->board[i] & TYPEMASK) == KING){
+
+            if((game->board[i] & COLORMASK) == WHITE){
+                game->wKing = i;
+            }
+            else{
+                game->bKing = i;
+            }
+        }
+        game->moveM[i] = moveMask(&game->board[i], &i, (colorp == game->turn || ((game->board[i] & TYPEMASK) == PAWN))?(&game->boardM):((colorp != WHITE)?(&game->blackM):(&game->whiteM)), (colorp == WHITE)?(&game->blackM):(&game->whiteM));
     }
+
+    stripCheck(game->board, game->moveM, (game->turn == WHITE)?(&game->whiteM):(&game->blackM), (game->turn == WHITE)?(&game->wKing):(&game->bKing));
 }
 void emptyBoard(PIECE_T board [STDBOARD]){
     int i;
@@ -418,7 +428,56 @@ MASK64 pathMask(PIECE_T * piece, POS_T * target, POS_T * source, MASK64 * moves)
             default:
                 break;
         }
+        mask |= (1ULL << *source);
     } 
 
     return mask;
+}
+
+CHECK_T stripCheck(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * playerM, POS_T * kingPos){
+    CHECK_T check = NOCHECK;
+    MASK64 path;
+    MASK64 cross;
+    POS_T i;
+    for(i = 0; i < STDBOARD; i++){
+        path = pathMask(&board[i], kingPos, &i, &moveM[i]);
+ 
+        cross = path & *playerM;
+          
+        if(path != 0){
+        
+            POS_T block = XX;
+           
+            POS_T j;
+            uint8_t blockCount = 0;
+            for(j = 0; j < STDBOARD; j++){
+
+                if((cross & (1ULL << j)) != 0){
+                    if(block != XX){
+                        block = XX;
+                        break; 
+                    }
+                    if((board[j] & TYPEMASK) != KING){
+                        blockCount++; 
+                        block = j;
+                    }
+                }
+            }
+            if(block != XX){
+                moveM[block] = moveM[block] & path;
+            }
+            else if(blockCount == 0){
+                check = INCHECK;
+                for(j = 0; j < STDBOARD; j++){
+                    if((board[j] & TYPEMASK )!= KING){
+                        moveM[j] = (moveM[j] & path);
+                    }
+                    else{
+                        moveM[j] = (moveM[j] & (~path));
+                    }
+                }
+            }
+        }
+    }
+    return check;
 }

@@ -16,7 +16,7 @@ int main(){
     printBoard(game.board, out);
     printf("%s\r\n", out);
 
-    printMask(&game.moveM[D7], out);
+    printMask(&game.moveM[E1], out);
     printf("%s", out);
 
     return 0;

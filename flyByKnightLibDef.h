@@ -15,6 +15,10 @@
 #define POS_T     char
 #define TURN_T    char
 #define STDBOARD  64
+//check definition table
+#define CHECK_T   char
+#define NOCHECK   0x00
+#define INCHECK   0x01
 //color definition table
 #define COLORMASK 0x01
 #define WHITE     0x00

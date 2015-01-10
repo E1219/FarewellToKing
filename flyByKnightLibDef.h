@@ -4,6 +4,8 @@
 //Edward Sandor
 //November 2014 - 2015
 //
+//Contains all type, constant, and structure definitions to be used used by FlyByKnightLib.
+//
 
 #ifndef FLYBYKNIGHTLIBDEF_H
 #define FLYBYKNIGHTLIBDEF_H
@@ -37,6 +39,18 @@
 #define PAWN      0x0A
 #define SPARE     0x0C
 #define EMPTY     0x0E
+
+typedef struct Game_s{
+   PIECE_T board[STDBOARD]; 
+   POS_T wKing;
+   POS_T bKing;
+   MASK64 boardM;
+   MASK64 whiteM;
+   MASK64 blackM;
+   MASK64 moveM[STDBOARD];
+   TURN_T turn; 
+}Game;
+
 //square value table
 #define A1  0
 #define B1  1
@@ -105,3 +119,4 @@
 #define XX 64
 
 #endif
+

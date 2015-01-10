@@ -4,9 +4,12 @@
 //Edward Sandor
 //November 2014 - 2015
 //
+//Main function can be used to test different aspects of FlyByKnightLib
+//
 
 #include <stdio.h>
 #include "flyByKnightLib.h"
+#include "flyByKnightLibStr.h"
 
 int main(){
     Game game;

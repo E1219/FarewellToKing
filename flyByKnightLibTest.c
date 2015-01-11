@@ -19,8 +19,7 @@ int main(){
     printBoard(game.board, out);
     printf("%s\r\n", out);
 
-    printMask(&game.moveM[E1], out);
-    printf("%s", out);
-
+    toCoordinate(A3, out);
+    printf("%s\r\n", out);
     return 0;
 }

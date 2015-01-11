@@ -19,4 +19,4 @@ if (BUILD_TEST)
 endif (BUILD_TEST)
 
 install (TARGETS flybyknightlib ${ADDITIONAL_BIN} DESTINATION bin)
-install (FILES flyByKnightLib.h ${ADDITIONAL_INCLUDE} DESTINATION include)
+install (FILES flyByKnightLib.h flyByKnightLibMask.h flyByKnightLibBoard.h ${ADDITIONAL_INCLUDE} DESTINATION include)

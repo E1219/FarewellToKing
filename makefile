@@ -82,6 +82,16 @@ install/local: preinstall
 install/local/fast: install/local
 .PHONY : install/local/fast
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake.exe -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: install/strip
+.PHONY : install/strip/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -157,6 +167,19 @@ flybyknightlibstr: cmake_check_build_system
 flybyknightlibstr/fast:
 	$(MAKE) -f CMakeFiles/flybyknightlibstr.dir/build.make CMakeFiles/flybyknightlibstr.dir/build
 .PHONY : flybyknightlibstr/fast
+
+#=============================================================================
+# Target rules for targets named flybyknightlibtest
+
+# Build rule for target.
+flybyknightlibtest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 flybyknightlibtest
+.PHONY : flybyknightlibtest
+
+# fast build rule for target.
+flybyknightlibtest/fast:
+	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/build
+.PHONY : flybyknightlibtest/fast
 
 flyByKnightLib.o: flyByKnightLib.c.o
 .PHONY : flyByKnightLib.o
@@ -254,6 +277,30 @@ flyByKnightLibStr.c.s:
 	$(MAKE) -f CMakeFiles/flybyknightlibstr.dir/build.make CMakeFiles/flybyknightlibstr.dir/flyByKnightLibStr.c.s
 .PHONY : flyByKnightLibStr.c.s
 
+flyByKnightLibTest.o: flyByKnightLibTest.c.o
+.PHONY : flyByKnightLibTest.o
+
+# target to build an object file
+flyByKnightLibTest.c.o:
+	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/flyByKnightLibTest.c.o
+.PHONY : flyByKnightLibTest.c.o
+
+flyByKnightLibTest.i: flyByKnightLibTest.c.i
+.PHONY : flyByKnightLibTest.i
+
+# target to preprocess a source file
+flyByKnightLibTest.c.i:
+	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/flyByKnightLibTest.c.i
+.PHONY : flyByKnightLibTest.c.i
+
+flyByKnightLibTest.s: flyByKnightLibTest.c.s
+.PHONY : flyByKnightLibTest.s
+
+# target to generate assembly for a file
+flyByKnightLibTest.c.s:
+	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/flyByKnightLibTest.c.s
+.PHONY : flyByKnightLibTest.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -263,8 +310,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... flybyknightlib"
 	@echo "... flybyknightlibstr"
+	@echo "... flybyknightlibtest"
 	@echo "... install"
 	@echo "... install/local"
+	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... flyByKnightLib.o"
@@ -279,6 +328,9 @@ help:
 	@echo "... flyByKnightLibStr.o"
 	@echo "... flyByKnightLibStr.i"
 	@echo "... flyByKnightLibStr.s"
+	@echo "... flyByKnightLibTest.o"
+	@echo "... flyByKnightLibTest.i"
+	@echo "... flyByKnightLibTest.s"
 .PHONY : help
 
 

@@ -9,6 +9,127 @@
 
 #include "flyByKnightLibStr.h"
 
+POS_T toPos(char input[3]){
+    if(input[0] >= 'A' && input[0] <= 'H' && input[1] >= '1' && input[1] <= '8')
+        return (input[1] - '1')*8 + (input[0] - 'A');
+    else if(input[0] >= 'a' && input[0] <= 'h' && input[1] >= '1' && input[1] <= '8')
+        return (input[1] - '1')*8 + (input[0] - 'a');
+    else
+        return XX;
+}
+void toCoordinate(POS_T square, char coordinate[]){
+    if(square != XX){
+        coordinate[0] = (square % 8) + 'a';
+        coordinate[1] = (square / 8) + '1';
+        coordinate[2] = 0;
+    }
+    else{
+        coordinate[0] = 'X';
+        coordinate[1] = 'X';
+        coordinate[2] =  0 ;
+    }
+}
+PIECE_T toPiece(char input){
+   switch(input){
+       case 'P':
+       case 'p':
+           return PAWN;
+           break;
+       case 'N':
+       case 'n':
+           return KNIGHT;
+           break;
+       case 'B':
+       case 'b':
+           return BISHOP;
+           break;
+       case 'R':
+       case 'r':
+           return ROOK;
+           break;
+       case 'Q':
+       case 'q':
+           return QUEEN;
+           break;
+       case 'K':
+       case 'k':
+           return KING;
+           break;
+       case 'S':
+       case 's':
+           return SPARE;
+       default:
+           return EMPTY;
+   } 
+}
+char toCharPiece(PIECE_T piece){
+    switch((piece & TYPEMASK)){
+        case PAWN:
+            return (piece & COLORMASK)==WHITE?'P':'p';
+            break;
+        case KNIGHT:
+            return (piece & COLORMASK)==WHITE?'N':'n';
+            break;
+        case BISHOP:
+            return (piece & COLORMASK)==WHITE?'B':'b';
+            break;
+        case ROOK:
+            return (piece & COLORMASK)==WHITE?'R':'r';
+            break;
+        case QUEEN:
+            return (piece & COLORMASK)==WHITE?'Q':'q';
+            break;
+        case KING:
+            return (piece & COLORMASK)==WHITE?'K':'k';
+            break;
+        case SPARE:
+            return (piece & COLORMASK)==WHITE?'S':'s';
+            break;
+  }
+}
+
+void xboardMove(char input[], POS_T * target, POS_T * source, char * extra){
+    char extraT = 0;
+    int inputSize;
+    for(inputSize = 0; input[inputSize] != 0; inputSize++);
+    
+    if(input[0] == '0'){
+        if(inputSize == 3)
+            extraT |= CASTLEKS;
+        else
+            extraT |= CASTLEQS;
+    }
+    else if(input[1] == '@'){
+        *source = XX;
+        if(input[0] == '@'){
+            *target = XX;
+        }
+        else{
+            char coord[3];
+            coord[0]= input[2];
+            coord[1]= input[3];
+            coord[2]= 0;
+            *target = toPos(coord);
+        }
+        extraT |= toPiece(input[0]);
+    }
+    else{
+        char coord[3];
+        coord[0] = input[0];
+        coord[1] = input[1];
+        coord[2] = 0;
+        *source  = toPos(coord); 
+
+        coord[0] = input[2];
+        coord[1] = input[3];
+        coord[2] = 0;
+        *target  = toPos(coord); 
+        if(inputSize == 5)
+            extraT |= toPiece(input[4]);
+    }
+    *extra=extraT;
+}
+
 void printMask(MASK64 * mask, char output[]){
    char ret[144];	//(2*8 columns + '\r\n')*8rows 
  	

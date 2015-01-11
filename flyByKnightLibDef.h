@@ -29,6 +29,10 @@
 #define MOVEDMASK 0x10
 #define NOTMOVED  0x00
 #define HASMOVED  0x10  
+//flags
+#define EXTRAMASK 0xC0
+#define CASTLEKS  0x80
+#define CASTLEQS  0x40
 //piece type definition table
 #define TYPEMASK  0x0E
 #define KING      0x00

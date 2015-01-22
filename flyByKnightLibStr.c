@@ -88,11 +88,12 @@ char toCharPiece(PIECE_T piece){
   }
 }
 
-void xboardMove(char input[], POS_T * target, POS_T * source, char * extra){
+void xboardMove(char input[8], POS_T * target, POS_T * source, char * extra){
+
     char extraT = 0;
-    int inputSize;
+    int inputSize = 0;
+
     for(inputSize = 0; input[inputSize] != 0; inputSize++);
-    
     if(input[0] == '0'){
         if(inputSize == 3)
             extraT |= CASTLEKS;
@@ -113,8 +114,8 @@ void xboardMove(char input[], POS_T * target, POS_T * source, char * extra){
         }
         extraT |= toPiece(input[0]);
     }
-    else{
-        char coord[3];
+    else if(inputSize >= 4){
+        char coord[5];
         coord[0] = input[0];
         coord[1] = input[1];
         coord[2] = 0;
@@ -127,7 +128,10 @@ void xboardMove(char input[], POS_T * target, POS_T * source, char * extra){
         if(inputSize == 5)
             extraT |= toPiece(input[4]);
     }
-    *extra=extraT;
+    else{
+        extraT=0xFF;
+    }
+    extra=&extraT;
 }
 
 void printMask(MASK64 * mask, char output[]){

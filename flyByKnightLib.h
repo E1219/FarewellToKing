@@ -17,5 +17,7 @@
 void beginStandardGame(Game * game);
 //call to update all game masks in the proper order after setup, moving piece, or board modification.
 void updateMasks(Game * game);
+//call to move piece
+void movePiece(Game * game, POS_T * target, POS_T * source);
 
 #endif

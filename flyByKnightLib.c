@@ -14,7 +14,7 @@ void beginStandardGame(Game * game){
     standardBoard(game->board);
 
     game->turn = WHITE;
-    
+        
     updateMasks(game);
 }
 void updateMasks(Game * game){
@@ -42,4 +42,12 @@ void updateMasks(Game * game){
 
     stripCheck(game->board, game->moveM, (game->turn == WHITE)?(&game->whiteM):(&game->blackM), (game->turn == WHITE)?(&game->wKing):(&game->bKing));
 }
-
+void movePiece(Game * game, POS_T * target, POS_T * source){
+    if((game->moveM[*source] & (1ULL << *target)) != 0 && (game->board[*source] & COLORMASK)==game->turn){
+        placePiece(game->board, &game->board[*source], target); 
+        PIECE_T empty = EMPTY;
+        placePiece(game->board, &empty, source);
+        game->turn = game->turn ^ BLACK;
+        updateMasks(game);
+    }
+}

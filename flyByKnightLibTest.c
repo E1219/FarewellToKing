@@ -15,11 +15,25 @@ int main(){
     Game game;
     beginStandardGame(&game);
 
+    char input[128];
     char out[1024];
-    printBoard(game.board, out);
-    printf("%s\r\n", out);
+    for(;;){
+        printBoardC(game.board, out);
+        printf("%s\r\n%d\n\n", out,game.turn);
 
-    toCoordinate(A3, out);
-    printf("%s\r\n", out);
+        scanf("%s", input);
+
+        if(strcmp("q",input) == 0 || strcmp("quit",input)==0)
+            break;
+
+        POS_T t = XX;
+        POS_T s = XX;
+        POS_T * target = &t;
+        POS_T * source = &s;
+        char * extra = 0;
+        xboardMove(input, target, source, extra);
+        movePiece(&game, target, source);
+    }
+
     return 0;
 }

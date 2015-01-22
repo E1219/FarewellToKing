@@ -32,7 +32,7 @@ char toCharPiece(PIECE_T piece);
 //char input[]: input string
 //POS_T * target: the target square interpreted from input, to be overwritten
 //POS_T * source: the source square interpreted from input, to be overwritten
-void xboardMove(char input[], POS_T * target, POS_T * source, char * extra);
+void xboardMove(char input[8], POS_T * target, POS_T * source, char * extra);
 
 //char output[] size >= 144 (18x8).  Lines ended with "\r\n".
 //fills output with formatted printout of mask without board coordinates

@@ -17,6 +17,33 @@ MASK64 boardMask(PIECE_T board[STDBOARD]);
 MASK64 whiteMask(PIECE_T board[STDBOARD]);
 //returns 64 bit integer representing board positions occupied by a black piece
 MASK64 blackMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a pawn
+MASK64 pawnMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a knight
+MASK64 knightMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a bishop
+MASK64 bishopMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a rook 
+MASK64 rookMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a queen
+MASK64 queenMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a king
+MASK64 kingMask(PIECE_T board[STDBOARD]);
+//returns 64 bit integer representing board positions occupied by a spare
+MASK64 spareMask(PIECE_T board[STDBOARD]);
+
+//generates all masks representing the board in one iteration as opposed to separate iterations for each mask.  Replaces values of pointers:
+//boardMask
+//whiteMask
+//blackMask
+//pawnMask
+//knightMask
+//bishopMask
+//rookMask
+//queenMask
+//kingMask
+//spareMask
+void superMask(PIECE_T board[STDBOARD], MASK64 * boardMask, MASK64 * whiteMask, MASK64 * blackMask, MASK64 * pawnMask, MASK64 * knightMask, MASK64 * bishopMask, MASK64 * rookMask, MASK64 * queenMask, MASK64 * kingMask, MASK64 * spareMask);
 
 //returns mask with basic legal moves, no checks for revealed check, castle, or en pasant.
 MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM);

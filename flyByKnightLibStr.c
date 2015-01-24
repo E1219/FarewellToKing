@@ -131,7 +131,7 @@ void xboardMove(char input[8], POS_T * target, POS_T * source, char * extra){
     else{
         extraT=0xFF;
     }
-    extra=&extraT;
+    *extra=extraT;
 }
 
 void printMask(MASK64 * mask, char output[]){

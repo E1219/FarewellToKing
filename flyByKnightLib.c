@@ -20,10 +20,8 @@ void beginStandardGame(Game * game){
 void updateMasks(Game * game){
     
     MASK64 tmp;
-    
-    game->boardM = boardMask(game->board);
-    game->whiteM = whiteMask(game->board);    
-    game->blackM = blackMask(game->board);
+
+    superMask(game->board, &game->boardM, &game->whiteM, &game->blackM, &game->pawnM, &game->knightM, &game->bishopM, &game->rookM, &game->queenM, &game->kingM, &game->spareM);    
 
     POS_T i;
     for(i = 0; i < STDBOARD; i++){

@@ -30,7 +30,8 @@ int main(){
         POS_T s = XX;
         POS_T * target = &t;
         POS_T * source = &s;
-        char * extra = 0;
+        char e = 0;
+        char * extra = &e;
         xboardMove(input, target, source, extra);
         movePiece(&game, target, source);
     }

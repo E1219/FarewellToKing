@@ -14,10 +14,12 @@ MASK64 boardMask(PIECE_T board[STDBOARD]){
     MASK64 mask = 0;
 
     int i;
+    MASK64 biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) != EMPTY){
-            mask = mask |  (1ULL << i);
+            mask = mask |  biterator;
         }
+        biterator = (biterator << 1);
     }
    
     return mask;
@@ -28,9 +30,12 @@ MASK64 whiteMask(PIECE_T board[STDBOARD]){
     MASK64 mask = 0;
 
     int i;
+    MASK64 biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
-        if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == WHITE)
-            mask = mask | (1ULL << i);
+        if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == WHITE){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
     }
     return mask;
 }
@@ -39,11 +44,175 @@ MASK64 blackMask(PIECE_T board[STDBOARD]){
     MASK64 mask = 0;
 
     int i;
+    MASK64 biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
-        if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == BLACK)
-            mask = mask | (1ULL << i);
+        if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == BLACK){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
     }
     return mask;
+}
+MASK64 pawnMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == PAWN){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+MASK64 knightMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == KNIGHT){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+MASK64 bishopMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == BISHOP){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+MASK64 rookMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == ROOK){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+MASK64 queenMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == QUEEN){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+MASK64 kingMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == KING){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+MASK64 spareMask(PIECE_T board[STDBOARD]){
+
+    MASK64 mask = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+        if((board[i] & TYPEMASK) == SPARE){
+            mask = mask |  biterator;
+        }
+        biterator = (biterator << 1);
+    }
+    return mask;
+}
+void superMask(PIECE_T board[STDBOARD], MASK64 * boardMask, MASK64 * whiteMask, MASK64 * blackMask, MASK64 * pawnMask, MASK64 * knightMask, MASK64 * bishopMask, MASK64 * rookMask, MASK64 * queenMask, MASK64 * kingMask, MASK64 * spareMask){
+    MASK64 boardMaskW  = 0;
+    MASK64 whiteMaskW  = 0;
+    MASK64 blackMaskW  = 0;
+    MASK64 pawnMaskW   = 0;
+    MASK64 knightMaskW = 0;
+    MASK64 bishopMaskW = 0;
+    MASK64 rookMaskW   = 0;
+    MASK64 queenMaskW  = 0;
+    MASK64 kingMaskW   = 0;
+    MASK64 spareMaskW  = 0;
+
+    int i;
+    MASK64 biterator = 1ULL;
+    for(i=A1;i<STDBOARD;i++){
+
+        if((board[i] & TYPEMASK) != EMPTY){
+            boardMaskW |= biterator;
+            if((board[i] & COLORMASK) == WHITE)
+                whiteMaskW |= biterator;
+            else
+                blackMaskW |= biterator;
+            switch((board[i] & TYPEMASK)){
+                case PAWN:
+                    pawnMaskW |= biterator;
+                    break;
+                case KNIGHT:
+                    knightMaskW |= biterator;
+                    break;
+                case BISHOP:
+                    bishopMaskW |= biterator;
+                    break;
+                case ROOK:
+                    rookMaskW |= biterator;
+                    break;
+                case QUEEN:
+                    queenMaskW |= biterator;
+                    break;
+                case KING:
+                    kingMaskW |= biterator;
+                    break;
+                case SPARE:
+                    spareMaskW |= biterator;
+                    break;
+                default:
+                    break;
+            }
+        }
+        biterator = biterator << 1;
+    }
+
+    *boardMask  = boardMaskW;
+    *whiteMask  = whiteMaskW;
+    *blackMask  = blackMaskW;
+    *pawnMask   = pawnMaskW;
+    *knightMask = knightMaskW;
+    *bishopMask = bishopMaskW;
+    *rookMask   = rookMaskW;
+    *queenMask  = queenMaskW;
+    *kingMask   = kingMaskW;
+    *spareMask  = spareMaskW;
+
 }
 
 MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM){

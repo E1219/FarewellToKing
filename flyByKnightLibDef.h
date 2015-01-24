@@ -51,6 +51,13 @@ typedef struct Game_s{
    MASK64 boardM;
    MASK64 whiteM;
    MASK64 blackM;
+   MASK64 pawnM;
+   MASK64 knightM;
+   MASK64 bishopM;
+   MASK64 rookM;
+   MASK64 queenM;
+   MASK64 kingM;
+   MASK64 spareM;
    MASK64 moveM[STDBOARD];
    TURN_T turn; 
 }Game;

@@ -1,6 +1,6 @@
 //
 //FlyByKnightLibStr.h
-//FlyByKnightLib 0.0.1 - Chess Library
+//FlyByKnightLib 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
@@ -46,5 +46,9 @@ void printMaskC(MASK64 * mask, char output[]);
 //char output[] size >= 210 (20x10).  Lines ended with "\r\n".
 //fills output with formatted printout of board including board coordinates
 void printBoardC(PIECE_T board[STDBOARD], char output[]);
+
+//char output[] size >= 86.
+//fills output with Forsyth–Edwards Notation representation of 'game'.
+void getFEN(Game * game, char output[]);
 
 #endif

@@ -1,6 +1,6 @@
 //
 //FlyByKnightLib.c
-//FlyByKnightLib 0.0.1 - Chess Library
+//FlyByKnightLib 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
@@ -13,14 +13,17 @@ void beginStandardGame(Game * game){
 
     standardBoard(game->board);
 
+    game->ep       = XX;
+    game->castle   = 0;
+    game->halfmove = 0;
+    game->fullmove = 1;
+
     game->turn = WHITE;
         
     updateMasks(game);
 }
 void updateMasks(Game * game){
     
-    MASK64 tmp;
-
     superMask(game->board, &game->boardM, &game->whiteM, &game->blackM, &game->pawnM, &game->knightM, &game->bishopM, &game->rookM, &game->queenM, &game->kingM, &game->spareM);    
 
     POS_T i;
@@ -42,6 +45,23 @@ void updateMasks(Game * game){
 }
 void movePiece(Game * game, POS_T * target, POS_T * source){
     if((game->moveM[*source] & (1ULL << *target)) != 0 && (game->board[*source] & COLORMASK)==game->turn){
+
+        if((game->turn & COLORMASK) == BLACK)
+            game->fullmove++;
+
+        game->halfmove++;
+
+        if(((game->board[*target] & TYPEMASK) != EMPTY) || ((game->board[*source] & TYPEMASK) == PAWN))
+            game->halfmove = 0;
+
+        game->ep = XX;
+        if((game->board[*source] & TYPEMASK) == PAWN){
+            if((*target - *source) / 8 == 2)
+                game->ep = *source + 8;
+            else if ((*target - *source) / 8 == -2)
+                game->ep = *source - 8;
+        }
+
         placePiece(game->board, &game->board[*source], target); 
         PIECE_T empty = EMPTY;
         placePiece(game->board, &empty, source);

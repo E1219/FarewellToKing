@@ -1,6 +1,6 @@
 //
 //FlyByKnightLibMask.h
-//FlyByKnightLib 0.0.1 - Chess Library
+//FlyByKnightLib 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //

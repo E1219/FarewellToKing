@@ -1,5 +1,5 @@
 ====================
-FlyByKnightLib 0.0.1
+FlyByKnightLib 0.0.2
 November 2014 - 2015
 ====================
 Edward Sandor

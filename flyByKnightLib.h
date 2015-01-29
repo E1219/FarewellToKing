@@ -1,6 +1,6 @@
 //
 //FlyByKnightLib.h
-//FlyByKnightLib 0.0.1 - Chess Library
+//FlyByKnightLib 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //

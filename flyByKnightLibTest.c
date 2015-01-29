@@ -1,6 +1,6 @@
 //
 //FlyByKnightLibTest.c
-//FlyByKnightLib 0.0.1 - Chess Library
+//FlyByKnightLib 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
@@ -18,7 +18,7 @@ int main(){
     char input[128];
     char out[1024];
     for(;;){
-        printBoardC(game.board, out);
+        printBoard(&game, out);
         printf("%s\r\n%d\n\n", out,game.turn);
 
         scanf("%s", input);

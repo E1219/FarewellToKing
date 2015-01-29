@@ -1,6 +1,6 @@
 //
 //FlyByKnightLibStr.h
-//FlyByKnightLib 0.0.1 - Chess Library
+//FlyByKnightLib 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
@@ -96,9 +96,9 @@ void xboardMove(char input[8], POS_T * target, POS_T * source, char * extra){
     for(inputSize = 0; input[inputSize] != 0; inputSize++);
     if(input[0] == '0'){
         if(inputSize == 3)
-            extraT |= CASTLEKS;
+            extraT |= WCKS;
         else
-            extraT |= CASTLEQS;
+            extraT |= WCQS;
     }
     else if(input[1] == '@'){
         *source = XX;
@@ -341,5 +341,141 @@ ret[((i*2) + (i/8)+(i/8+1)*3)] = 'a' + i-8-STDBOARD;
     ret[209] = '\0';
     for(i = 0; i < 210; i++)
         output[i]=ret[i];
+}
+void getFEN(Game * game, char output[]){
+    int i;
+    int j;
+    for(i = 0; i < 86; i++){
+        output[i] = 0;
+    }
+
+    int outI  = 0;
+    for(i = 7; i >= 0; i--){
+        int count = 0;
+
+        for(j = 0; j < 8; j++){
+            if((game->board[i*8+j] & TYPEMASK) == EMPTY){
+                count++;
+            }
+            else{
+                if(count != 0){
+                    output[outI] = '0' + count;
+                    outI++;
+                }
+                count = 0;
+                output[outI] = toCharPiece(game->board[i*8+j]);
+                outI++;
+            }
+        }
+        if(count != 0){
+            output[outI] = '0' + count;
+            outI++;
+        }
+        if(i != 0){
+            output[outI] = '/';
+            outI++;
+        }
+    }
+    output[outI] = ' ';
+    outI++;
+    if((game->turn & COLORMASK) == WHITE){
+        output[outI] = 'w';
+        outI++;
+    }
+    else{
+        output[outI] = 'b';
+        outI++;
+    }
+    output[outI] = ' ';
+    outI++;
+    char castle = 1;
+    if(((game->board[E1] & (KING | WHITE)) == (KING | WHITE)) && 
+       ((game->board[H1] & (ROOK | WHITE)) == (ROOK | WHITE))){
+        output[outI] = 'K';
+        outI++;
+        castle = 0;
+    }
+    if(((game->board[E1] & (KING | WHITE)) == (KING | WHITE)) && 
+       ((game->board[A1] & (ROOK | WHITE)) == (ROOK | WHITE))){
+        output[outI] = 'Q';
+        outI++;
+        castle = 0;
+    }
+    if(((game->board[E8] & (KING | BLACK)) == (KING | BLACK)) && 
+       ((game->board[H8] & (ROOK | BLACK)) == (ROOK | BLACK))){
+        output[outI] = 'k';
+        outI++;
+        castle = 0;
+    }
+    if(((game->board[E8] & (KING | BLACK)) == (KING | BLACK)) && 
+       ((game->board[A8] & (ROOK | BLACK)) == (ROOK | BLACK))){
+        output[outI] = 'q';
+        outI++;
+        castle = 0;
+    }
+    if(castle == 1){
+        output[outI] = '-';
+        outI++;
+    }
+    output[outI] = ' ';
+    outI++;
+    if(game->ep != XX){
+        char ep[8];
+        toCoordinate(game->ep, ep);
+        output[outI] = ep[0];
+        outI++;
+        output[outI] = ep[1];
+        outI++;
+    }
+    else{
+        output[outI] = '-';
+        outI++;
+    }
+    output[outI] = ' ';
+    outI++;
+    int digits = 0;
+    int num = game->halfmove;
+    if(game->halfmove != 0){
+        while(num != 0){
+            digits++;
+            num /= 10;
+        }
+        for(i = 0; i < digits; i++){
+            num = game->halfmove;
+            for(j = i + 1; j < digits; j++){
+                num /= 10;
+            }
+            output[outI] = num%10 + '0';
+            outI++;
+        }
+    }
+    else{
+        output[outI] = '0';
+        outI++;
+    }
+    output[outI] = ' ';
+    outI++;
+    digits = 0;
+    if(game->fullmove != 0){
+        num = game->fullmove;
+        while(num != 0){
+            digits++;
+            num /= 10;
+        }
+        for(i = 0; i < digits; i++){
+            num = game->fullmove;
+            for(j = i + 1; j < digits; j++){
+                num /= 10;
+            }
+            output[outI] = num%10 + '0';
+            outI++;
+        }
+    }
+    else{
+        output[outI] = '0';
+        outI++;
+    }
+    output[outI] = ' ';
+    outI++;
 }
 

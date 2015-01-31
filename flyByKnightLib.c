@@ -14,7 +14,6 @@ void beginStandardGame(Game * game){
     standardBoard(game->board);
 
     game->ep       = XX;
-    game->castle   = 0;
     game->halfmove = 0;
     game->fullmove = 1;
 
@@ -69,3 +68,4 @@ void movePiece(Game * game, POS_T * target, POS_T * source){
         updateMasks(game);
     }
 }
+

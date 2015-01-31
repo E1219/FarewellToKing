@@ -69,8 +69,6 @@ typedef struct Game_s{
    TURN_T turn; 
    int halfmove;
    int fullmove;
-
-   CASTLE_T castle;
 }Game;
 
 //square value table

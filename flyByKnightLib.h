@@ -19,5 +19,4 @@ void beginStandardGame(Game * game);
 void updateMasks(Game * game);
 //call to move piece
 void movePiece(Game * game, POS_T * target, POS_T * source);
-
 #endif

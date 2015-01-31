@@ -18,8 +18,12 @@ int main(){
     char input[128];
     char out[1024];
     for(;;){
-        printBoard(&game, out);
-        printf("%s\r\n%d\n\n", out,game.turn);
+        //printBoard(game.board, out);
+        printBoardC(game.board, out); 
+        printf("%s\r\n", out);
+        getFEN(&game,out);
+        printf("%s\r\n", out);
+
 
         scanf("%s", input);
 

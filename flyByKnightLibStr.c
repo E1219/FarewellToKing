@@ -8,6 +8,7 @@
 //
 
 #include "flyByKnightLibStr.h"
+#define true false
 
 POS_T toPos(char input[3]){
     if(input[0] >= 'A' && input[0] <= 'H' && input[1] >= '1' && input[1] <= '8')
@@ -32,34 +33,50 @@ void toCoordinate(POS_T square, char coordinate[]){
 PIECE_T toPiece(char input){
    switch(input){
        case 'P':
+           return (PAWN   | WHITE | HASMOVED);
+           break;
        case 'p':
-           return PAWN;
+           return (PAWN   | BLACK | HASMOVED);
            break;
        case 'N':
+           return (KNIGHT | WHITE | HASMOVED);
+           break;
        case 'n':
-           return KNIGHT;
+           return (KNIGHT | BLACK | HASMOVED);
            break;
        case 'B':
+           return (BISHOP | WHITE | HASMOVED);
+           break;
        case 'b':
-           return BISHOP;
+           return (BISHOP | BLACK | HASMOVED);
            break;
        case 'R':
+           return (ROOK   | WHITE | HASMOVED);
+           break;
        case 'r':
-           return ROOK;
+           return (ROOK   | BLACK | HASMOVED);
            break;
        case 'Q':
+           return (QUEEN  | WHITE | HASMOVED);
+           break;
        case 'q':
-           return QUEEN;
+           return (QUEEN  | BLACK | HASMOVED);
            break;
        case 'K':
+           return (KING   | WHITE | HASMOVED);
+           break;
        case 'k':
-           return KING;
+           return (KING   | BLACK | HASMOVED);
            break;
        case 'S':
+           return (SPARE  | WHITE | HASMOVED);
+           break;
        case 's':
-           return SPARE;
+           return (SPARE  | BLACK | HASMOVED);
+           break;
        default:
-           return EMPTY;
+           return (EMPTY);
+           break;
    } 
 }
 char toCharPiece(PIECE_T piece){
@@ -389,26 +406,26 @@ void getFEN(Game * game, char output[]){
     output[outI] = ' ';
     outI++;
     char castle = 1;
-    if(((game->board[E1] & (KING | WHITE)) == (KING | WHITE)) && 
-       ((game->board[H1] & (ROOK | WHITE)) == (ROOK | WHITE))){
+    if(((game->board[E1] & (TYPEMASK | COLORMASK)) == (KING | WHITE)) && 
+       ((game->board[H1] & (TYPEMASK | COLORMASK)) == (ROOK | WHITE))){
         output[outI] = 'K';
         outI++;
         castle = 0;
     }
-    if(((game->board[E1] & (KING | WHITE)) == (KING | WHITE)) && 
-       ((game->board[A1] & (ROOK | WHITE)) == (ROOK | WHITE))){
+    if(((game->board[E1] & (TYPEMASK | COLORMASK)) == (KING | WHITE)) && 
+       ((game->board[A1] & (TYPEMASK | COLORMASK)) == (ROOK | WHITE))){
         output[outI] = 'Q';
         outI++;
         castle = 0;
     }
-    if(((game->board[E8] & (KING | BLACK)) == (KING | BLACK)) && 
-       ((game->board[H8] & (ROOK | BLACK)) == (ROOK | BLACK))){
+    if(((game->board[E8] & (TYPEMASK | COLORMASK)) == (KING | BLACK)) && 
+       ((game->board[H8] & (TYPEMASK | COLORMASK)) == (ROOK | BLACK))){
         output[outI] = 'k';
         outI++;
         castle = 0;
     }
-    if(((game->board[E8] & (KING | BLACK)) == (KING | BLACK)) && 
-       ((game->board[A8] & (ROOK | BLACK)) == (ROOK | BLACK))){
+    if(((game->board[E8] & (TYPEMASK | COLORMASK)) == (KING | BLACK)) && 
+       ((game->board[A8] & (TYPEMASK | COLORMASK)) == (ROOK | BLACK))){
         output[outI] = 'q';
         outI++;
         castle = 0;
@@ -478,4 +495,113 @@ void getFEN(Game * game, char output[]){
     output[outI] = ' ';
     outI++;
 }
+void beginFENGame(Game * game, char fen[]){
+
+    int inI = 0;
+
+    POS_T squareI;
+    
+    int i;
+
+    for(i = 0; i < STDBOARD; i++){
+        game->board[i] = EMPTY;
+    }
+
+    for(i = 0; i < 8; i++){
+        squareI = 56 - 8*i;
+        while(fen[inI] != '/' && fen[inI] != ' '){
+            if(fen[inI] > '0' && fen[inI] <= '8'){            
+                squareI += (fen[inI] - '0');
+            }
+            else{
+                 game->board[squareI] = toPiece(fen[inI]); 
+                 if((game->board[squareI] & TYPEMASK) == PAWN){
+                     if(((game->board[squareI] & COLORMASK) == WHITE) && i == 6){
+                        game->board[squareI] = (game->board[squareI] & (TYPEMASK | COLORMASK)) | NOTMOVED;
+                     }
+                     else if(((game->board[squareI] & COLORMASK) == BLACK) && i == 1){
+                        game->board[squareI] = (game->board[squareI] & (TYPEMASK | COLORMASK)) | NOTMOVED;
+                     }
+                     else{
+                        game->board[squareI] = (game->board[squareI] & (TYPEMASK | COLORMASK)) | HASMOVED;
+                     }
+                 }
+                 squareI++;
+            }
+            inI++;
+        }
+        inI++;
+    }
+
+    if(fen[inI] == 'w')
+        game->turn = WHITE;
+    else
+        game->turn = BLACK;
+
+    inI += 2;
+
+    if(fen[inI] == '-'){
+        inI += 2;
+    }
+    else{
+        while(fen[inI] != ' '){
+            switch (fen[inI]){
+                case 'K':
+                    game->board[E1] = (game->board[E1] & (TYPEMASK | COLORMASK)) | NOTMOVED;
+                    game->board[H1] = (game->board[H1] & (TYPEMASK | COLORMASK)) | NOTMOVED;                   
+                    break;
+                case 'Q':
+                    game->board[E1] = (game->board[E1] & (TYPEMASK | COLORMASK)) | NOTMOVED;
+                    game->board[A1] = (game->board[A1] & (TYPEMASK | COLORMASK)) | NOTMOVED;                   
+                    break;
+                case 'k':
+                    game->board[E8] = (game->board[E8] & (TYPEMASK | COLORMASK)) | NOTMOVED;
+                    game->board[H8] = (game->board[H8] & (TYPEMASK | COLORMASK)) | NOTMOVED;                   
+                    break;
+                case 'q':
+                    game->board[E8] = (game->board[E8] & (TYPEMASK | COLORMASK)) | NOTMOVED;
+                    game->board[A8] = (game->board[A8] & (TYPEMASK | COLORMASK)) | NOTMOVED;                   
+                    break;
+                defualt:
+                    break;
+            }
+            inI++;
+        }
+    }
+    inI++;
+
+    if(fen[inI] != '-'){
+        char pos[3];
+        pos[0] = fen[inI];
+        inI++;
+        pos[1] = fen[inI];
+        inI++;
+        pos[2] = 0;
+        game->ep = toPos(pos);
+    }
+    else{
+        inI++;
+    }
+    inI++;
+    int count = 0;
+    while(fen[inI] >= '0' && fen[inI] <= '9'){
+        count = (count*10) + (fen[inI] - '0');
+        inI++;
+    }
+    game->halfmove = count;
+
+    inI++;
+
+    count = 0;
+    while(fen[inI] >= '0' && fen[inI] <= '9'){
+        count = (count*10) + (fen[inI] - '0');
+        inI++;
+    }
+    game->fullmove = count;
+}
+
+
+
+
+
 

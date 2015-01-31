@@ -51,4 +51,9 @@ void printBoardC(PIECE_T board[STDBOARD], char output[]);
 //fills output with Forsyth–Edwards Notation representation of 'game'.
 void getFEN(Game * game, char output[]);
 
+//load game settings from FEN file
+//Game * game: game to store game data
+//char fen[]:  character array containing FEN data.
+void beginFENGame(Game * game, char fen[]);
+
 #endif

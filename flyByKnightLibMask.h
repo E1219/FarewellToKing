@@ -46,7 +46,7 @@ MASK64 spareMask(PIECE_T board[STDBOARD]);
 void superMask(PIECE_T board[STDBOARD], MASK64 * boardMask, MASK64 * whiteMask, MASK64 * blackMask, MASK64 * pawnMask, MASK64 * knightMask, MASK64 * bishopMask, MASK64 * rookMask, MASK64 * queenMask, MASK64 * kingMask, MASK64 * spareMask);
 
 //returns mask with basic legal moves, no checks for revealed check, castle, or en pasant.
-MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM);
+MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM, POS_T * ep);
 
 //returns mask describing a path to a specified square clear of pieces of the color of the piece moving.  
 //PIECE_T piece:  the piece of interest
@@ -56,8 +56,16 @@ MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opp
 MASK64 pathMask(PIECE_T * piece, POS_T * target, POS_T * source, MASK64 * moves);
 
 //method strips moves from the move mask for any piece whose movment would result in exposed check
-//PIECE_T board: array of the board size that contains a description of each piece on 
-//MASK64  moveM[STDBOARD]: an array for everyboard positions describing potential moves, will be overwritten by this method
+//PIECE_T board: array size of a standard board containing a description of each piece on each square 
+//MASK64  moveM[STDBOARD]: an array for everyboard positions describing potential moves, will be modified by this method
 CHECK_T stripCheck(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * playerM, POS_T * kingPos); 
+
+//method adds castling to move masks if castling is legal
+//PIECE_T board: array of the board size that contains descriptons of each piece on each square
+//MASK64  moveM[STDBOARD]: an array for everyboard positions describing potential moves, will be modified by this method
+//MASK64 * whiteM: a mask describing the position of all white pieces
+//MASK64 * blackM: a mask describing the position of all black pieces
+//TURN_T * turn: descriptor of whose turn it is
+void addCastle(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * whiteM, MASK64 * blackM, TURN_T * turn);
 
 #endif

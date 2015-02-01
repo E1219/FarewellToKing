@@ -37,10 +37,11 @@ void updateMasks(Game * game){
                 game->bKing = i;
             }
         }
-        game->moveM[i] = moveMask(&game->board[i], &i, (colorp == game->turn || ((game->board[i] & TYPEMASK) == PAWN))?(&game->boardM):((colorp != WHITE)?(&game->blackM):(&game->whiteM)), (colorp == WHITE)?(&game->blackM):(&game->whiteM));
+        game->moveM[i] = moveMask(&game->board[i], &i, (colorp == game->turn || ((game->board[i] & TYPEMASK) == PAWN))?(&game->boardM):((colorp != WHITE)?(&game->blackM):(&game->whiteM)), (colorp == WHITE)?(&game->blackM):(&game->whiteM), &game->ep);
     }
 
     stripCheck(game->board, game->moveM, (game->turn == WHITE)?(&game->whiteM):(&game->blackM), (game->turn == WHITE)?(&game->wKing):(&game->bKing));
+    addCastle(game->board, game->moveM, &game->whiteM, &game->blackM, &game->turn);
 }
 void movePiece(Game * game, POS_T * target, POS_T * source){
     if((game->moveM[*source] & (1ULL << *target)) != 0 && (game->board[*source] & COLORMASK)==game->turn){
@@ -53,16 +54,32 @@ void movePiece(Game * game, POS_T * target, POS_T * source){
         if(((game->board[*target] & TYPEMASK) != EMPTY) || ((game->board[*source] & TYPEMASK) == PAWN))
             game->halfmove = 0;
 
-        game->ep = XX;
+        PIECE_T empty = EMPTY;
+
         if((game->board[*source] & TYPEMASK) == PAWN){
+
+            if(*target == game->ep){
+                if( (game->turn) == WHITE ){
+                    game->board[game->ep - 8] = empty;
+                }
+                else{
+                    game->board[game->ep + 8] = empty;
+                }
+            }
+
             if((*target - *source) / 8 == 2)
                 game->ep = *source + 8;
             else if ((*target - *source) / 8 == -2)
                 game->ep = *source - 8;
+            else
+                game->ep = XX;               
+        }
+        else{
+            game->ep = XX;
         }
 
+        game->board[*source] = (game->board[*source] & (TYPEMASK | COLORMASK)) | HASMOVED;
         placePiece(game->board, &game->board[*source], target); 
-        PIECE_T empty = EMPTY;
         placePiece(game->board, &empty, source);
         game->turn = game->turn ^ BLACK;
         updateMasks(game);

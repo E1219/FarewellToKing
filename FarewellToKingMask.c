@@ -1,13 +1,13 @@
 //
-//FlyByKnightLibMask.c
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingMask.c
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
 //Conatains implementation of all methods used to generate and manipulate board masks.
 //
 
-#include "flyByKnightLibMask.h"
+#include "FarewellToKingMask.h"
 
 MASK64 boardMask(PIECE_T board[STDBOARD]){
 

@@ -1,13 +1,13 @@
 //
-//FlyByKnightLibBoard.c
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingBoard.c
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
 //Contains implementation of all methods for board manipulation. 
 //
 
-#include "flyByKnightLibBoard.h"
+#include "FarewellToKingBoard.h"
 
 void emptyBoard(PIECE_T board [STDBOARD]){
     int i;

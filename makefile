@@ -143,163 +143,163 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named flybyknightlib
+# Target rules for targets named farewelltoking
 
 # Build rule for target.
-flybyknightlib: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 flybyknightlib
-.PHONY : flybyknightlib
+farewelltoking: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 farewelltoking
+.PHONY : farewelltoking
 
 # fast build rule for target.
-flybyknightlib/fast:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/build
-.PHONY : flybyknightlib/fast
+farewelltoking/fast:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/build
+.PHONY : farewelltoking/fast
 
 #=============================================================================
-# Target rules for targets named flybyknightlibstr
+# Target rules for targets named farewelltokingstr
 
 # Build rule for target.
-flybyknightlibstr: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 flybyknightlibstr
-.PHONY : flybyknightlibstr
+farewelltokingstr: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 farewelltokingstr
+.PHONY : farewelltokingstr
 
 # fast build rule for target.
-flybyknightlibstr/fast:
-	$(MAKE) -f CMakeFiles/flybyknightlibstr.dir/build.make CMakeFiles/flybyknightlibstr.dir/build
-.PHONY : flybyknightlibstr/fast
+farewelltokingstr/fast:
+	$(MAKE) -f CMakeFiles/farewelltokingstr.dir/build.make CMakeFiles/farewelltokingstr.dir/build
+.PHONY : farewelltokingstr/fast
 
 #=============================================================================
-# Target rules for targets named flybyknightlibtest
+# Target rules for targets named farewelltokingtest
 
 # Build rule for target.
-flybyknightlibtest: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 flybyknightlibtest
-.PHONY : flybyknightlibtest
+farewelltokingtest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 farewelltokingtest
+.PHONY : farewelltokingtest
 
 # fast build rule for target.
-flybyknightlibtest/fast:
-	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/build
-.PHONY : flybyknightlibtest/fast
+farewelltokingtest/fast:
+	$(MAKE) -f CMakeFiles/farewelltokingtest.dir/build.make CMakeFiles/farewelltokingtest.dir/build
+.PHONY : farewelltokingtest/fast
 
-flyByKnightLib.o: flyByKnightLib.c.o
-.PHONY : flyByKnightLib.o
-
-# target to build an object file
-flyByKnightLib.c.o:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLib.c.o
-.PHONY : flyByKnightLib.c.o
-
-flyByKnightLib.i: flyByKnightLib.c.i
-.PHONY : flyByKnightLib.i
-
-# target to preprocess a source file
-flyByKnightLib.c.i:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLib.c.i
-.PHONY : flyByKnightLib.c.i
-
-flyByKnightLib.s: flyByKnightLib.c.s
-.PHONY : flyByKnightLib.s
-
-# target to generate assembly for a file
-flyByKnightLib.c.s:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLib.c.s
-.PHONY : flyByKnightLib.c.s
-
-flyByKnightLibBoard.o: flyByKnightLibBoard.c.o
-.PHONY : flyByKnightLibBoard.o
+FarewellToKing.o: FarewellToKing.c.o
+.PHONY : FarewellToKing.o
 
 # target to build an object file
-flyByKnightLibBoard.c.o:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLibBoard.c.o
-.PHONY : flyByKnightLibBoard.c.o
+FarewellToKing.c.o:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKing.c.o
+.PHONY : FarewellToKing.c.o
 
-flyByKnightLibBoard.i: flyByKnightLibBoard.c.i
-.PHONY : flyByKnightLibBoard.i
+FarewellToKing.i: FarewellToKing.c.i
+.PHONY : FarewellToKing.i
 
 # target to preprocess a source file
-flyByKnightLibBoard.c.i:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLibBoard.c.i
-.PHONY : flyByKnightLibBoard.c.i
+FarewellToKing.c.i:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKing.c.i
+.PHONY : FarewellToKing.c.i
 
-flyByKnightLibBoard.s: flyByKnightLibBoard.c.s
-.PHONY : flyByKnightLibBoard.s
+FarewellToKing.s: FarewellToKing.c.s
+.PHONY : FarewellToKing.s
 
 # target to generate assembly for a file
-flyByKnightLibBoard.c.s:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLibBoard.c.s
-.PHONY : flyByKnightLibBoard.c.s
+FarewellToKing.c.s:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKing.c.s
+.PHONY : FarewellToKing.c.s
 
-flyByKnightLibMask.o: flyByKnightLibMask.c.o
-.PHONY : flyByKnightLibMask.o
+FarewellToKingBoard.o: FarewellToKingBoard.c.o
+.PHONY : FarewellToKingBoard.o
 
 # target to build an object file
-flyByKnightLibMask.c.o:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLibMask.c.o
-.PHONY : flyByKnightLibMask.c.o
+FarewellToKingBoard.c.o:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKingBoard.c.o
+.PHONY : FarewellToKingBoard.c.o
 
-flyByKnightLibMask.i: flyByKnightLibMask.c.i
-.PHONY : flyByKnightLibMask.i
+FarewellToKingBoard.i: FarewellToKingBoard.c.i
+.PHONY : FarewellToKingBoard.i
 
 # target to preprocess a source file
-flyByKnightLibMask.c.i:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLibMask.c.i
-.PHONY : flyByKnightLibMask.c.i
+FarewellToKingBoard.c.i:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKingBoard.c.i
+.PHONY : FarewellToKingBoard.c.i
 
-flyByKnightLibMask.s: flyByKnightLibMask.c.s
-.PHONY : flyByKnightLibMask.s
+FarewellToKingBoard.s: FarewellToKingBoard.c.s
+.PHONY : FarewellToKingBoard.s
 
 # target to generate assembly for a file
-flyByKnightLibMask.c.s:
-	$(MAKE) -f CMakeFiles/flybyknightlib.dir/build.make CMakeFiles/flybyknightlib.dir/flyByKnightLibMask.c.s
-.PHONY : flyByKnightLibMask.c.s
+FarewellToKingBoard.c.s:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKingBoard.c.s
+.PHONY : FarewellToKingBoard.c.s
 
-flyByKnightLibStr.o: flyByKnightLibStr.c.o
-.PHONY : flyByKnightLibStr.o
+FarewellToKingMask.o: FarewellToKingMask.c.o
+.PHONY : FarewellToKingMask.o
 
 # target to build an object file
-flyByKnightLibStr.c.o:
-	$(MAKE) -f CMakeFiles/flybyknightlibstr.dir/build.make CMakeFiles/flybyknightlibstr.dir/flyByKnightLibStr.c.o
-.PHONY : flyByKnightLibStr.c.o
+FarewellToKingMask.c.o:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKingMask.c.o
+.PHONY : FarewellToKingMask.c.o
 
-flyByKnightLibStr.i: flyByKnightLibStr.c.i
-.PHONY : flyByKnightLibStr.i
+FarewellToKingMask.i: FarewellToKingMask.c.i
+.PHONY : FarewellToKingMask.i
 
 # target to preprocess a source file
-flyByKnightLibStr.c.i:
-	$(MAKE) -f CMakeFiles/flybyknightlibstr.dir/build.make CMakeFiles/flybyknightlibstr.dir/flyByKnightLibStr.c.i
-.PHONY : flyByKnightLibStr.c.i
+FarewellToKingMask.c.i:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKingMask.c.i
+.PHONY : FarewellToKingMask.c.i
 
-flyByKnightLibStr.s: flyByKnightLibStr.c.s
-.PHONY : flyByKnightLibStr.s
+FarewellToKingMask.s: FarewellToKingMask.c.s
+.PHONY : FarewellToKingMask.s
 
 # target to generate assembly for a file
-flyByKnightLibStr.c.s:
-	$(MAKE) -f CMakeFiles/flybyknightlibstr.dir/build.make CMakeFiles/flybyknightlibstr.dir/flyByKnightLibStr.c.s
-.PHONY : flyByKnightLibStr.c.s
+FarewellToKingMask.c.s:
+	$(MAKE) -f CMakeFiles/farewelltoking.dir/build.make CMakeFiles/farewelltoking.dir/FarewellToKingMask.c.s
+.PHONY : FarewellToKingMask.c.s
 
-flyByKnightLibTest.o: flyByKnightLibTest.c.o
-.PHONY : flyByKnightLibTest.o
+FarewellToKingStr.o: FarewellToKingStr.c.o
+.PHONY : FarewellToKingStr.o
 
 # target to build an object file
-flyByKnightLibTest.c.o:
-	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/flyByKnightLibTest.c.o
-.PHONY : flyByKnightLibTest.c.o
+FarewellToKingStr.c.o:
+	$(MAKE) -f CMakeFiles/farewelltokingstr.dir/build.make CMakeFiles/farewelltokingstr.dir/FarewellToKingStr.c.o
+.PHONY : FarewellToKingStr.c.o
 
-flyByKnightLibTest.i: flyByKnightLibTest.c.i
-.PHONY : flyByKnightLibTest.i
+FarewellToKingStr.i: FarewellToKingStr.c.i
+.PHONY : FarewellToKingStr.i
 
 # target to preprocess a source file
-flyByKnightLibTest.c.i:
-	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/flyByKnightLibTest.c.i
-.PHONY : flyByKnightLibTest.c.i
+FarewellToKingStr.c.i:
+	$(MAKE) -f CMakeFiles/farewelltokingstr.dir/build.make CMakeFiles/farewelltokingstr.dir/FarewellToKingStr.c.i
+.PHONY : FarewellToKingStr.c.i
 
-flyByKnightLibTest.s: flyByKnightLibTest.c.s
-.PHONY : flyByKnightLibTest.s
+FarewellToKingStr.s: FarewellToKingStr.c.s
+.PHONY : FarewellToKingStr.s
 
 # target to generate assembly for a file
-flyByKnightLibTest.c.s:
-	$(MAKE) -f CMakeFiles/flybyknightlibtest.dir/build.make CMakeFiles/flybyknightlibtest.dir/flyByKnightLibTest.c.s
-.PHONY : flyByKnightLibTest.c.s
+FarewellToKingStr.c.s:
+	$(MAKE) -f CMakeFiles/farewelltokingstr.dir/build.make CMakeFiles/farewelltokingstr.dir/FarewellToKingStr.c.s
+.PHONY : FarewellToKingStr.c.s
+
+FarewellToKingTest.o: FarewellToKingTest.c.o
+.PHONY : FarewellToKingTest.o
+
+# target to build an object file
+FarewellToKingTest.c.o:
+	$(MAKE) -f CMakeFiles/farewelltokingtest.dir/build.make CMakeFiles/farewelltokingtest.dir/FarewellToKingTest.c.o
+.PHONY : FarewellToKingTest.c.o
+
+FarewellToKingTest.i: FarewellToKingTest.c.i
+.PHONY : FarewellToKingTest.i
+
+# target to preprocess a source file
+FarewellToKingTest.c.i:
+	$(MAKE) -f CMakeFiles/farewelltokingtest.dir/build.make CMakeFiles/farewelltokingtest.dir/FarewellToKingTest.c.i
+.PHONY : FarewellToKingTest.c.i
+
+FarewellToKingTest.s: FarewellToKingTest.c.s
+.PHONY : FarewellToKingTest.s
+
+# target to generate assembly for a file
+FarewellToKingTest.c.s:
+	$(MAKE) -f CMakeFiles/farewelltokingtest.dir/build.make CMakeFiles/farewelltokingtest.dir/FarewellToKingTest.c.s
+.PHONY : FarewellToKingTest.c.s
 
 # Help Target
 help:
@@ -308,29 +308,29 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... flybyknightlib"
-	@echo "... flybyknightlibstr"
-	@echo "... flybyknightlibtest"
+	@echo "... farewelltoking"
+	@echo "... farewelltokingstr"
+	@echo "... farewelltokingtest"
 	@echo "... install"
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... flyByKnightLib.o"
-	@echo "... flyByKnightLib.i"
-	@echo "... flyByKnightLib.s"
-	@echo "... flyByKnightLibBoard.o"
-	@echo "... flyByKnightLibBoard.i"
-	@echo "... flyByKnightLibBoard.s"
-	@echo "... flyByKnightLibMask.o"
-	@echo "... flyByKnightLibMask.i"
-	@echo "... flyByKnightLibMask.s"
-	@echo "... flyByKnightLibStr.o"
-	@echo "... flyByKnightLibStr.i"
-	@echo "... flyByKnightLibStr.s"
-	@echo "... flyByKnightLibTest.o"
-	@echo "... flyByKnightLibTest.i"
-	@echo "... flyByKnightLibTest.s"
+	@echo "... FarewellToKing.o"
+	@echo "... FarewellToKing.i"
+	@echo "... FarewellToKing.s"
+	@echo "... FarewellToKingBoard.o"
+	@echo "... FarewellToKingBoard.i"
+	@echo "... FarewellToKingBoard.s"
+	@echo "... FarewellToKingMask.o"
+	@echo "... FarewellToKingMask.i"
+	@echo "... FarewellToKingMask.s"
+	@echo "... FarewellToKingStr.o"
+	@echo "... FarewellToKingStr.i"
+	@echo "... FarewellToKingStr.s"
+	@echo "... FarewellToKingTest.o"
+	@echo "... FarewellToKingTest.i"
+	@echo "... FarewellToKingTest.s"
 .PHONY : help
 
 

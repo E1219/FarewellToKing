@@ -1,6 +1,6 @@
 //
-//FlyByKnightLibBoard.h
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingBoard.h
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
@@ -9,7 +9,7 @@
 
 #ifndef FLYBYKNIGHTLIBBOARD_H
 #define FLYBYKNIGHTLIBBOARD_H
-#include "flyByKnightLibDef.h"
+#include "FarewellToKingDef.h"
 
 //set all squares of board to bx00001110
 void emptyBoard(PIECE_T board[STDBOARD]);

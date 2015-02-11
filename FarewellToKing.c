@@ -1,13 +1,13 @@
 //
-//FlyByKnightLib.c
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKing.c
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
 //Contains implementations of all methods for general game manipulation. 
 //
 
-#include "flyByKnightLib.h"
+#include "FarewellToKing.h"
 
 void beginStandardGame(Game * game){
 

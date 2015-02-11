@@ -1,14 +1,14 @@
 //
-//FlyByKnightLibDef.h
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingDef.h
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
-//Contains all type, constant, and structure definitions to be used used by FlyByKnightLib.
+//Contains all type, constant, and structure definitions to be used used by FarewellToKing.
 //
 
-#ifndef FLYBYKNIGHTLIBDEF_H
-#define FLYBYKNIGHTLIBDEF_H
+#ifndef FAREWELLTOKINGDEF_H
+#define FAREWELLTOKINGDEF_H
 #include <stdint.h>
 
 //game definition table

@@ -1,15 +1,15 @@
 //
-//FlyByKnightLibTest.c
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingTest.c
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
-//Main function can be used to test different aspects of FlyByKnightLib
+//Main function can be used to test different aspects of FarewellToKing
 //
 
 #include <stdio.h>
-#include "flyByKnightLib.h"
-#include "flyByKnightLibStr.h"
+#include "FarewellToKing.h"
+#include "FarewellToKingStr.h"
 
 int main(){
     Game game;

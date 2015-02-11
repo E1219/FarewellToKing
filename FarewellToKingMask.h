@@ -1,15 +1,15 @@
 //
-//FlyByKnightLibMask.h
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingMask.h
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
 //Conatains declarations of all methods used to generate and manipulate board masks.
 //
 
-#ifndef FLYBYKNIGHTLIBMASK_H
-#define FLYBYKNIGHTLIBMASK_H
-#include "flyByKnightLibDef.h"
+#ifndef FAREWELLTOKINGMASK_H
+#define FAREWELLTOKINGMASK_H
+#include "FarewellToKingDef.h"
 
 //returns 64 bit integer representing board positions occupied by a piece
 MASK64 boardMask(PIECE_T board[STDBOARD]);

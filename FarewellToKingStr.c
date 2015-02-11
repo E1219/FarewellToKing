@@ -1,14 +1,13 @@
 //
-//FlyByKnightLibStr.h
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingStr.h
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
 //Contains implementations of all methods that generate formatted strings for human readable output.
 //
 
-#include "flyByKnightLibStr.h"
-#define true false
+#include "FarewellToKingStr.h"
 
 POS_T toPos(char input[3]){
     if(input[0] >= 'A' && input[0] <= 'H' && input[1] >= '1' && input[1] <= '8')

@@ -1,17 +1,17 @@
 //
-//FlyByKnightLib.h
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKing.h
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
 //Contains delcarations of all methods for general game manipulation. 
 //
 
-#ifndef FLYBYKNIGHTLIB_H
-#define FLYBYKNIGHTLIB_H
-#include "flyByKnightLibDef.h"
-#include "flyByKnightLibBoard.h"
-#include "flyByKnightLibMask.h"
+#ifndef FAREWELLTOKING_H
+#define FAREWELLTOKING_H
+#include "FarewellToKingDef.h"
+#include "FarewellToKingBoard.h"
+#include "FarewellToKingMask.h"
 
 //initializes values of Game structure, game, for a standard game of chess 
 void beginStandardGame(Game * game);

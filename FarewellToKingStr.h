@@ -1,15 +1,15 @@
 //
-//FlyByKnightLibStr.h
-//FlyByKnightLib 0.0.2 - Chess Library
+//FarewellToKingStr.h
+//FarewellToKing 0.0.2 - Chess Library
 //Edward Sandor
 //January 2015
 //
 //Contains declarations of all methods that generate formatted strings for human readable output.
 //
 
-#ifndef FLYBYKNIGHTLIBSTR_H
-#define FLYBYKNIGHTLIBSTR_H
-#include "flyByKnightLibDef.h"
+#ifndef FAREWELLTOKINGSTR_H
+#define FAREWELLTOKINGSTR_H
+#include "FarewellToKingDef.h"
 
 //method converts chess coordinate to square number
 //char input[3]: char array containing chess cordinate

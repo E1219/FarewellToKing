@@ -466,7 +466,7 @@ void addCastle(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * whiteM,
     MASK64 QS;
     MASK64 KS;
     POS_T i = 0;
-    if(turn == WHITE){
+    if(*turn == WHITE){
         if(board[E1] == (NOTMOVED | KING | WHITE)){
             castle = WCKS | WCQS;
         }
@@ -475,35 +475,35 @@ void addCastle(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * whiteM,
         KS = (1ULL << F1) | (1ULL << G1);
 
         if((((1ULL << B1) | QS) & (*whiteM | *blackM)) != 0 || (board[A1] != (NOTMOVED | ROOK | WHITE))){
-            castle &= !WCQS;
+            castle &= ~WCQS;
         }
         if((KS & (*whiteM | *blackM)) != 0 || (board[H1] != (NOTMOVED | ROOK | WHITE))){
-            castle &= !WCKS;
+            castle &= ~WCKS;
         }
 
         for(i = 0; i < STDBOARD && castle != 0; i++){
-            if(board[i] & COLORMASK == BLACK){
+            if((board[i] & COLORMASK) == BLACK){
                 if( (((QS | KS | E8) & moveM[i]) != 0)){
                     POS_T pos = E1;
-                    if( pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM == 0){
-                        castle &= !WCKS;
-                        castle &= !WCQS;
+                    if( (pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM) == 0){
+                        castle &= ~WCKS;
+                        castle &= ~WCQS;
                     } 
                     pos = C1;
-                    if( pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM == 0){
-                        castle &= !WCQS;
+                    if( (pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM) == 0){
+                        castle &= ~WCQS;
                     } 
                     pos = D1;
-                    if( pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM == 0){
-                        castle &= !WCQS;
+                    if( (pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM) == 0){
+                        castle &= ~WCQS;
                     } 
                     pos = F1;
-                    if( pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM == 0){
-                        castle &= !WCKS;
+                    if( (pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM) == 0){
+                        castle &= ~WCKS;
                     } 
                     pos = G1;
-                    if( pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM == 0){
-                        castle &= !WCKS;
+                    if( (pathMask(&board[i], &pos, &i, &moveM[i]) & *whiteM) == 0){
+                        castle &= ~WCKS;
                     } 
 
                 }
@@ -515,14 +515,14 @@ void addCastle(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * whiteM,
             castle = BCKS | BCQS;
         }
 
-        QS = (8ULL << C8) | (8ULL << D8);
-        KS = (8ULL << F8) | (8ULL << G8);
+        QS = (1ULL << C8) | (1ULL << D8);
+        KS = (1ULL << F8) | (1ULL << G8);
 
-        if((((8ULL << B8) | QS) & (*whiteM | *blackM)) != 0 || (board[A8] != (NOTMOVED | ROOK | BLACK))){
-            castle &= !BCQS;
+        if((((1ULL << B8) | QS) & (*whiteM | *blackM)) != 0 || (board[A8] != (NOTMOVED | ROOK | BLACK))){
+            castle &= ~BCQS;
         }
         if((KS & (*whiteM | *blackM)) != 0 || (board[H8] != (NOTMOVED | ROOK | BLACK))){
-            castle &= !BCKS;
+            castle &= ~BCKS;
         }
 
         for(i = 0; i < STDBOARD && castle != 0; i++){
@@ -530,40 +530,40 @@ void addCastle(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * whiteM,
                 if( (((QS | KS | E8) & moveM[i]) != 0)){
                     POS_T pos = E8;
                     if( pathMask(&board[i], &pos, &i, &moveM[i]) & *blackM == 0){
-                        castle &= !BCKS;
-                        castle &= !BCQS;
+                        castle &= ~BCKS;
+                        castle &= ~BCQS;
                     } 
                     pos = C8;
                     if( pathMask(&board[i], &pos, &i, &moveM[i]) & *blackM == 0){
-                        castle &= !BCQS;
+                        castle &= ~BCQS;
                     } 
                     pos = D8;
                     if( pathMask(&board[i], &pos, &i, &moveM[i]) & *blackM == 0){
-                        castle &= !BCQS;
+                        castle &= ~BCQS;
                     } 
                     pos = F8;
                     if( pathMask(&board[i], &pos, &i, &moveM[i]) & *blackM == 0){
-                        castle &= !BCKS;
+                        castle &= ~BCKS;
                     } 
                     pos = G8;
                     if( pathMask(&board[i], &pos, &i, &moveM[i]) & *blackM == 0){
-                        castle &= !BCKS;
+                        castle &= ~BCKS;
                     } 
 
                 }
             }
         }
     }
-    if(castle & WCKS == WCKS){
+    if((castle & WCKS) == WCKS){
         moveM[E1] |= (1ULL << G1);
     }
-    if(castle & WCQS == WCQS){
+    if((castle & WCQS) == WCQS){
         moveM[E1] |= (1ULL << C1);
     }
-    if(castle & BCKS == BCKS){
+    if((castle & BCKS) == BCKS){
         moveM[E8] |= (1ULL << G8);
     }
-    if(castle & BCQS == BCQS){
+    if((castle & BCQS) == BCQS){
         moveM[E8] |= (1ULL << C8);
     }
 }

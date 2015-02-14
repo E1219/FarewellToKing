@@ -77,6 +77,17 @@ void movePiece(Game * game, POS_T * target, POS_T * source){
         else{
             game->ep = XX;
         }
+        
+        if((game->board[*source] & TYPEMASK) == KING){
+            if((*target - *source) == 2){
+                game->board[*target - 1] = (game->board[*source + 3] & (TYPEMASK | COLORMASK)) | HASMOVED;
+                game->board[*source + 3] = EMPTY;
+            }
+            if((*target - *source) == -2){
+                game->board[*target + 1] = (game->board[*source - 4] & (TYPEMASK | COLORMASK)) | HASMOVED;
+                game->board[*source - 4] = EMPTY;
+            }
+        }
 
         game->board[*source] = (game->board[*source] & (TYPEMASK | COLORMASK)) | HASMOVED;
         placePiece(game->board, &game->board[*source], target); 

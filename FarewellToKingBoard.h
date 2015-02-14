@@ -7,8 +7,8 @@
 //Contains delcarations of all methods for board manipulation. 
 //
 
-#ifndef FLYBYKNIGHTLIBBOARD_H
-#define FLYBYKNIGHTLIBBOARD_H
+#ifndef FAREWELLTOKINGBOARD_H
+#define FAREWELLTOKINGBOARD_H
 #include "FarewellToKingDef.h"
 
 //set all squares of board to bx00001110

@@ -21,9 +21,12 @@ int main(){
         //printBoard(game.board, out);
         printBoardC(game.board, out); 
         printf("%s\r\n", out);
+
+//        printMaskC(&game.moveM[E1], out);
+//        printf("%s\r\n", out);
+
         getFEN(&game,out);
         printf("%s\r\n", out);
-
 
         scanf("%s", input);
 

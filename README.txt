@@ -1,8 +1,7 @@
-========================
-|Farewell To King 0.0.2|
-|Chess Library         |
-|November 2014 - 2015  |
-========================
+    ========================
+    #Farewell To King 0.0.2#
+    #Chess Library         # November 2014 - 2015  
+    ========================
 
 Edward Sandor
 

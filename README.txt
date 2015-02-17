@@ -1,11 +1,9 @@
     ========================
-    #Farewell To King 0.0.2#
+    #Farewell To King 0.0.2# Edward Sandor
     #Chess Library         # November 2014 - 2015  
     ========================
 
-Edward Sandor
-
-Farewell To King is a reusable, light chess library to be written in C.  It can be used for board representation, check legality, and game management for different chess applications.
+Farewell To King is a reusable, light chess library to be written in C.  It can be used to represent a game, to check move legality, and to perform other common chess related tasks for use in different chess applications.
 
 To build, run:
 $make

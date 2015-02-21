@@ -1,6 +1,6 @@
 //
 //FarewellToKingDef.h
-//FarewellToKing 0.0.2 - Chess Library
+//FarewellToKing 0.0.3 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //
@@ -70,6 +70,13 @@ typedef struct Game_s{
    int halfmove;
    int fullmove;
 }Game;
+
+typedef struct move_s{
+    POS_T target;
+    POS_T Source;
+
+    
+}Move;
 
 //square value table
 #define A1  0

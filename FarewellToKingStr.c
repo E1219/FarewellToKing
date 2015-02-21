@@ -1,6 +1,6 @@
 //
 //FarewellToKingStr.h
-//FarewellToKing 0.0.2 - Chess Library
+//FarewellToKing 0.0.3 - Chess Library
 //Edward Sandor
 //January 2015
 //

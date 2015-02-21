@@ -1,6 +1,6 @@
 //
 //FarewellToKing.c
-//FarewellToKing 0.0.2 - Chess Library
+//FarewellToKing 0.0.3 - Chess Library
 //Edward Sandor
 //November 2014 - 2015
 //

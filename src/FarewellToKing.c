@@ -43,26 +43,42 @@ void updateMasks(Game * game){
     stripCheck(game->board, game->moveM, (game->turn == WHITE)?(&game->whiteM):(&game->blackM), (game->turn == WHITE)?(&game->wKing):(&game->bKing));
     addCastle(game->board, game->moveM, &game->whiteM, &game->blackM, &game->turn);
 }
-void movePiece(Game * game, POS_T * target, POS_T * source){
+Move movePiece(Game * game, POS_T * target, POS_T * source){
+    Move move;
+    PIECE_T empty = EMPTY;
+
     if((game->moveM[*source] & (1ULL << *target)) != 0 && (game->board[*source] & COLORMASK)==game->turn){
 
-        if((game->turn & COLORMASK) == BLACK)
+        move.source     = *source;
+        move.target     = *target;
+
+        move.moved      = game->board[*source];
+        move.capture    = game->board[*target];
+
+        move.ep         = game->ep;
+
+        move.turn       = game->turn;
+        move.fullmove   = game->fullmove;
+        move.halfmove   = game->halfmove;
+
+        if((game->turn & COLORMASK) == BLACK){
             game->fullmove++;
+        }
 
         game->halfmove++;
 
         if(((game->board[*target] & TYPEMASK) != EMPTY) || ((game->board[*source] & TYPEMASK) == PAWN))
             game->halfmove = 0;
 
-        PIECE_T empty = EMPTY;
-
         if((game->board[*source] & TYPEMASK) == PAWN){
 
             if(*target == game->ep){
                 if( (game->turn) == WHITE ){
+                    move.capture = game->board[game->ep - 8];
                     game->board[game->ep - 8] = empty;
                 }
                 else{
+                    move.capture = game->board[game->ep + 8];
                     game->board[game->ep + 8] = empty;
                 }
             }
@@ -95,5 +111,36 @@ void movePiece(Game * game, POS_T * target, POS_T * source){
         game->turn = game->turn ^ BLACK;
         updateMasks(game);
     }
+    else{
+        move.source     = XX;
+        move.target     = XX;
+
+        move.moved      = empty;
+        move.capture    = empty;
+
+        move.ep         = XX;
+
+        move.turn       = 0;
+        move.fullmove   = 0;
+        move.halfmove   = 0;
+    }
+    return move;
 }
 
+char moveForeward(Game * game, Move * move){
+
+    if(move->target == XX || move->source == XX)
+        return 2;
+
+    Move newmove = movePiece(game, &move->target, &move->source);
+        
+    if(newmove.target == XX || newmove.source == XX)
+        return 1;
+
+    return 0;
+}
+
+char moveBackward(Game * game, Move * move){
+
+    return 1;
+}

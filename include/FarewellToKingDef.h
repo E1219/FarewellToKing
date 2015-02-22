@@ -72,10 +72,17 @@ typedef struct Game_s{
 }Game;
 
 typedef struct move_s{
-    POS_T target;
-    POS_T Source;
+    POS_T   target;
+    POS_T   source;
 
-    
+    PIECE_T moved;    
+    PIECE_T capture;
+
+    POS_T   ep;
+
+    TURN_T  turn;
+    int     halfmove;
+    int     fullmove;
 }Move;
 
 //square value table

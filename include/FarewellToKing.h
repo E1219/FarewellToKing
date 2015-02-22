@@ -17,6 +17,17 @@
 void beginStandardGame(Game * game);
 //call to update all game masks in the proper order after setup, moving piece, or board modification.
 void updateMasks(Game * game);
+
 //call to move piece
-void movePiece(Game * game, POS_T * target, POS_T * source);
+//Game * game: game to manipulate
+//POS_T * target: the square to move to
+//POS_T * source: the square to move from
+//Move: returns move structure describing changes made to game
+Move movePiece(Game * game, POS_T * target, POS_T * source);
+
+//move backward based on move structure
+//Game * game: game to manipulate
+//Move * move: description of move to be reveresed.
+char moveBackward(Game * game, Move * move);
+
 #endif

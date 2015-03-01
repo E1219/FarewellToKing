@@ -97,10 +97,12 @@ Move movePiece(Game * game, POS_T * target, POS_T * source){
         if((game->board[*source] & TYPEMASK) == KING){
             if((*target - *source) == 2){
                 game->board[*target - 1] = (game->board[*source + 3] & (TYPEMASK | COLORMASK)) | HASMOVED;
+                move.capture = game->board[*source + 3];
                 game->board[*source + 3] = EMPTY;
             }
             if((*target - *source) == -2){
                 game->board[*target + 1] = (game->board[*source - 4] & (TYPEMASK | COLORMASK)) | HASMOVED;
+                move.capture = game->board[*source - 4];
                 game->board[*source - 4] = EMPTY;
             }
         }
@@ -130,17 +132,45 @@ Move movePiece(Game * game, POS_T * target, POS_T * source){
 char moveForeward(Game * game, Move * move){
 
     if(move->target == XX || move->source == XX)
-        return 2;
+        return 1;
 
     Move newmove = movePiece(game, &move->target, &move->source);
         
     if(newmove.target == XX || newmove.source == XX)
-        return 1;
+        return 2;
 
     return 0;
 }
 
 char moveBackward(Game * game, Move * move){
 
-    return 1;
+    if(move->target == XX && move->source == XX)
+        return 1;
+
+    game->board[move->source] = move->moved;
+
+    if(move->target == move->ep){
+        if(move->turn == WHITE){
+            game->board[move->ep - 8] = move->capture;
+        }
+        else{
+            game->board[move->ep + 8] = move->capture;
+        }
+        game->board[move->target] = (EMPTY);
+    }
+    else if((move->moved & TYPEMASK) == KING && (move->target - move->source) ==  2){
+        game->board[move->target] = (EMPTY);
+        game->board[move->source - 1] = (EMPTY);
+        game->board[move->source + 3] = move->capture;
+    }    
+    else if((move->moved & TYPEMASK) == KING && (move->target - move->source) == -2){
+        game->board[move->target] = (EMPTY);
+        game->board[move->source + 1] = (EMPTY);
+        game->board[move->source - 4] = move->capture;
+    } 
+    else{
+        game->board[move->target] = (EMPTY);
+    }
+
+    return 0;
 }

@@ -148,6 +148,10 @@ char moveBackward(Game * game, Move * move){
         return 1;
 
     game->board[move->source] = move->moved;
+    game->ep = move->ep;
+    game->turn = move->turn;
+    game->halfmove = move->halfmove;
+    game->fullmove = move->fullmove;
 
     if(move->target == move->ep){
         if(move->turn == WHITE){
@@ -171,6 +175,8 @@ char moveBackward(Game * game, Move * move){
     else{
         game->board[move->target] = (EMPTY);
     }
+
+    updateMasks(game);
 
     return 0;
 }

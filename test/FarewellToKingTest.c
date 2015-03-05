@@ -40,7 +40,11 @@ int main(){
         char e = 0;
         char * extra = &e;
         xboardMove(input, target, source, extra);
-        movePiece(&game, target, source);
+
+        Move move = movePiece(&game, target, source);
+
+        moveBackward(&game, &move); 
+        printf("%d\n\n", moveForeward(&game, &move));
     }
 
     return 0;

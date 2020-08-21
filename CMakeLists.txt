@@ -1,11 +1,11 @@
 cmake_minimum_required (VERSION 2.8.4)
-project (FarewellToKing)
+project (farewell_to_king)
 
 subdirs(src test)
 set(HEADERS "${CMAKE_SOURCE_DIR}/include")
 include_directories(${HEADERS})
 
-option (INCLUDE_STR "Build farewelltokingstr, includes operations to generate formatted strings." ON)
-option (BUILD_TEST "Build executable to test farewelltoking." OFF)
+option (INCLUDE_STR "Build farewell_to_king_strings, includes operations to generate formatted strings." ON)
+option (BUILD_TEST "Build executable to test Farewell to King." OFF)
 
-install (FILES ${HEADERS}/FarewellToKing.h ${HEADERS}/FarewellToKingDef.h ${HEADERS}/FarewellToKingMask.h ${HEADERS}/FarewellToKingBoard.h  DESTINATION include)
+install (FILES ${HEADERS}/farewell_to_kings.h ${HEADERS}/farewell_to_kings_types.h ${HEADERS}/FarewellToKingMask.h ${HEADERS}/FarewellToKingBoard.h  DESTINATION include)

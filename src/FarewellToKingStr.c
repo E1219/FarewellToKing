@@ -1,11 +1,11 @@
-//
-//FarewellToKingStr.h
-//FarewellToKing 0.0.3 - Chess Library
-//Edward Sandor
-//January 2015
-//
-//Contains implementations of all methods that generate formatted strings for human readable output.
-//
+/*
+ FarewellToKingStr.h
+ Farewell To King - Chess Library
+ Edward Sandor
+ January 2015 - 2020
+ 
+ Contains implementations of all methods that generate formatted strings for human readable output.
+*/
 
 #include "FarewellToKingStr.h"
 
@@ -150,7 +150,7 @@ void xboardMove(char input[8], POS_T * target, POS_T * source, char * extra){
     *extra=extraT;
 }
 
-void printMask(MASK64 * mask, char output[]){
+void printMask(ftk_board_mask_t * mask, char output[]){
    char ret[144];	//(2*8 columns + '\r\n')*8rows 
  	
  	int i;
@@ -250,7 +250,7 @@ void printBoard(PIECE_T board [STDBOARD], char output[]){
  		output[i]=ret[i]; 
 }
 
-void printMaskC(MASK64 * mask, char output[]){
+void printMaskC(ftk_board_mask_t * mask, char output[]){
     char ret[210];   //('a  ' + 2*8 columns + '\r\n')*10rows 
     
     int i;

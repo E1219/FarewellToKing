@@ -1,15 +1,15 @@
 //
 //FarewellToKingStr.h
-//FarewellToKing 0.0.3 - Chess Library
+//FarewellToKing - Chess Library
 //Edward Sandor
-//January 2015
+//January 2015 - 2020
 //
 //Contains declarations of all methods that generate formatted strings for human readable output.
 //
 
 #ifndef FAREWELLTOKINGSTR_H
 #define FAREWELLTOKINGSTR_H
-#include "FarewellToKingDef.h"
+#include "farewell_to_king_types.h"
 
 //method converts chess coordinate to square number
 //char input[3]: char array containing chess cordinate
@@ -36,19 +36,19 @@ void xboardMove(char input[8], POS_T * target, POS_T * source, char * extra);
 
 //char output[] size >= 144 (18x8).  Lines ended with "\r\n".
 //fills output with formatted printout of mask without board coordinates
-void printMask(MASK64 * mask, char output[]);
+void printMask(ftk_board_mask_t * mask, char output[]);
 //char output[] size >= 144 (18x8).  Lines ended with "\r\n".
 //fills output with formatted printout of board without board coordinates
 void printBoard(PIECE_T board[STDBOARD], char output[]);
 //char output[] size >= 210 (20x10).  Lines ended with "\r\n". 
 //fills output with formatted printout of mask including board coordinates
-void printMaskC(MASK64 * mask, char output[]);
+void printMaskC(ftk_board_mask_t * mask, char output[]);
 //char output[] size >= 210 (20x10).  Lines ended with "\r\n".
 //fills output with formatted printout of board including board coordinates
 void printBoardC(PIECE_T board[STDBOARD], char output[]);
 
 //char output[] size >= 86.
-//fills output with Forsyth–Edwards Notation representation of 'game'.
+//fills output with Forsyth-Edwards Notation representation of 'game'.
 void getFEN(Game * game, char output[]);
 
 //load game settings from FEN file

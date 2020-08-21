@@ -1,15 +1,15 @@
 //
 //FarewellToKingBoard.h
-//FarewellToKing 0.0.3 - Chess Library
+//Farewell To King - Chess Library
 //Edward Sandor
-//January 2015
+//January 2015 - 2020
 //
 //Contains delcarations of all methods for board manipulation. 
 //
 
 #ifndef FAREWELLTOKINGBOARD_H
 #define FAREWELLTOKINGBOARD_H
-#include "FarewellToKingDef.h"
+#include "farewell_to_king_types.h"
 
 //set all squares of board to bx00001110
 void emptyBoard(PIECE_T board[STDBOARD]);

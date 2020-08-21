@@ -1,20 +1,20 @@
-//
-//FarewellToKingMask.c
-//FarewellToKing 0.0.3 - Chess Library
-//Edward Sandor
-//January 2015
-//
-//Conatains implementation of all methods used to generate and manipulate board masks.
-//
+/*
+ FarewellToKingMask.c
+ FarewellToKing 0.0.3 - Chess Library
+ Edward Sandor
+ January 2015
+ 
+ Conatains implementation of all methods used to generate and manipulate board masks.
+*/
 
 #include "FarewellToKingMask.h"
 
-MASK64 boardMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t boardMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) != EMPTY){
             mask = mask |  biterator;
@@ -25,12 +25,12 @@ MASK64 boardMask(PIECE_T board[STDBOARD]){
     return mask;
 }
 
-MASK64 whiteMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t whiteMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == WHITE){
             mask = mask |  biterator;
@@ -39,12 +39,12 @@ MASK64 whiteMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 blackMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t blackMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if(((board[i] & TYPEMASK) != EMPTY) && (board[i] & COLORMASK) == BLACK){
             mask = mask |  biterator;
@@ -53,12 +53,12 @@ MASK64 blackMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 pawnMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t pawnMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == PAWN){
             mask = mask |  biterator;
@@ -67,12 +67,12 @@ MASK64 pawnMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 knightMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t knightMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == KNIGHT){
             mask = mask |  biterator;
@@ -81,12 +81,12 @@ MASK64 knightMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 bishopMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t bishopMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == BISHOP){
             mask = mask |  biterator;
@@ -95,12 +95,12 @@ MASK64 bishopMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 rookMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t rookMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == ROOK){
             mask = mask |  biterator;
@@ -109,12 +109,12 @@ MASK64 rookMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 queenMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t queenMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == QUEEN){
             mask = mask |  biterator;
@@ -123,12 +123,12 @@ MASK64 queenMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 kingMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t kingMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == KING){
             mask = mask |  biterator;
@@ -137,12 +137,12 @@ MASK64 kingMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-MASK64 spareMask(PIECE_T board[STDBOARD]){
+ftk_board_mask_t spareMask(PIECE_T board[STDBOARD]){
 
-    MASK64 mask = 0;
+    ftk_board_mask_t mask = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
         if((board[i] & TYPEMASK) == SPARE){
             mask = mask |  biterator;
@@ -151,20 +151,20 @@ MASK64 spareMask(PIECE_T board[STDBOARD]){
     }
     return mask;
 }
-void superMask(PIECE_T board[STDBOARD], MASK64 * boardMask, MASK64 * whiteMask, MASK64 * blackMask, MASK64 * pawnMask, MASK64 * knightMask, MASK64 * bishopMask, MASK64 * rookMask, MASK64 * queenMask, MASK64 * kingMask, MASK64 * spareMask){
-    MASK64 boardMaskW  = 0;
-    MASK64 whiteMaskW  = 0;
-    MASK64 blackMaskW  = 0;
-    MASK64 pawnMaskW   = 0;
-    MASK64 knightMaskW = 0;
-    MASK64 bishopMaskW = 0;
-    MASK64 rookMaskW   = 0;
-    MASK64 queenMaskW  = 0;
-    MASK64 kingMaskW   = 0;
-    MASK64 spareMaskW  = 0;
+void superMask(PIECE_T board[STDBOARD], ftk_board_mask_t * boardMask, ftk_board_mask_t * whiteMask, ftk_board_mask_t * blackMask, ftk_board_mask_t * pawnMask, ftk_board_mask_t * knightMask, ftk_board_mask_t * bishopMask, ftk_board_mask_t * rookMask, ftk_board_mask_t * queenMask, ftk_board_mask_t * kingMask, ftk_board_mask_t * spareMask){
+    ftk_board_mask_t boardMaskW  = 0;
+    ftk_board_mask_t whiteMaskW  = 0;
+    ftk_board_mask_t blackMaskW  = 0;
+    ftk_board_mask_t pawnMaskW   = 0;
+    ftk_board_mask_t knightMaskW = 0;
+    ftk_board_mask_t bishopMaskW = 0;
+    ftk_board_mask_t rookMaskW   = 0;
+    ftk_board_mask_t queenMaskW  = 0;
+    ftk_board_mask_t kingMaskW   = 0;
+    ftk_board_mask_t spareMaskW  = 0;
 
     int i;
-    MASK64 biterator = 1ULL;
+    ftk_board_mask_t biterator = 1ULL;
     for(i=A1;i<STDBOARD;i++){
 
         if((board[i] & TYPEMASK) != EMPTY){
@@ -215,8 +215,8 @@ void superMask(PIECE_T board[STDBOARD], MASK64 * boardMask, MASK64 * whiteMask, 
 
 }
 
-MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opponentM, POS_T * ep){
-    MASK64 mask = 0;
+ftk_board_mask_t moveMask(PIECE_T * piece, POS_T * position, ftk_board_mask_t * boardM, ftk_board_mask_t * opponentM, POS_T * ep){
+    ftk_board_mask_t mask = 0;
     if(((*piece)&TYPEMASK) == PAWN){
         int direction = (((*piece)&COLORMASK) == WHITE)?1:-1; //change direction based on color
         int test = *position + direction*8; //forward/back 1
@@ -348,9 +348,9 @@ MASK64 moveMask(PIECE_T * piece, POS_T * position, MASK64 * boardM, MASK64 * opp
     return mask;
 }
 
-MASK64 pathMask(PIECE_T * piece, POS_T * target, POS_T * source, MASK64 * moves){
+ftk_board_mask_t pathMask(PIECE_T * piece, POS_T * target, POS_T * source, ftk_board_mask_t * moves){
     
-    MASK64 mask = 0;   
+    ftk_board_mask_t mask = 0;   
 
     if((*moves & (1ULL << *target)) != 0){
         switch(*piece & TYPEMASK){
@@ -413,10 +413,10 @@ MASK64 pathMask(PIECE_T * piece, POS_T * target, POS_T * source, MASK64 * moves)
     return mask;
 }
 
-CHECK_T stripCheck(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * playerM, POS_T * kingPos){
+CHECK_T stripCheck(PIECE_T board[STDBOARD], ftk_board_mask_t moveM[STDBOARD], ftk_board_mask_t * playerM, POS_T * kingPos){
     CHECK_T check = NOCHECK;
-    MASK64 path;
-    MASK64 cross;
+    ftk_board_mask_t path;
+    ftk_board_mask_t cross;
     POS_T i;
     for(i = 0; i < STDBOARD; i++){
         path = pathMask(&board[i], kingPos, &i, &moveM[i]);
@@ -461,10 +461,10 @@ CHECK_T stripCheck(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * pla
     return check;
 }
 
-void addCastle(PIECE_T board[STDBOARD], MASK64 moveM[STDBOARD], MASK64 * whiteM, MASK64 * blackM, TURN_T * turn){
+void addCastle(PIECE_T board[STDBOARD], ftk_board_mask_t moveM[STDBOARD], ftk_board_mask_t * whiteM, ftk_board_mask_t * blackM, TURN_T * turn){
     char castle = 0;
-    MASK64 QS;
-    MASK64 KS;
+    ftk_board_mask_t QS;
+    ftk_board_mask_t KS;
     POS_T i = 0;
     if(*turn == WHITE){
         if(board[E1] == (NOTMOVED | KING | WHITE)){

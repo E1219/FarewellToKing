@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.4)
+cmake_minimum_required (VERSION 3.16.3)
 
 if (BUILD_TEST)
     add_executable (farewell_to_king_test farewell_to_king_test.c)

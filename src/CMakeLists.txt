@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.16.3)
+cmake_minimum_required (VERSION 3.13.4)
 
 add_library (farewell_to_king SHARED farewell_to_king.c farewell_to_king_mask.c farewell_to_king_board.c)
 

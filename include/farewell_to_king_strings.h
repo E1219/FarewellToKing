@@ -12,6 +12,12 @@
 #include "farewell_to_king_types.h"
 
 /**
+ * @brief type to represent string indiceis
+ *
+ */
+typedef uint32_t ftk_string_index_t;
+
+/**
  * @brief Converts chess coordinate to square number
  * 
  * @param input Chess coordinate string. size 2
@@ -103,6 +109,6 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output);
  * @param game Game to store game data
  * @param fen String containing FEN data.
  */
-void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen);
+ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen);
 
 #endif

@@ -11,6 +11,27 @@
 #include "farewell_to_king.h"
 #include "farewell_to_king_strings.h"
 
+static bool ftk_increment_string_index(const char * str, ftk_string_index_t *index, ftk_string_index_t increment)
+{
+  ftk_string_index_t i = 0;
+  bool ret_val = true;
+
+  for(i = 0; i < increment; i++)
+  {
+    if(0 == str[*index])
+    {
+      ret_val = false;
+      break;
+    }
+    else
+    {
+      (*index)++;
+    }
+  }
+
+  return ret_val;
+}
+
 ftk_position_t ftk_string_to_position(const char *input) {
   if(input[0] >= 'A' && input[0] <= 'H' && input[1] >= '1' && input[1] <= '8')
   {
@@ -424,9 +445,11 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output) {
   output[outI] = ' ';
   outI++;
 }
-void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
 
-  int inI = 0;
+ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
+
+  ftk_result_e ret_val = FTK_SUCCESS;
+  ftk_string_index_t inI = 0;
 
   ftk_position_t squareI;
   
@@ -462,9 +485,9 @@ void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
         }
         squareI++;
       }
-      inI++;
+      if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
     }
-    inI++;
+    if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
 
   if(fen[inI] == 'w')
@@ -472,10 +495,10 @@ void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
   else
     game->turn = FTK_COLOR_BLACK;
 
-  inI += 2;
+  if(false == ftk_increment_string_index(fen, &inI, 2)) { return FTK_FAILURE; }
 
   if(fen[inI] == '-'){
-    inI += 2;
+    if(false == ftk_increment_string_index(fen, &inI, 2)) { return FTK_FAILURE; }
   }
   else{
     while(fen[inI] != ' '){
@@ -499,10 +522,10 @@ void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
         defualt:
           break;
       }
-      inI++;
+      if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
     }
   }
-  inI++;
+  if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
 
   if(fen[inI] != '-'){
     char pos[3];
@@ -514,24 +537,26 @@ void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
     game->ep = ftk_string_to_position(pos);
   }
   else{
-    inI++;
+    if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
-  inI++;
+  if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   int count = 0;
   while(fen[inI] >= '0' && fen[inI] <= '9'){
     count = (count*10) + (fen[inI] - '0');
-    inI++;
+    if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
   game->halfmove = count;
 
-  inI++;
+  if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
 
   count = 0;
   while(fen[inI] >= '0' && fen[inI] <= '9'){
     count = (count*10) + (fen[inI] - '0');
-    inI++;
+    if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
   game->fullmove = count;
 
   ftk_update_board_masks(game);
+
+  return ret_val;
 }

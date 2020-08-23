@@ -432,6 +432,7 @@ void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
   
   int i;
 
+  ftk_begin_standard_game(game);
   ftk_clear_board(&game->board);
 
   for(i = 0; i < 8; i++){

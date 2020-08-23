@@ -531,4 +531,6 @@ void ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) {
     inI++;
   }
   game->fullmove = count;
+
+  ftk_update_board_masks(game);
 }

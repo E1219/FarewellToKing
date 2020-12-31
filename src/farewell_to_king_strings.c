@@ -134,9 +134,11 @@ char ftk_square_to_char(ftk_square_s square) {
   }
 }
 
-ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
+ftk_result_e ftk_long_algebraic_move(char *input, ftk_position_t *target,
                              ftk_position_t *source, ftk_type_e *pawn_promotion,
-                             ftk_castle_e *castle) {
+                             ftk_castle_e *castle) 
+{
+
   ftk_result_e result = FTK_SUCCESS;
   uint8_t inputSize = 0;
 
@@ -174,6 +176,13 @@ ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
   }
 
   return result;
+}
+
+ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
+                             ftk_position_t *source, ftk_type_e *pawn_promotion,
+                             ftk_castle_e *castle) 
+{
+  return ftk_long_algebraic_move(input, target, source, pawn_promotion, castle);
 }
 
 void ftk_mask_to_string(ftk_board_mask_t mask, char *output) {

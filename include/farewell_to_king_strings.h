@@ -49,10 +49,12 @@ ftk_square_s ftk_char_to_square(char input);
  */
 char ftk_square_to_char(ftk_square_s piece);
 
+#define FTK_MOVE_STRING_SIZE 6
+
 /**
  * @brief Parses a long algebraic move string 
  * 
- * @param input input string, assumes exactly one long algebraic command in 0-terminated string with no leading or trailing white space. Size 6
+ * @param input input string, assumes exactly one long algebraic command in 0-terminated string with no leading or trailing white space. Size FTK_MOVE_STRING_SIZE
  * @param target output target position
  * @param source output source position
  * @param pawn_promotion output Pawn promotion type
@@ -66,7 +68,7 @@ ftk_result_e ftk_long_algebraic_move(char *input, ftk_position_t *target,
 /**
  * @brief Parses a xboard move string 
  * 
- * @param input input string, assumes exactly one xboard command in 0-terminated string with no leading or trailing white space. Size 6
+ * @param input input string, assumes exactly one xboard command in 0-terminated string with no leading or trailing white space. Size FTK_MOVE_STRING_SIZE
  * @param target output target position
  * @param source output source position
  * @param pawn_promotion output Pawn promotion type

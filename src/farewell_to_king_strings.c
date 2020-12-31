@@ -507,7 +507,7 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) 
   if(false == ftk_increment_string_index(fen, &inI, 2)) { return FTK_FAILURE; }
 
   if(fen[inI] == '-'){
-    if(false == ftk_increment_string_index(fen, &inI, 2)) { return FTK_FAILURE; }
+    if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
   else{
     while(fen[inI] != ' '){

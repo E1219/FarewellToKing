@@ -2,7 +2,7 @@
  farewell_to_king_types.h
  Farewell To King - Chess Library
  Edward Sandor
- November 2014 - 2020
+ November 2014 - 2021
  
  Contains all type, constant, and structure definitions to be used used by FarewellToKing.
 */

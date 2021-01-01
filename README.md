@@ -1,6 +1,6 @@
 Farewell To King - Chess library
 ================
-**Ed Sandor** - November 2014 - 2020
+**Ed Sandor** - November 2014 - 2021
 -------------
 
 

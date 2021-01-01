@@ -18,6 +18,14 @@
 typedef uint32_t ftk_string_index_t;
 
 /**
+ * @brief Returns piece type based on character
+ * 
+ * @param input 
+ * @return ftk_type_e, FTK_TYPE_EMPTY if unkown piece
+ */
+ftk_type_e ftk_char_to_piece_type(char input);
+
+/**
  * @brief Converts chess coordinate to square number
  * 
  * @param input Chess coordinate string. size 2

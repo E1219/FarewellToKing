@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.13.4)
 
-add_library (farewell_to_king SHARED farewell_to_king.c farewell_to_king_mask.c farewell_to_king_board.c)
+add_library (farewell_to_king SHARED farewell_to_king.c farewell_to_king_mask.c farewell_to_king_board.c farewell_to_king_bitops.c)
 
 if(INCLUDE_STR)
     add_library (farewell_to_king_strings SHARED farewell_to_king_strings.c)

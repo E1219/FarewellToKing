@@ -31,6 +31,18 @@ typedef enum
 } ftk_result_e;
 
 /**
+ * @brief Number of bits in maximum FTK mask
+ * 
+ */
+#define FTK_MAX_MASK_BITS 64
+
+/**
+ * @brief Maximum Farewell to King mask size
+ * 
+ */
+typedef uint64_t ftk_max_mask_size_t;
+
+/**
  * @brief Type for representing board bitmasks
  * 
  */

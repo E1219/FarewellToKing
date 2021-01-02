@@ -9,6 +9,7 @@
 
 #ifndef _FAREWELL_TO_KING_H_
 #define _FAREWELL_TO_KING_H_
+#include "farewell_to_king_bitops.h"
 #include "farewell_to_king_board.h"
 #include "farewell_to_king_mask.h"
 #include "farewell_to_king_types.h"
@@ -81,5 +82,20 @@ bool ftk_check_legal_moves(const ftk_game_s *game);
  */
 ftk_game_end_e ftk_check_for_game_end(const ftk_game_s *game);
 
+/**
+ * @brief Get list of legal moves for given game
+ * 
+ * @param game game to generate list for
+ * @param move_list list of legal moves (memory allocated accordingly)
+ */
+void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list);
+
+/**
+ * @brief Delete move list
+ * 
+ * @param game game to generate list for
+ * @param move_list list of legal moves to delete (memory deallocated accordingly)
+ */
+void ftk_delete_move_list(const ftk_game_s *game, ftk_move_list_s * move_list);
 
 #endif // _FAREWELL_TO_KING_H_

@@ -285,6 +285,25 @@ typedef struct
   ftk_move_count_t fullmove;
 } ftk_move_s;
 
+/**
+ * @brief Move count type
+ * 
+ */
+typedef uint16_t ftk_move_count_t;
+
+/**
+ * @brief Move list structure
+ * 
+ */
+typedef struct
+{
+  /* Number of legal moves in list */
+  ftk_move_count_t  count;
+  /* Dynamically allocated arry of legal moves */
+  ftk_move_s       *move;
+
+} ftk_move_list_s;
+
 //Square value table
 #define FTK_A1  0
 #define FTK_B1  1

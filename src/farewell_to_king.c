@@ -7,6 +7,10 @@
  Contains implementations of all methods for general game manipulation. 
 */
 
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "farewell_to_king.h"
 #include "farewell_to_king_types.h"
 
@@ -38,6 +42,91 @@ void ftk_update_board_masks(ftk_game_s *game)
 
   ftk_add_castle(&game->board, game->turn);
 }
+
+ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
+{
+  ftk_move_s move;
+  ftk_square_s empty;
+  FTK_SQUARE_CLEAR(empty);
+
+  if((game->board.move_mask[source] & (1ULL << target)) != 0 && game->board.square[source].color == game->turn)
+  {
+    move.source         = source;
+    move.target         = target;
+
+    move.moved          = game->board.square[source];
+    move.capture        = game->board.square[target];
+
+    move.ep             = game->ep;
+    move.pawn_promotion = FTK_TYPE_DONT_CARE;
+
+    move.turn           = game->turn;
+    move.fullmove       = game->fullmove;
+    move.halfmove       = game->halfmove;
+
+    if(game->board.square[source].type == FTK_TYPE_PAWN)
+    {
+      if(target == game->ep)
+      {
+        if( FTK_COLOR_WHITE == game->turn )
+        {
+          move.capture = game->board.square[game->ep - 8];
+        }
+        else
+        {
+          move.capture = game->board.square[game->ep + 8];
+        }
+      }
+
+      if(0 == target / 8 ||
+         7 == target / 8 )
+      {
+        if(FTK_TYPE_KNIGHT == pawn_promotion ||
+           FTK_TYPE_BISHOP == pawn_promotion ||
+           FTK_TYPE_ROOK   == pawn_promotion ||
+           FTK_TYPE_QUEEN  == pawn_promotion )
+        {
+          move.pawn_promotion = pawn_promotion;
+        }
+        else 
+        {
+          move.pawn_promotion = FTK_TYPE_QUEEN;
+        }
+      }
+    }
+    
+    if(game->board.square[source].type == FTK_TYPE_KING)
+    {
+      if((target - source) == 2){
+        /* Save old Rook */
+        move.capture = game->board.square[source + 3];
+      }
+      if((target - source) == -2){
+        /* Save old Rook */
+        move.capture = game->board.square[source - 4];
+      }
+    }
+  }
+  else
+  {
+    move.source   = FTK_XX;
+    move.target   = FTK_XX;
+
+    move.moved    = empty;
+    move.capture  = empty;
+
+    move.ep       = FTK_XX;
+
+    move.turn     = 0;
+    move.fullmove = 0;
+    move.halfmove = 0;
+  }
+
+  return move;
+}
+
+
+
 ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
@@ -290,3 +379,52 @@ ftk_game_end_e ftk_check_for_game_end(const ftk_game_s *game)
 
   return game_end;
 }
+
+/**
+ * @brief Get list of legal moves for given game
+ * 
+ * @param game game to generate list for
+ * @param move_list list of legal moves (memory allocated accordingly)
+ */
+void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
+{
+  int i; 
+  ftk_position_t target;
+  ftk_board_mask_t move_mask_temp;
+  ftk_move_count_t move_index = 0;
+
+  memset(move_list, 0, sizeof(ftk_move_list_s));
+
+  for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
+  {
+    move_list->count += ftk_get_num_bits_set(game->board.move_mask[i]);
+  }
+
+  move_list->move = (ftk_move_s*) calloc(move_list->count, sizeof(ftk_move_s));
+
+  for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
+  {
+    move_mask_temp = game->board.move_mask[i];
+
+    while(move_mask_temp != 0)
+    {
+      target = ftk_get_first_set_bit_idx(move_mask_temp);
+
+      assert(move_index < move_list->count);
+
+      move_list->move[move_index] = ftk_stage_move(game, target, i, FTK_TYPE_DONT_CARE);
+    }
+  }
+}
+
+/**
+ * @brief Delete move list
+ * 
+ * @param game game to generate list for
+ * @param move_list list of legal moves to delete (memory deallocated accordingly)
+ */
+void ftk_delete_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
+{
+  free(move_list->move);
+}
+

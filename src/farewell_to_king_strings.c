@@ -7,6 +7,7 @@
  Contains implementations of all methods that generate formatted strings for human readable output.
 */
 
+#include <assert.h>
 #include <string.h>
 #include "farewell_to_king.h"
 #include "farewell_to_king_strings.h"
@@ -47,7 +48,7 @@ ftk_position_t ftk_string_to_position(const char *input) {
   }
 }
 void ftk_position_to_string(ftk_position_t square, char coordinate[]) {
-  if(square != FTK_XX){
+  if(square < FTK_XX){
     coordinate[0] = (square % 8) + 'a';
     coordinate[1] = (square / 8) + '1';
     coordinate[2] = 0;
@@ -128,6 +129,38 @@ char ftk_square_to_char(ftk_square_s square) {
       break;
     case FTK_TYPE_KING:
       return (FTK_COLOR_WHITE == square.color)?'K':'k';
+      break;
+    default:
+      return 'X';
+  }
+}
+
+/**
+ * @brief Convert a type into a character representation
+ * 
+ * @param type Type to convert
+ * @return char Character representing the given type, 'X' if invalid 
+ */
+char ftk_type_to_char(ftk_type_e type) {
+  switch(type)
+  {
+    case FTK_TYPE_PAWN:
+      return 'p';
+      break;
+    case FTK_TYPE_KNIGHT:
+      return 'n';
+      break;
+    case FTK_TYPE_BISHOP:
+      return 'b';
+      break;
+    case FTK_TYPE_ROOK:
+      return 'r';
+      break;
+    case FTK_TYPE_QUEEN:
+      return 'q';
+      break;
+    case FTK_TYPE_KING:
+      return 'k';
       break;
     default:
       return 'X';
@@ -566,6 +599,34 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) 
   game->fullmove = count;
 
   ftk_update_board_masks(game);
+
+  return ret_val;
+}
+
+/**
+ * @brief Converts move to xboard string
+ * 
+ * @param move 
+ * @param output buffer for output string (expect size >= FTK_MOVE_STRING_SIZE)
+ * @return ftk_result_e 
+ */
+ftk_result_e ftk_move_to_xboard_string(ftk_move_s *move, char * output)
+{
+  ftk_result_e ret_val = FTK_SUCCESS;
+
+  assert(output != NULL);
+
+  memset(output, 0, FTK_MOVE_STRING_SIZE*sizeof(char));
+
+  ftk_position_to_string(move->source, &output[0]);
+  ftk_position_to_string(move->target, &output[2]);
+
+  output[4] = ftk_type_to_char(move->pawn_promotion);
+
+  if('X' == output[4])
+  {
+    output[4] = '\0';
+  }
 
   return ret_val;
 }

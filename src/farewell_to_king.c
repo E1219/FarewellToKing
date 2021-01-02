@@ -397,22 +397,30 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
 
   for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
   {
-    move_list->count += ftk_get_num_bits_set(game->board.move_mask[i]);
+    if(game->board.square[i].color == game->turn)
+    {
+      move_list->count += ftk_get_num_bits_set(game->board.move_mask[i]);
+    }
   }
 
   move_list->move = (ftk_move_s*) calloc(move_list->count, sizeof(ftk_move_s));
 
   for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
   {
-    move_mask_temp = game->board.move_mask[i];
-
-    while(move_mask_temp != 0)
+    if(game->board.square[i].color == game->turn)
     {
-      target = ftk_get_first_set_bit_idx(move_mask_temp);
+      move_mask_temp = game->board.move_mask[i];
 
-      assert(move_index < move_list->count);
+      while(move_mask_temp != 0)
+      {
+        target = ftk_get_first_set_bit_idx(move_mask_temp);
+        FTK_CLEAR_BIT(move_mask_temp, target);
 
-      move_list->move[move_index] = ftk_stage_move(game, target, i, FTK_TYPE_DONT_CARE);
+        assert(move_index < move_list->count);
+
+        move_list->move[move_index] = ftk_stage_move(game, target, i, FTK_TYPE_DONT_CARE);
+        move_index++;
+      }
     }
   }
 }
@@ -420,10 +428,9 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
 /**
  * @brief Delete move list
  * 
- * @param game game to generate list for
  * @param move_list list of legal moves to delete (memory deallocated accordingly)
  */
-void ftk_delete_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
+void ftk_delete_move_list(ftk_move_list_s * move_list)
 {
   free(move_list->move);
 }

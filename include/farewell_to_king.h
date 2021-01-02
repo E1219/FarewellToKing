@@ -93,9 +93,8 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list);
 /**
  * @brief Delete move list
  * 
- * @param game game to generate list for
  * @param move_list list of legal moves to delete (memory deallocated accordingly)
  */
-void ftk_delete_move_list(const ftk_game_s *game, ftk_move_list_s * move_list);
+void ftk_delete_move_list(ftk_move_list_s * move_list);
 
 #endif // _FAREWELL_TO_KING_H_

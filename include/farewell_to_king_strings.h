@@ -135,4 +135,13 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output);
  */
 ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen);
 
+/**
+ * @brief Converts move to xboard string
+ * 
+ * @param move 
+ * @param output buffer for output string (expect size >= FTK_MOVE_STRING_SIZE)
+ * @return ftk_result_e 
+ */
+ftk_result_e ftk_move_to_xboard_string(ftk_move_s *move, char * output);
+
 #endif

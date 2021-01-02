@@ -16,12 +16,12 @@
  * @brief Set bit in mask at index
  * 
  */
-#define FTK_SET_BIT(mask, index)   (mask |= (1<<index))
+#define FTK_SET_BIT(mask, index)   (mask |= (1ULL<<index))
 /**
  * @brief Clear bit in mask at index
  * 
  */
-#define FTK_CLEAR_BIT(mask, index) (mask &= ~(1<<index))
+#define FTK_CLEAR_BIT(mask, index) (mask &= ~(1ULL<<index))
 
 /**
  * @brief Get number of bits set in mask

@@ -13,4 +13,4 @@ if(BUILD_DEBUG)
   set(CMAKE_BUILD_TYPE Debug)
 endif(BUILD_DEBUG)
 
-install (FILES ${HEADERS}/farewell_to_king.h ${HEADERS}/farewell_to_king_types.h ${HEADERS}/farewell_to_king_mask.h ${HEADERS}/farewell_to_king_board.h  ${HEADERS}/farewell_to_king_bitops.h DESTINATION include)
+install (FILES ${HEADERS}/farewell_to_king.h ${HEADERS}/farewell_to_king_types.h ${HEADERS}/farewell_to_king_mask.h ${HEADERS}/farewell_to_king_board.h  ${HEADERS}/farewell_to_king_bitops.h ${HEADERS}/farewell_to_king_version.h DESTINATION include)

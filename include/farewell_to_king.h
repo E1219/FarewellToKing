@@ -13,6 +13,7 @@
 #include "farewell_to_king_board.h"
 #include "farewell_to_king_mask.h"
 #include "farewell_to_king_types.h"
+#include "farewell_to_king_version.h"
 
 /**
  * @brief Begins a standard game of chess

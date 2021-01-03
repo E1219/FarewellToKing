@@ -348,8 +348,11 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target,
       case FTK_TYPE_ROOK:
       case FTK_TYPE_QUEEN:
       {
-        if ((target - source) % 9 == 0) 
+        if (((target/8) != (source/8)) &&
+            ((target%8) != (source%8)) &&
+            (abs(target - source) % 9 == 0))
         {
+          /* Same diagnol (up/right or down/left) */
           char i;
           for (i = target; i > source; i = i - 9)
             mask |= (1ULL << i);
@@ -357,8 +360,11 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target,
           for (i = target; i < source; i = i + 9)
             mask |= (1ULL << i);
         } 
-        else if ((target - source) % 7 == 0) 
+        if (((target/8) != (source/8)) &&
+            ((target%8) != (source%8)) &&
+            (abs(target - source) % 7 == 0))
         {
+          /* Same diagnol (up/left or down/right) */
           char i;
           for (i = target; i > source; i = i - 7)
             mask |= (1ULL << i);
@@ -366,16 +372,18 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target,
           for (i = target; i < source; i = i + 7)
             mask |= (1ULL << i);
         } 
-        else if ((target - source) % 8 == 0) 
+        if ((target%8) == (source%8))
         {
+          /* Same file */
           char i;
           for (i = target; i > source; i = i - 8)
             mask |= (1ULL << i);
           for (i = target; i < source; i = i + 8)
             mask |= (1ULL << i);
         } 
-        else 
+        if((target/8) == (source/8))
         {
+          /* Same rank */
           char i;
           for (i = target; i > source; i = i - 1)
             mask |= (1ULL << i);
@@ -470,14 +478,15 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
       }
       /*Build opponents move mask as if current-turn player's pieces do not exist */
       move_mask_no_opponent = ftk_build_move_mask_raw(board->square[i], opponent_mask, turn_mask, i, &ep);
-      /* Get oppent's path to players king */
-      path = ftk_build_path_mask(board->square[i], king_position, i, move_mask_no_opponent);
 
-      if (path) 
+      if(move_mask_no_opponent & FTK_POSITION_TO_MASK(king_position))
       {
+        /* Get oppent's path to players king */
+        path = ftk_build_path_mask(board->square[i], king_position, i, move_mask_no_opponent);
+
         /* Overlap between piece's path to King and current player's pieces */
         cross = path & turn_mask;
-
+        
         /* Assume no protecting piece */
         protecting = FTK_XX;
 

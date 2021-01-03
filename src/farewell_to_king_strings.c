@@ -12,6 +12,8 @@
 #include "farewell_to_king.h"
 #include "farewell_to_king_strings.h"
 
+#define FTK_MASK_STRING_CHAR 'X'
+
 static bool ftk_increment_string_index(const char * str, ftk_string_index_t *index, ftk_string_index_t increment)
 {
   ftk_string_index_t i = 0;
@@ -232,7 +234,7 @@ void ftk_mask_to_string(ftk_board_mask_t mask, char *output) {
   for (i = 0; i < FTK_STD_BOARD_SIZE; i++) {
     char name = ' ';
     if ((mask & (1ULL << i)) != 0)
-      name = '1';
+      name = FTK_MASK_STRING_CHAR;
     else
       name = (((i + (i / 8)) % 2) ? '.' : '#');
 
@@ -297,7 +299,7 @@ void ftk_mask_to_string_with_coordinates(ftk_board_mask_t mask,
   for (i = 0; i < FTK_STD_BOARD_SIZE; i++) {
     char name = ' ';
     if ((mask & (1ULL << i)) != 0)
-      name = '1';
+      name = FTK_MASK_STRING_CHAR;
     else
       name = (((i + (i / 8)) % 2) ? '.' : '#');
 

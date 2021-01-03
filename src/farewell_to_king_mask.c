@@ -7,6 +7,8 @@
  Conatains implementation of all methods used to generate and manipulate board masks.
 */
 
+#include <stdlib.h>
+
 #include "farewell_to_king_bitops.h"
 #include "farewell_to_king_mask.h"
 #include "farewell_to_king_types.h"
@@ -138,12 +140,16 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
     }
     test = position + direction * 9; // capture up-right/down-left diagnol
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-        ((opponent_mask & 1ULL << test) != 0 || test == *ep)) {
+        ((opponent_mask & 1ULL << test) != 0 || test == *ep) &&
+        (1 == abs((test/8) - (position/8)))) 
+    {
       mask |= (1ULL << test);
     }
     test = position + direction * 7; // capture up-left/down-right diagnol
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-        ((opponent_mask & 1ULL << test) != 0 || test == *ep)) {
+        ((opponent_mask & 1ULL << test) != 0 || test == *ep) &&
+        (1 == abs((test/8) - (position/8)))) 
+    {
       mask |= (1ULL << test);
     }
 
@@ -423,11 +429,15 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
         pawn_direction = (board->square[i].color == FTK_COLOR_WHITE) ? 1 : -1; // change direction based on color
 
         pawn_test_square= i + pawn_direction * 9; // capture up-right/down-left diagnol
-        if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0) {
+        if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0 &&
+            (1 == abs((pawn_test_square/8) - (i/8)))) 
+        {
           temp_mask |= (1ULL << pawn_test_square);
         }
         pawn_test_square= i + pawn_direction * 7; // capture up-left/down-right diagnol
-        if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0) {
+        if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0 &&
+            (1 == abs((pawn_test_square/8) - (i/8)))) 
+        {
           temp_mask |= (1ULL << pawn_test_square);
         }
 

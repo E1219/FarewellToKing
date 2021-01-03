@@ -14,7 +14,7 @@
 #define FAREWELL_TO_KING_VERSION_STR "1.0.2-dev"
 
 #define FAREWELL_TO_KING_NAME "Farewell to King"
-#define FAREWELL_TO_KING_NAME_VER "Farewell to King "FAREWELL_TO_KING_VERSION_STR
+#define FAREWELL_TO_KING_NAME_VER "Farewell to King " FAREWELL_TO_KING_VERSION_STR
 #define FAREWELL_TO_KING_AUTHOR "Edward Sandor"
 #define FAREWELL_TO_KING_CONTACT "farewelltoking@sandorlaboratories.com"
 

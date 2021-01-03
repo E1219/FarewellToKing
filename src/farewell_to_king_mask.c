@@ -7,6 +7,7 @@
  Conatains implementation of all methods used to generate and manipulate board masks.
 */
 
+#include "farewell_to_king_bitops.h"
 #include "farewell_to_king_mask.h"
 #include "farewell_to_king_types.h"
 
@@ -399,41 +400,35 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
   ftk_board_mask_t turn_mask = (FTK_COLOR_WHITE == turn) ? board->white_mask : board->black_mask;
   ftk_board_mask_t opponent_mask = (FTK_COLOR_WHITE == turn) ? board->black_mask : board->white_mask;
   ftk_board_mask_t move_mask_no_opponent;
+  ftk_board_mask_t king_moves_temp;
   ftk_position_t   protecting;
   ftk_position_t   king_position;
+  ftk_position_t   move_under_test;
+  int              pawn_direction, pawn_test_square;
+  ftk_board_s      board_copy;
   FTK_MASK_TO_POSITION(board->king_mask & turn_mask, king_position);
 
+  /* Remove moves cause check or do not resolve check */
   for (i = 0; i < FTK_STD_BOARD_SIZE; i++) 
   {
     /* Walk through moves of the entire board */
     if(board->square[i].type != FTK_TYPE_EMPTY && board->square[i].color != turn)
     {
+      /* Remove squares that enter check from King's move mask */
       if(FTK_TYPE_PAWN == board->square[i].type)
       {
         /* Ignore forward moves for Pawns as they can only capture diagnally */
-        temp_mask = board->move_mask[i];
+        temp_mask = 0;
 
-        if(FTK_COLOR_WHITE == board->square[i].color)
-        {
-          if(i+FTK_STD_BOARD_ROWS < FTK_STD_BOARD_SIZE)
-          {
-            temp_mask &= ~FTK_POSITION_TO_MASK(i+FTK_STD_BOARD_ROWS);
-          }
-          if(i+(2*FTK_STD_BOARD_ROWS) < FTK_STD_BOARD_SIZE)
-          {
-            temp_mask &= ~FTK_POSITION_TO_MASK(i+(2*FTK_STD_BOARD_ROWS));
-          }
+        pawn_direction = (board->square[i].color == FTK_COLOR_WHITE) ? 1 : -1; // change direction based on color
+
+        pawn_test_square= i + pawn_direction * 9; // capture up-right/down-left diagnol
+        if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0) {
+          temp_mask |= (1ULL << pawn_test_square);
         }
-        else 
-        {
-          if(i >= FTK_STD_BOARD_ROWS)
-          {
-            temp_mask &= ~FTK_POSITION_TO_MASK(i-FTK_STD_BOARD_ROWS);
-          }
-          if(i >= (2*FTK_STD_BOARD_ROWS))
-          {
-            temp_mask &= ~FTK_POSITION_TO_MASK(i-(2*FTK_STD_BOARD_ROWS));
-          }
+        pawn_test_square= i + pawn_direction * 7; // capture up-left/down-right diagnol
+        if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0) {
+          temp_mask |= (1ULL << pawn_test_square);
         }
 
         /* Do not allow King to move into a valid oppenet's piece valid move */
@@ -451,7 +446,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
         /* If opponents piece can move to the King's square, the King is in check */
         check = FTK_CHECK_IN_CHECK;
 
-        /* Consider path to king */
+        /* Consider oppoent's path to king */
         path = ftk_build_path_mask(board->square[i], king_position, i, board->move_mask[i]);
         for (j = 0; j < FTK_STD_BOARD_SIZE; j++) 
         {
@@ -465,7 +460,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
       }
       /*Build opponents move mask as if current-turn player's pieces do not exist */
       move_mask_no_opponent = ftk_build_move_mask_raw(board->square[i], opponent_mask, turn_mask, i, &ep);
-      /* Get path to players king */
+      /* Get oppent's path to players king */
       path = ftk_build_path_mask(board->square[i], king_position, i, move_mask_no_opponent);
 
       if (path) 
@@ -495,6 +490,33 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
         {
           /* If piece is blocking check, only allow moves on the pieces path */
           board->move_mask[protecting] = board->move_mask[protecting] & (path | FTK_POSITION_TO_MASK(i));
+        }
+      }
+    }
+  }
+
+  /* Remove King's move that capture into check */
+  king_moves_temp = board->move_mask[king_position];
+  while(king_moves_temp)
+  {
+    move_under_test = ftk_get_first_set_bit_idx(king_moves_temp);
+    FTK_CLEAR_BIT(king_moves_temp, move_under_test);
+    if(opponent_mask & FTK_POSITION_TO_MASK(move_under_test))
+    {
+      board_copy = *board;
+      board_copy.square[move_under_test] = board_copy.square[king_position];
+      FTK_SQUARE_CLEAR(board_copy.square[king_position]);
+
+      ftk_build_all_masks(&board_copy);
+
+      /* Check all potential (simple) moves to king move under test */
+      for(j = 0; j < FTK_STD_BOARD_SIZE; j++)
+      {
+        board_copy.move_mask[j] = ftk_build_move_mask(&board_copy, j, &(ep));
+        if(board_copy.move_mask[j] & FTK_POSITION_TO_MASK(move_under_test))
+        {
+          /* If opponent can move to test square, remove it from King's legal moves */
+          FTK_CLEAR_BIT(board->move_mask[king_position], move_under_test);
         }
       }
     }

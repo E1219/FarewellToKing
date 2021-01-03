@@ -505,29 +505,27 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
     }
   }
 
-  /* Remove King's move that capture into check */
+  /* Verify King cannot move into check with remaining moves */
   king_moves_temp = board->move_mask[king_position];
   while(king_moves_temp)
   {
     move_under_test = ftk_get_first_set_bit_idx(king_moves_temp);
     FTK_CLEAR_BIT(king_moves_temp, move_under_test);
-    if(opponent_mask & FTK_POSITION_TO_MASK(move_under_test))
+
+    board_copy = *board;
+    board_copy.square[move_under_test] = board_copy.square[king_position];
+    FTK_SQUARE_CLEAR(board_copy.square[king_position]);
+
+    ftk_build_all_masks(&board_copy);
+
+    /* Check all potential (simple) moves to king position after move under test */
+    for(j = 0; j < FTK_STD_BOARD_SIZE; j++)
     {
-      board_copy = *board;
-      board_copy.square[move_under_test] = board_copy.square[king_position];
-      FTK_SQUARE_CLEAR(board_copy.square[king_position]);
-
-      ftk_build_all_masks(&board_copy);
-
-      /* Check all potential (simple) moves to king move under test */
-      for(j = 0; j < FTK_STD_BOARD_SIZE; j++)
+      board_copy.move_mask[j] = ftk_build_move_mask(&board_copy, j, &(ep));
+      if(board_copy.move_mask[j] & FTK_POSITION_TO_MASK(move_under_test))
       {
-        board_copy.move_mask[j] = ftk_build_move_mask(&board_copy, j, &(ep));
-        if(board_copy.move_mask[j] & FTK_POSITION_TO_MASK(move_under_test))
-        {
-          /* If opponent can move to test square, remove it from King's legal moves */
-          FTK_CLEAR_BIT(board->move_mask[king_position], move_under_test);
-        }
+        /* If opponent can move to test square, remove it from King's legal moves */
+        FTK_CLEAR_BIT(board->move_mask[king_position], move_under_test);
       }
     }
   }

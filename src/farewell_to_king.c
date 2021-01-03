@@ -64,8 +64,6 @@ void ftk_update_board_masks(ftk_game_s *game)
   ftk_position_t i;
   for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
   {
-    ftk_color_e colorp = (game->board.square[i].color);
-
     game->board.move_mask[i] = ftk_build_move_mask(&game->board, i, &game->ep);
   }
 

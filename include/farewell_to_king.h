@@ -13,7 +13,27 @@
 #include "farewell_to_king_board.h"
 #include "farewell_to_king_mask.h"
 #include "farewell_to_king_types.h"
-#include "farewell_to_king_version.h"
+
+/**
+ * @brief Returns name string for Farewell to King Library
+ * 
+ * @return const char* 
+ */
+const char * ftk_get_name_string();
+
+/**
+ * @brief Returns name with version string for Farewell to King Library
+ * 
+ * @return const char* 
+ */
+const char * ftk_get_name_ver_string();
+
+/**
+ * @brief Returns into string for Farewell to King Library
+ * 
+ * @return const char* 
+ */
+const char * ftk_get_intro_string();
 
 /**
  * @brief Begins a standard game of chess

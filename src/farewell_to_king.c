@@ -13,6 +13,37 @@
 
 #include "farewell_to_king.h"
 #include "farewell_to_king_types.h"
+#include "farewell_to_king_version.h"
+
+/**
+ * @brief Returns name string for Farewell to King Library
+ * 
+ * @return const char* 
+ */
+const char * ftk_get_name_string()
+{
+  return FAREWELL_TO_KING_NAME;
+}
+
+/**
+ * @brief Returns name with version string for Farewell to King Library
+ * 
+ * @return const char* 
+ */
+const char * ftk_get_name_ver_string()
+{
+  return FAREWELL_TO_KING_NAME_VER;
+}
+
+/**
+ * @brief Returns into string for Farewell to King Library
+ * 
+ * @return const char* 
+ */
+const char * ftk_get_intro_string()
+{
+  return FAREWELL_TO_KING_INTRO;
+}
 
 void ftk_begin_standard_game(ftk_game_s *game) {
 
@@ -434,4 +465,3 @@ void ftk_delete_move_list(ftk_move_list_s * move_list)
 {
   free(move_list->move);
 }
-

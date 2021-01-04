@@ -103,6 +103,8 @@ ftk_square_s ftk_char_to_square(char input) {
   {
     ret_val.color = (input >= 'A' && input <= 'Z')?FTK_COLOR_WHITE:FTK_COLOR_BLACK;
   }
+
+  return ret_val;
 }
 
 /**
@@ -563,7 +565,7 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) 
           game->board.square[FTK_E8].moved = FTK_MOVED_NOT_MOVED; 
           game->board.square[FTK_A8].moved = FTK_MOVED_NOT_MOVED; 
           break;
-        defualt:
+        default:
           break;
       }
       if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }

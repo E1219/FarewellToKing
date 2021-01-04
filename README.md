@@ -4,7 +4,7 @@ Farewell To King - Chess library
 -------------
 
 
-Farewell To King is a reusable, lightweight chess library to written in C.  
+Farewell To King is a reusable, lightweight chess library written in C.  
 
 It can be used to represent a game, to check move legality, and to perform other common chess related tasks for use in different chess applications.  There is a optional chess strings library that provides utilites to represent a game in ASCII and to parse moves from text.
 

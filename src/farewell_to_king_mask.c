@@ -547,7 +547,6 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
   ftk_castle_mask_t castle = FTK_CASTLE_NONE;
   ftk_board_mask_t QS;
   ftk_board_mask_t KS;
-  ftk_board_mask_t CASTLE_SQUARES;
   ftk_position_t i = 0;
 
   if(turn == FTK_COLOR_WHITE)
@@ -559,7 +558,6 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
 
     QS = FTK_POSITION_TO_MASK(FTK_C1) | FTK_POSITION_TO_MASK(FTK_D1);
     KS = FTK_POSITION_TO_MASK(FTK_F1) | FTK_POSITION_TO_MASK(FTK_G1);
-    CASTLE_SQUARES = QS | KS | FTK_POSITION_TO_MASK(FTK_E1);
 
     if (((FTK_POSITION_TO_MASK(FTK_B1) | QS) & (board->white_mask | board->black_mask)) != 0 ||
         !FTK_SQUARE_IS(board->square[FTK_A1], FTK_TYPE_ROOK, FTK_COLOR_WHITE, FTK_MOVED_NOT_MOVED)) 
@@ -610,7 +608,6 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
 
     QS = FTK_POSITION_TO_MASK(FTK_C8) | FTK_POSITION_TO_MASK(FTK_D8);
     KS = FTK_POSITION_TO_MASK(FTK_F8) | FTK_POSITION_TO_MASK(FTK_G8);
-    CASTLE_SQUARES = QS | KS | FTK_POSITION_TO_MASK(FTK_E8);
 
     if (((FTK_POSITION_TO_MASK(FTK_B8) | QS) & (board->white_mask | board->black_mask)) != 0 ||
         !FTK_SQUARE_IS(board->square[FTK_A8], FTK_TYPE_ROOK, FTK_COLOR_BLACK, FTK_MOVED_NOT_MOVED)) 

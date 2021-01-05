@@ -287,14 +287,14 @@ ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_
 
 ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move) {
 
-  if(move->target == FTK_XX || move->source == FTK_XX)
+  if(move->target >= FTK_XX || move->source >= FTK_XX)
   {
     return FTK_FAILURE;
   }
 
   ftk_move_s newmove = ftk_move_piece(game, move->target, move->source, move->pawn_promotion);
 
-  if(newmove.target == FTK_XX || newmove.source == FTK_XX)
+  if(newmove.target >= FTK_XX || newmove.source >= FTK_XX)
   {
     return FTK_FAILURE;
   }
@@ -421,6 +421,7 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
   ftk_position_t target;
   ftk_board_mask_t move_mask_temp;
   ftk_move_count_t move_index = 0;
+  ftk_move_count_t base_move_count = 0;
 
   memset(move_list, 0, sizeof(ftk_move_list_s));
 
@@ -428,11 +429,13 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
   {
     if(game->board.square[i].color == game->turn)
     {
-      move_list->count += ftk_get_num_bits_set(game->board.move_mask[i]);
+      base_move_count += ftk_get_num_bits_set(game->board.move_mask[i]);
     }
   }
 
-  move_list->move = (ftk_move_s*) calloc(move_list->count, sizeof(ftk_move_s));
+  move_list->move = (ftk_move_s*) malloc(base_move_count * sizeof(ftk_move_s));
+  move_list->count = base_move_count;
+  assert(move_list->move);
 
   for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
   {
@@ -445,13 +448,26 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
         target = ftk_get_first_set_bit_idx(move_mask_temp);
         FTK_CLEAR_BIT(move_mask_temp, target);
 
-        assert(move_index < move_list->count);
+        assert(move_index < base_move_count);
 
         move_list->move[move_index] = ftk_stage_move(game, target, i, FTK_TYPE_DONT_CARE);
+
+        if(FTK_TYPE_QUEEN == move_list->move[move_index].pawn_promotion)
+        {
+          /* Pawn was promoted, include alternate promotions */
+          move_list->move = (ftk_move_s*) realloc(move_list->move, (move_list->count+3) * sizeof(ftk_move_s));
+          assert(move_list->move);
+          move_list->move[move_list->count++] = ftk_stage_move(game, target, i, FTK_TYPE_KNIGHT);
+          move_list->move[move_list->count++] = ftk_stage_move(game, target, i, FTK_TYPE_BISHOP);
+          move_list->move[move_list->count++] = ftk_stage_move(game, target, i, FTK_TYPE_ROOK);
+        }
+        
         move_index++;
       }
     }
   }
+
+  assert(move_index == base_move_count);
 }
 
 /**

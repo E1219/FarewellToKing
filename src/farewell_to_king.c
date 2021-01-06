@@ -2,7 +2,7 @@
  farewell_to_king.c
  FarewellToKing - Chess Library
  Edward Sandor
- November 2014 - 2020
+ November 2014 - 2021
  
  Contains implementations of all methods for general game manipulation. 
 */

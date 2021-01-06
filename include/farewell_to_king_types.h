@@ -21,7 +21,7 @@
 #define FTK_STD_BOARD_SIZE    (FTK_STD_BOARD_ROWS * FTK_STD_BOARD_COLUMNS)
 
 /**
- * @brief Enum for representing function results
+ * @brief Enum for representing functionresults
  * 
  */
 typedef enum
@@ -97,6 +97,18 @@ typedef enum
   FTK_END_DRAW_DEAD_POSITION,
   FTK_END_DRAW_ON_TIME,
 } ftk_game_end_e;
+
+#define FTK_END_DEFINITIVE(result) ((FTK_END_CHECKMATE   == (result)) || \
+                                    (FTK_END_RESIGN      == (result)) || \
+                                    (FTK_END_FORFEIT     == (result)) || \
+                                    (FTK_END_WIN_ON_TIME == (result)))
+
+#define FTK_END_DRAW(result) ((FTK_END_DRAW_STALEMATE       == (result)) || \
+                              (FTK_END_DRAW_AGREED          == (result)) || \
+                              (FTK_END_DRAW_FIFTY_MOVE_RULE == (result)) || \
+                              (FTK_END_DRAW_REPETITION      == (result)) || \
+                              (FTK_END_DRAW_DEAD_POSITION   == (result)) || \
+                              (FTK_END_DRAW_ON_TIME         == (result)) )
 
 /**
  * @brief Castle mask bit enum
@@ -274,7 +286,7 @@ typedef struct
 
   /* En Pasant target position before this move */
   ftk_position_t   ep;
-  /* Type Pawn is prmomoted to */
+  /* Type Pawn is promoted to */
   ftk_type_e       pawn_promotion;
 
   /* Current turn color */
@@ -299,7 +311,7 @@ typedef struct
 {
   /* Number of legal moves in list */
   ftk_move_count_t  count;
-  /* Dynamically allocated arry of legal moves */
+  /* Dynamically allocated array of legal moves */
   ftk_move_s       *move;
 
 } ftk_move_list_s;

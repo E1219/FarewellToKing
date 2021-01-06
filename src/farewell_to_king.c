@@ -319,12 +319,12 @@ ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move) {
   {
     if(move->turn == FTK_COLOR_WHITE)
     {
-      /* Repalce captured Pawn */
+      /* Replace captured Pawn */
       game->board.square[move->ep - 8] = move->capture;
     }
     else
     {
-      /* Repalce captured Pawn */
+      /* Replace captured Pawn */
       game->board.square[move->ep + 8] = move->capture;
     }
     /* Clear en pasant square */
@@ -332,20 +332,20 @@ ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move) {
   }
   else if(move->moved.type == FTK_TYPE_KING && (move->target - move->source) ==  2)
   {
-    /* Reset caslte King side */
+    /* Reset castle King side */
     /* Clear moved King and Rook */
     FTK_SQUARE_CLEAR(game->board.square[move->target]);
     FTK_SQUARE_CLEAR(game->board.square[move->target - 1]);
-    /* Repalce Rook */
+    /* Replace Rook */
     game->board.square[move->source + 3] = move->capture;
   }    
   else if(move->moved.type == FTK_TYPE_KING && (move->target - move->source) == -2)
   {
-    /* Reset caslte Queen side */
+    /* Reset castle Queen side */
     /* Clear moved King and Rook */
     FTK_SQUARE_CLEAR(game->board.square[move->target]);
     FTK_SQUARE_CLEAR(game->board.square[move->target + 1]);
-    /* Repalce Rook */
+    /* Replace Rook */
     game->board.square[move->source - 4] = move->capture;
   } 
   else

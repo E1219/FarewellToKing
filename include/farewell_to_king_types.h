@@ -40,19 +40,19 @@ typedef enum
  * @brief Maximum Farewell to King mask size
  * 
  */
-typedef uint64_t ftk_max_mask_size_t;
+typedef uint_fast64_t ftk_max_mask_size_t;
 
 /**
  * @brief Type for representing board bitmasks
  * 
  */
-typedef uint64_t ftk_board_mask_t;
+typedef uint_fast64_t ftk_board_mask_t;
 
 /**
  * @brief Type for representing board positions
  * 
  */
-typedef uint8_t ftk_position_t;
+typedef uint_fast8_t ftk_position_t;
 
 /**
  * @brief Converts a position index to a mask bit
@@ -220,7 +220,7 @@ typedef struct {
  * @brief Type for keeping track of move count
  * 
  */
-typedef uint16_t ftk_move_count_t;
+typedef uint_fast16_t ftk_move_count_t;
 
 /**
  * @brief Game board structure
@@ -296,12 +296,6 @@ typedef struct
   ftk_move_count_t halfmove;
   ftk_move_count_t fullmove;
 } ftk_move_s;
-
-/**
- * @brief Move count type
- * 
- */
-typedef uint16_t ftk_move_count_t;
 
 /**
  * @brief Move list structure

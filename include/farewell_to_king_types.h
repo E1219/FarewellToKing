@@ -297,6 +297,8 @@ typedef struct
   ftk_move_count_t fullmove;
 } ftk_move_s;
 
+#define FTK_MOVE_VALID(move) ((move).target < FTK_XX && (move).source < FTK_XX)
+
 /**
  * @brief Move list structure
  * 

@@ -118,4 +118,11 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list);
  */
 void ftk_delete_move_list(ftk_move_list_s * move_list);
 
+/**
+ * @brief Invalidates move structure
+ * 
+ * @param move Move to be invalidated
+ */
+void ftk_invalidate_move(ftk_move_s *move);
+
 #endif // _FAREWELL_TO_KING_H_

@@ -75,9 +75,6 @@ void ftk_update_board_masks(ftk_game_s *game)
 ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
-  ftk_square_s empty;
-  FTK_SQUARE_CLEAR(empty);
-
   if((game->board.move_mask[source] & (1ULL << target)) != 0 && game->board.square[source].color == game->turn)
   {
     move.source         = source;
@@ -138,17 +135,7 @@ ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_pos
   }
   else
   {
-    move.source   = FTK_XX;
-    move.target   = FTK_XX;
-
-    move.moved    = empty;
-    move.capture  = empty;
-
-    move.ep       = FTK_XX;
-
-    move.turn     = 0;
-    move.fullmove = 0;
-    move.halfmove = 0;
+    ftk_invalidate_move(&move);
   }
 
   return move;
@@ -159,8 +146,6 @@ ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_pos
 ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
-  ftk_square_s empty;
-  FTK_SQUARE_CLEAR(empty);
 
   if((game->board.move_mask[source] & (1ULL << target)) != 0 && game->board.square[source].color == game->turn)
   {
@@ -269,17 +254,7 @@ ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_
   }
   else
   {
-    move.source   = FTK_XX;
-    move.target   = FTK_XX;
-
-    move.moved    = empty;
-    move.capture  = empty;
-
-    move.ep       = FTK_XX;
-
-    move.turn     = 0;
-    move.fullmove = 0;
-    move.halfmove = 0;
+    ftk_invalidate_move(&move);
   }
 
   return move;
@@ -478,4 +453,24 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
 void ftk_delete_move_list(ftk_move_list_s * move_list)
 {
   free(move_list->move);
+}
+
+/**
+ * @brief Invalidates move structure
+ * 
+ * @param move Move to be invalidated
+ */
+void ftk_invalidate_move(ftk_move_s *move)
+{
+  move->source   = FTK_XX;
+  move->target   = FTK_XX;
+
+  FTK_SQUARE_CLEAR(move->moved);
+  FTK_SQUARE_CLEAR(move->capture);
+
+  move->ep       = FTK_XX;
+
+  move->turn     = 0;
+  move->fullmove = 0;
+  move->halfmove = 0;
 }

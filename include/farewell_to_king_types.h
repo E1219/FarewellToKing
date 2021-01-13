@@ -231,6 +231,9 @@ typedef struct
   /* Square contents */
   ftk_square_s     square[FTK_STD_BOARD_SIZE];
 
+  /* If masks are update to date after move */
+  bool             masks_valid;
+
   /* Valid moves for a given square */
   ftk_board_mask_t move_mask[FTK_STD_BOARD_SIZE];
   

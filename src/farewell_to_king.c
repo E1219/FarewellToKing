@@ -59,17 +59,22 @@ void ftk_begin_standard_game(ftk_game_s *game) {
 }
 void ftk_update_board_masks(ftk_game_s *game) 
 {
-  ftk_build_all_masks(&game->board);
-
-  ftk_position_t i;
-  for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
+  if(false == game->board.masks_valid)
   {
-    game->board.move_mask[i] = ftk_build_move_mask(&game->board, i, &game->ep);
+    ftk_build_all_masks(&game->board);
+
+    ftk_position_t i;
+    for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
+    {
+      game->board.move_mask[i] = ftk_build_move_mask(&game->board, i, &game->ep);
+    }
+
+    ftk_strip_check( &game->board, game->turn);
+
+    ftk_add_castle(&game->board, game->turn);
+
+    game->board.masks_valid = true;
   }
-
-  ftk_strip_check( &game->board, game->turn);
-
-  ftk_add_castle(&game->board, game->turn);
 }
 
 ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
@@ -141,11 +146,11 @@ ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_pos
   return move;
 }
 
-
-
-ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
+ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
+
+  game->board.masks_valid = false;
 
   if((game->board.move_mask[source] & (1ULL << target)) != 0 && game->board.square[source].color == game->turn)
   {
@@ -250,7 +255,6 @@ ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_
     game->board.square[target].moved = FTK_MOVED_HAS_MOVED;
     FTK_SQUARE_CLEAR(game->board.square[source]);
     game->turn = (FTK_COLOR_WHITE == game->turn)? FTK_COLOR_BLACK:FTK_COLOR_WHITE;
-    ftk_update_board_masks(game);
   }
   else
   {
@@ -260,15 +264,29 @@ ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_
   return move;
 }
 
-ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move) {
+ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
+{
+  ftk_move_s move;
 
+  move = ftk_move_piece_quick(game, target, source, pawn_promotion);
+
+  if(FTK_MOVE_VALID(move))
+  {
+    ftk_update_board_masks(game);
+  }
+
+  return move;
+}
+
+ftk_result_e ftk_move_forward_quick(ftk_game_s *game, ftk_move_s *move) 
+{
   if(move->target >= FTK_XX || move->source >= FTK_XX)
   {
     return FTK_FAILURE;
   }
 
-  ftk_move_s newmove = ftk_move_piece(game, move->target, move->source, move->pawn_promotion);
-
+  ftk_move_s newmove = ftk_move_piece_quick(game, move->target, move->source, move->pawn_promotion);
+  
   if(newmove.target >= FTK_XX || newmove.source >= FTK_XX)
   {
     return FTK_FAILURE;
@@ -277,7 +295,23 @@ ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move) {
   return FTK_SUCCESS;
 }
 
-ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move) {
+ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move) 
+{
+  ftk_result_e result;
+
+  result = ftk_move_forward_quick(game, move);
+
+  if(FTK_SUCCESS == result)
+  {
+    ftk_update_board_masks(game);
+  }
+
+  return result;
+}
+
+ftk_result_e ftk_move_backward_quick(ftk_game_s *game, ftk_move_s *move) 
+{
+  game->board.masks_valid = false;
 
   if(move->target == FTK_XX && move->source == FTK_XX)
   {
@@ -329,9 +363,21 @@ ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move) {
     game->board.square[move->target] = move->capture;
   }
 
-  ftk_update_board_masks(game);
-
   return FTK_SUCCESS;
+}
+
+ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move) 
+{
+  ftk_result_e result;
+
+  result = ftk_move_backward_quick(game, move);
+
+  if(FTK_SUCCESS == result)
+  {
+    ftk_update_board_masks(game);
+  }
+
+  return result;
 }
 
 ftk_check_e ftk_check_for_check(const ftk_game_s *game)
@@ -373,6 +419,8 @@ ftk_game_end_e ftk_check_for_game_end(const ftk_game_s *game)
 {
   ftk_game_end_e game_end = FTK_END_NOT_OVER;
 
+  assert(game->board.masks_valid);
+
   if( false == ftk_check_legal_moves(game) )
   {
     game_end = (FTK_CHECK_IN_CHECK == ftk_check_for_check(game))?FTK_END_CHECKMATE:FTK_END_DRAW_STALEMATE;
@@ -397,6 +445,8 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
   ftk_board_mask_t move_mask_temp;
   ftk_move_count_t move_index = 0;
   ftk_move_count_t base_move_count = 0;
+
+  assert(game->board.masks_valid);
 
   memset(move_list, 0, sizeof(ftk_move_list_s));
 

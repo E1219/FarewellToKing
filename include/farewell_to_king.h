@@ -61,22 +61,51 @@ void ftk_update_board_masks(ftk_game_s *game);
 ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion);
 
 /**
+ * @brief Make a move in a game without generating masks (Masks must be generated via ftk_update_board_masks() before use)
+ * 
+ * @param game Game to move in
+ * @param target Position to move piece to
+ * @param source Piece position to move
+ * @param pawn_promotion Type to convert Pawn to in case of promotion, ignored in other cases (may use 'don't care').  Assumed Queen if not provided or invalid
+ * @return Move Description of modifications made to game
+ */
+ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion);
+
+/**
  * @brief Move forward based on move structure
  *
  * @param game game to manipulate
- * @param move description of move to be reveresed.
+ * @param move description of move to be reversed.
  * @return char 
  */
 ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move);
 
 /**
+ * @brief Move forward based on move structure without generating masks (Masks must be generated via ftk_update_board_masks() before use)
+ *
+ * @param game game to manipulate
+ * @param move description of move to be reversed.
+ * @return char 
+ */
+ftk_result_e ftk_move_forward_quick(ftk_game_s *game, ftk_move_s *move);
+
+/**
  * @brief Move backward based on move structure
  *
  * @param game game to manipulate
- * @param move description of move to be reveresed.
+ * @param move description of move to be reversed.
  * @return char 
  */
 ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move);
+
+/**
+ * @brief Move backward based on move structure without generating masks (Masks must be generated via ftk_update_board_masks() before use)
+ *
+ * @param game game to manipulate
+ * @param move description of move to be reversed.
+ * @return char 
+ */
+ftk_result_e ftk_move_backward_quick(ftk_game_s *game, ftk_move_s *move);
 
 /**
  * @brief Checks if current turn's player is in check

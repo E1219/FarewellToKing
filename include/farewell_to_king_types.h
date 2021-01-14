@@ -300,7 +300,35 @@ typedef struct
   ftk_move_count_t fullmove;
 } ftk_move_s;
 
+/**
+ * @brief Checks if given move is valid
+ * 
+ */
 #define FTK_MOVE_VALID(move) ((move).target < FTK_XX && (move).source < FTK_XX)
+
+/**
+ * @brief Checks if two moves are the same (Basic details for forward move)
+ * 
+ */
+#define FTK_COMPARE_MOVES(move_a, move_b)                 \
+  (((move_a).source         == (move_b).source) &&        \
+   ((move_a).target         == (move_b).target) &&        \
+   ((move_a).pawn_promotion == (move_b).pawn_promotion) ) 
+
+/**
+ * @brief Checks if two moves are the same (Including ep, capture, etc for backwards moves)
+ * 
+ */
+#define FTK_COMPARE_MOVES_COMPLETE(move_a, move_b)                               \
+  (((move_a).source                    == (move_b).source) &&                    \
+   ((move_a).target                    == (move_b).target) &&                    \
+   (FTK_SQUARE_EQUAL((move_a).moved)   == FTK_SQUARE_EQUAL((move_b).moved)) &&   \
+   (FTK_SQUARE_EQUAL((move_a).capture) == FTK_SQUARE_EQUAL((move_b).capture)) && \
+   ((move_a).ep                        == (move_b).ep) &&                        \
+   ((move_a).pawn_promotion            == (move_b).pawn_promotion) &&            \
+   ((move_a).turn                      == (move_b).turn) &&                      \
+   ((move_a).halfmove                  == (move_b).halfmove) &&                  \
+   ((move_a).fullmove                  == (move_b).fullmove))
 
 /**
  * @brief Move list structure

@@ -45,7 +45,9 @@ const char * ftk_get_intro_string()
   return FAREWELL_TO_KING_INTRO;
 }
 
-void ftk_begin_standard_game(ftk_game_s *game) {
+void ftk_begin_standard_game(ftk_game_s *game) 
+{
+  game->board.masks_valid = false;
 
   ftk_set_standard_board(&game->board);
 
@@ -57,6 +59,7 @@ void ftk_begin_standard_game(ftk_game_s *game) {
 
   ftk_update_board_masks(game);
 }
+
 void ftk_update_board_masks(ftk_game_s *game) 
 {
   if(false == game->board.masks_valid)

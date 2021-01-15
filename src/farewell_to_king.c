@@ -152,7 +152,7 @@ ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_pos
 
   game->board.masks_valid = false;
 
-  if((game->board.move_mask[source] & (1ULL << target)) != 0 && game->board.square[source].color == game->turn)
+  if(game->board.square[source].color == game->turn)
   {
     move.source         = source;
     move.target         = target;
@@ -205,7 +205,7 @@ ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_pos
       }
       else
       {
-        game->ep = FTK_XX;               
+        game->ep = FTK_XX;
       }
 
       if(0 == target / 8 ||

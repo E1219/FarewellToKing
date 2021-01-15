@@ -50,6 +50,17 @@ void ftk_begin_standard_game(ftk_game_s *game);
 void ftk_update_board_masks(ftk_game_s *game);
 
 /**
+ * @brief Stages a move in a game without modifying the game
+ * 
+ * @param game Game to move in
+ * @param target Position to move piece to
+ * @param source Piece position to move
+ * @param pawn_promotion Type to convert Pawn to in case of promotion, ignored in other cases (may use 'don't care').  Assumed Queen if not provided or invalid
+ * @return Move Description of modifications made to game
+ */
+ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion);
+
+/**
  * @brief Make a move in a game
  * 
  * @param game Game to move in

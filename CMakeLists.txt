@@ -5,9 +5,16 @@ subdirs(src test)
 set(HEADERS "${CMAKE_SOURCE_DIR}/include")
 include_directories(${HEADERS})
 
+option (BUILD_SHARED "Build farewell_to_king as a shared library." OFF)
+option (BUILD_STATIC "Build farewell_to_king as a static library." ON)
 option (INCLUDE_STR "Build farewell_to_king_strings, includes operations to generate formatted strings." ON)
+
 option (BUILD_TEST "Build executable to test Farewell to King." ON)
 option (BUILD_DEBUG "Build Farewell to King with debug symbols enabled." ON)
+
+if(NOT (BUILD_SHARED OR BUILD_STATIC))
+  message(FATAL_ERROR "BUILD_STATIC and/or BUILD_SHARED must specified to build Farewell to King")
+endif ()
 
 if(BUILD_DEBUG)
   set(CMAKE_BUILD_TYPE Debug)

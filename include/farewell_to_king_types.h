@@ -76,8 +76,11 @@ typedef enum
   FTK_CHECK_IN_CHECK,
 } ftk_check_e;
 
-#define FTK_DRAW_MOVES 50
-#define FTK_DRAW_HALF_MOVES (2*FTK_DRAW_MOVES)
+#define FTK_FULL_MOVES_TO_HALF_MOVES(moves) (moves << 2)
+#define FTK_HALF_MOVES_TO_FULL_MOVES(moves) (moves >> 2)
+
+#define FTK_DRAW_FULL_MOVES 50
+#define FTK_DRAW_HALF_MOVES FTK_FULL_MOVES_TO_HALF_MOVES(FTK_DRAW_FULL_MOVES)
 
 /**
  * @brief Game end types enum
@@ -259,16 +262,16 @@ typedef struct
   /* Active game board */
   ftk_board_s    board;
 
-  /* Current En Pasant target position */
+  /* Current En Passant target position */
   ftk_position_t ep;
 
   /* Current turn color */
   ftk_color_e turn;
 
   /* Number of half moves since last capture or pawn movement */
-  ftk_move_count_t halfmove;
+  ftk_move_count_t half_move;
   /* Number of full moves in given game */
-  ftk_move_count_t fullmove;
+  ftk_move_count_t full_move;
 } ftk_game_s;
 
 /**
@@ -287,7 +290,7 @@ typedef struct
   /* Piece captured in this move, or Rook in castle case */
   ftk_square_s     capture;
 
-  /* En Pasant target position before this move */
+  /* En Passant target position before this move */
   ftk_position_t   ep;
   /* Type Pawn is promoted to */
   ftk_type_e       pawn_promotion;
@@ -296,8 +299,8 @@ typedef struct
   ftk_color_e      turn;
 
   /* Number of moves before this move */
-  ftk_move_count_t halfmove;
-  ftk_move_count_t fullmove;
+  ftk_move_count_t half_move;
+  ftk_move_count_t full_move;
 } ftk_move_s;
 
 /**
@@ -327,8 +330,8 @@ typedef struct
    ((move_a).ep                        == (move_b).ep) &&                        \
    ((move_a).pawn_promotion            == (move_b).pawn_promotion) &&            \
    ((move_a).turn                      == (move_b).turn) &&                      \
-   ((move_a).halfmove                  == (move_b).halfmove) &&                  \
-   ((move_a).fullmove                  == (move_b).fullmove))
+   ((move_a).half_move                  == (move_b).half_move) &&                  \
+   ((move_a).full_move                  == (move_b).full_move))
 
 /**
  * @brief Move list structure
@@ -344,70 +347,73 @@ typedef struct
 } ftk_move_list_s;
 
 //Square value table
-#define FTK_A1  0
-#define FTK_B1  1
-#define FTK_C1  2
-#define FTK_D1  3
-#define FTK_E1  4
-#define FTK_F1  5
-#define FTK_G1  6
-#define FTK_H1  7
-#define FTK_A2  8
-#define FTK_B2  9
-#define FTK_C2 10
-#define FTK_D2 11
-#define FTK_E2 12
-#define FTK_F2 13
-#define FTK_G2 14
-#define FTK_H2 15
-#define FTK_A3 16
-#define FTK_B3 17
-#define FTK_C3 18
-#define FTK_D3 19
-#define FTK_E3 20
-#define FTK_F3 21
-#define FTK_G3 22
-#define FTK_H3 23
-#define FTK_A4 24
-#define FTK_B4 25
-#define FTK_C4 26
-#define FTK_D4 27
-#define FTK_E4 28
-#define FTK_F4 29
-#define FTK_G4 30
-#define FTK_H4 31
-#define FTK_A5 32
-#define FTK_B5 33
-#define FTK_C5 34
-#define FTK_D5 35
-#define FTK_E5 36
-#define FTK_F5 37
-#define FTK_G5 38
-#define FTK_H5 39
-#define FTK_A6 40
-#define FTK_B6 41
-#define FTK_C6 42
-#define FTK_D6 43
-#define FTK_E6 44
-#define FTK_F6 45
-#define FTK_G6 46
-#define FTK_H6 47
-#define FTK_A7 48
-#define FTK_B7 49
-#define FTK_C7 50
-#define FTK_D7 51
-#define FTK_E7 52
-#define FTK_F7 53
-#define FTK_G7 54
-#define FTK_H7 55
-#define FTK_A8 56
-#define FTK_B8 57
-#define FTK_C8 58
-#define FTK_D8 59
-#define FTK_E8 60
-#define FTK_F8 61
-#define FTK_G8 62
-#define FTK_H8 63
-#define FTK_XX 64
+typedef enum
+{
+  FTK_A1 = 0,
+  FTK_B1 = 1,
+  FTK_C1 = 2,
+  FTK_D1 = 3,
+  FTK_E1 = 4,
+  FTK_F1 = 5,
+  FTK_G1 = 6,
+  FTK_H1 = 7,
+  FTK_A2 = 8,
+  FTK_B2 = 9,
+  FTK_C2 = 10,
+  FTK_D2 = 11,
+  FTK_E2 = 12,
+  FTK_F2 = 13,
+  FTK_G2 = 14,
+  FTK_H2 = 15,
+  FTK_A3 = 16,
+  FTK_B3 = 17,
+  FTK_C3 = 18,
+  FTK_D3 = 19,
+  FTK_E3 = 20,
+  FTK_F3 = 21,
+  FTK_G3 = 22,
+  FTK_H3 = 23,
+  FTK_A4 = 24,
+  FTK_B4 = 25,
+  FTK_C4 = 26,
+  FTK_D4 = 27,
+  FTK_E4 = 28,
+  FTK_F4 = 29,
+  FTK_G4 = 30,
+  FTK_H4 = 31,
+  FTK_A5 = 32,
+  FTK_B5 = 33,
+  FTK_C5 = 34,
+  FTK_D5 = 35,
+  FTK_E5 = 36,
+  FTK_F5 = 37,
+  FTK_G5 = 38,
+  FTK_H5 = 39,
+  FTK_A6 = 40,
+  FTK_B6 = 41,
+  FTK_C6 = 42,
+  FTK_D6 = 43,
+  FTK_E6 = 44,
+  FTK_F6 = 45,
+  FTK_G6 = 46,
+  FTK_H6 = 47,
+  FTK_A7 = 48,
+  FTK_B7 = 49,
+  FTK_C7 = 50,
+  FTK_D7 = 51,
+  FTK_E7 = 52,
+  FTK_F7 = 53,
+  FTK_G7 = 54,
+  FTK_H7 = 55,
+  FTK_A8 = 56,
+  FTK_B8 = 57,
+  FTK_C8 = 58,
+  FTK_D8 = 59,
+  FTK_E8 = 60,
+  FTK_F8 = 61,
+  FTK_G8 = 62,
+  FTK_H8 = 63,
+  FTK_XX = 64,
+} ftk_square_name_e;
 
 #endif //_FAREWELL_TO_KING_TYPES_H_

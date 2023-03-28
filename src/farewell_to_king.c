@@ -52,8 +52,8 @@ void ftk_begin_standard_game(ftk_game_s *game)
   ftk_set_standard_board(&game->board);
 
   game->ep = FTK_XX;
-  game->halfmove = 0;
-  game->fullmove = 1;
+  game->half_move = 0;
+  game->full_move = 1;
 
   game->turn = FTK_COLOR_WHITE;
 
@@ -95,8 +95,8 @@ ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_pos
     move.pawn_promotion = FTK_TYPE_DONT_CARE;
 
     move.turn           = game->turn;
-    move.fullmove       = game->fullmove;
-    move.halfmove       = game->halfmove;
+    move.full_move       = game->full_move;
+    move.half_move       = game->half_move;
 
     if(game->board.square[source].type == FTK_TYPE_PAWN)
     {
@@ -167,19 +167,19 @@ ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_pos
     move.pawn_promotion = FTK_TYPE_DONT_CARE;
 
     move.turn           = game->turn;
-    move.fullmove       = game->fullmove;
-    move.halfmove       = game->halfmove;
+    move.full_move       = game->full_move;
+    move.half_move       = game->half_move;
 
     if(game->turn == FTK_COLOR_BLACK)
     {
-      game->fullmove++;
+      game->full_move++;
     }
 
-    game->halfmove++;
+    game->half_move++;
 
     if((game->board.square[target].type != FTK_TYPE_EMPTY) || (game->board.square[source].type == FTK_TYPE_PAWN))
     {
-      game->halfmove = 0;
+      game->half_move = 0;
     }
 
     if(game->board.square[source].type == FTK_TYPE_PAWN)
@@ -324,8 +324,8 @@ ftk_result_e ftk_move_backward_quick(ftk_game_s *game, ftk_move_s *move)
   game->board.square[move->source] = move->moved;
   game->ep                         = move->ep;
   game->turn                       = move->turn;
-  game->halfmove                   = move->halfmove;
-  game->fullmove                   = move->fullmove;
+  game->half_move                   = move->half_move;
+  game->full_move                   = move->full_move;
 
   if(move->target == move->ep && FTK_TYPE_PAWN == move->moved.type)
   {
@@ -428,7 +428,7 @@ ftk_game_end_e ftk_check_for_game_end(const ftk_game_s *game)
   {
     game_end = (FTK_CHECK_IN_CHECK == ftk_check_for_check(game))?FTK_END_CHECKMATE:FTK_END_DRAW_STALEMATE;
   }
-  else if (game->halfmove > FTK_DRAW_HALF_MOVES) {
+  else if (game->half_move > FTK_DRAW_HALF_MOVES) {
     game_end = FTK_END_DRAW_FIFTY_MOVE_RULE;
   }
 
@@ -524,6 +524,6 @@ void ftk_invalidate_move(ftk_move_s *move)
   move->ep       = FTK_XX;
 
   move->turn     = 0;
-  move->fullmove = 0;
-  move->halfmove = 0;
+  move->full_move = 0;
+  move->half_move = 0;
 }

@@ -449,14 +449,14 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output) {
   output[outI] = ' ';
   outI++;
   int digits = 0;
-  int num = game->halfmove;
-  if (game->halfmove != 0) {
+  int num = game->half_move;
+  if (game->half_move != 0) {
     while (num != 0) {
       digits++;
       num /= 10;
     }
     for (i = 0; i < digits; i++) {
-      num = game->halfmove;
+      num = game->half_move;
       for (j = i + 1; j < digits; j++) {
         num /= 10;
       }
@@ -470,14 +470,14 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output) {
   output[outI] = ' ';
   outI++;
   digits = 0;
-  if (game->fullmove != 0) {
-    num = game->fullmove;
+  if (game->full_move != 0) {
+    num = game->full_move;
     while (num != 0) {
       digits++;
       num /= 10;
     }
     for (i = 0; i < digits; i++) {
-      num = game->fullmove;
+      num = game->full_move;
       for (j = i + 1; j < digits; j++) {
         num /= 10;
       }
@@ -591,7 +591,7 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) 
     count = (count*10) + (fen[inI] - '0');
     if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
-  game->halfmove = count;
+  game->half_move = count;
 
   if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
 
@@ -600,7 +600,7 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) 
     count = (count*10) + (fen[inI] - '0');
     if(false == ftk_increment_string_index(fen, &inI, 1)) { return FTK_FAILURE; }
   }
-  game->fullmove = count;
+  game->full_move = count;
 
   ftk_update_board_masks(game);
 

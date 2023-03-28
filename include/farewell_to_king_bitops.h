@@ -29,7 +29,7 @@
  * @param mask 
  * @return uint8_t number of bits set in mask
  */
-uint8_t ftk_get_num_bits_set(ftk_max_mask_size_t mask);
+uint_fast8_t ftk_get_num_bits_set(ftk_max_mask_size_t mask);
 
 /**
  * @brief 
@@ -37,6 +37,6 @@ uint8_t ftk_get_num_bits_set(ftk_max_mask_size_t mask);
  * @param mask Get first set bit (LSB) index from mask
  * @return uint8_t index of first set bit, 0xFF if empty
  */
-uint8_t ftk_get_first_set_bit_idx(ftk_max_mask_size_t mask);
+uint_fast8_t ftk_get_first_set_bit_idx(ftk_max_mask_size_t mask);
 
 #endif //_FAREWELL_TO_KING_BITOPS_H_

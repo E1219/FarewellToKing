@@ -4,7 +4,7 @@
  Edward Sandor
  January 2015 - 2020
  
- Conatains declarations of all methods used to generate and manipulate board masks.
+ Contains declarations of all methods used to generate and manipulate board masks.
 */
 
 #ifndef _FAREWELL_TO_KING_MASK_H_
@@ -68,7 +68,7 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s     square,
                                      ftk_board_mask_t moves);
 
 /**
- * @brief Strips moves from the move mask for any piece whose movment would result in exposed check
+ * @brief Strips moves from the move mask for any piece whose movement would result in exposed check
  * 
  * @param board Board to strip check moves
  * @param turn Current turn player color
@@ -83,5 +83,11 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn);
  * @param turn Current turn player color
  */
 void ftk_add_castle(ftk_board_s *board, ftk_color_e turn);
+
+/**
+ * @brief Converts a mask bit to position index (Returns mask MSB if multiple bits are set)
+ * 
+ */
+ftk_position_t ftk_mask_to_position(ftk_board_mask_t mask);
 
 #endif //_FAREWELL_TO_KING_MASK_H_

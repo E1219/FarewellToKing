@@ -4,7 +4,7 @@
  Edward Sandor
  January 2015 - 2020
  
- Conatains implementation of all methods used to generate and manipulate board masks.
+ Contains implementation of all methods used to generate and manipulate board masks.
 */
 
 #include <stdlib.h>
@@ -138,14 +138,14 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
         mask |= (1ULL << test);
       }
     }
-    test = position + direction * 9; // capture up-right/down-left diagnol
+    test = position + direction * 9; // capture up-right/down-left diagonal
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
         ((opponent_mask & 1ULL << test) != 0 || test == *ep) &&
         (1 == abs((test/8) - (position/8)))) 
     {
       mask |= (1ULL << test);
     }
-    test = position + direction * 7; // capture up-left/down-right diagnol
+    test = position + direction * 7; // capture up-left/down-right diagonal
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
         ((opponent_mask & 1ULL << test) != 0 || test == *ep) &&
         (1 == abs((test/8) - (position/8)))) 
@@ -213,7 +213,7 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
   {
     if (square.type != FTK_TYPE_ROOK) 
     {
-      int test = position + 9; // up-right diagnol
+      int test = position + 9; // up-right diagonal
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
              (test % 8) > (position % 8) &&
              ((board_mask & 1ULL << test) == 0 ||
@@ -224,7 +224,7 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
           break;
         test += 9;
       }
-      test = position - 9; // down-left diagnol
+      test = position - 9; // down-left diagonal
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
              (test % 8) < (position % 8) &&
              ((board_mask & 1ULL << test) == 0 ||
@@ -235,7 +235,7 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
           break;
         test -= 9;
       }
-      test = position + 7; // up-left diagnol
+      test = position + 7; // up-left diagonal
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
              (test % 8) < (position % 8) &&
              ((board_mask & 1ULL << test) == 0 ||
@@ -246,7 +246,7 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
           break;
         test += 7;
       }
-      test = position - 7; // down-right diagnol
+      test = position - 7; // down-right diagonal
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
              (test % 8) > (position % 8) &&
              ((board_mask & 1ULL << test) == 0 ||
@@ -352,7 +352,7 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target,
             ((target%8) != (source%8)) &&
             (abs(target - source) % 9 == 0))
         {
-          /* Same diagnol (up/right or down/left) */
+          /* Same diagonal (up/right or down/left) */
           char i;
           for (i = target; i > source; i = i - 9)
             mask |= (1ULL << i);
@@ -364,7 +364,7 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target,
             ((target%8) != (source%8)) &&
             (abs(target - source) % 7 == 0))
         {
-          /* Same diagnol (up/left or down/right) */
+          /* Same diagonal (up/left or down/right) */
           char i;
           for (i = target; i > source; i = i - 7)
             mask |= (1ULL << i);
@@ -420,7 +420,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
   ftk_position_t   move_under_test;
   int              pawn_direction, pawn_test_square;
   ftk_board_s      board_copy;
-  FTK_MASK_TO_POSITION(board->king_mask & turn_mask, king_position);
+  king_position = ftk_mask_to_position(board->king_mask & turn_mask);
 
   /* Remove moves cause check or do not resolve check */
   for (i = 0; i < FTK_STD_BOARD_SIZE; i++) 
@@ -431,30 +431,30 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
       /* Remove squares that enter check from King's move mask */
       if(FTK_TYPE_PAWN == board->square[i].type)
       {
-        /* Ignore forward moves for Pawns as they can only capture diagnally */
+        /* Ignore forward moves for Pawns as they can only capture diagonally */
         temp_mask = 0;
 
         pawn_direction = (board->square[i].color == FTK_COLOR_WHITE) ? 1 : -1; // change direction based on color
 
-        pawn_test_square= i + pawn_direction * 9; // capture up-right/down-left diagnol
+        pawn_test_square= i + pawn_direction * 9; // capture up-right/down-left diagonal
         if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0 &&
             (1 == abs((pawn_test_square/8) - (i/8)))) 
         {
           temp_mask |= (1ULL << pawn_test_square);
         }
-        pawn_test_square= i + pawn_direction * 7; // capture up-left/down-right diagnol
+        pawn_test_square= i + pawn_direction * 7; // capture up-left/down-right diagonal
         if (pawn_test_square< FTK_STD_BOARD_SIZE && pawn_test_square>= 0 &&
             (1 == abs((pawn_test_square/8) - (i/8)))) 
         {
           temp_mask |= (1ULL << pawn_test_square);
         }
 
-        /* Do not allow King to move into a valid oppenet's piece valid move */
+        /* Do not allow King to move into a valid opponent's piece valid move */
         board->move_mask[king_position] &= ~temp_mask;
       }
       else
       {
-        /* Do not allow King to move into a valid oppenet's piece valid move*/
+        /* Do not allow King to move into a valid opponent's piece valid move*/
         board->move_mask[king_position] &= ~board->move_mask[i];
       }
 
@@ -464,7 +464,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
         /* If opponents piece can move to the King's square, the King is in check */
         check = FTK_CHECK_IN_CHECK;
 
-        /* Consider oppoent's path to king */
+        /* Consider opponent's path to king */
         path = ftk_build_path_mask(board->square[i], king_position, i, board->move_mask[i]);
         for (j = 0; j < FTK_STD_BOARD_SIZE; j++) 
         {
@@ -481,7 +481,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
 
       if(move_mask_no_opponent & FTK_POSITION_TO_MASK(king_position))
       {
-        /* Get oppent's path to players king */
+        /* Get opponent's path to players king */
         path = ftk_build_path_mask(board->square[i], king_position, i, move_mask_no_opponent);
 
         /* Overlap between piece's path to King and current player's pieces */
@@ -665,4 +665,19 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
   {
       board->move_mask[FTK_E8] |= FTK_POSITION_TO_MASK(FTK_C8);
   }
+}
+
+ftk_position_t ftk_mask_to_position(ftk_board_mask_t mask)
+{ 
+  ftk_position_t position    = 0; 
+  ftk_board_mask_t temp_mask = mask; 
+  while(temp_mask)
+  {
+    temp_mask >>= 1; 
+    if(temp_mask)
+    {
+      position++;
+    } 
+  }
+  return position;
 }

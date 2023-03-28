@@ -59,11 +59,6 @@ typedef uint_fast8_t ftk_position_t;
  * 
  */
 #define FTK_POSITION_TO_MASK(position) (1ULL << (position))
-/**
- * @brief Converts a mask bit to position index (Returns mask MSB if multiple bits are set)
- * 
- */
-#define FTK_MASK_TO_POSITION(mask, position) { (position) = 0; ftk_board_mask_t temp_mask = (mask); while(temp_mask){temp_mask >>= 1; if(temp_mask){(position)++;}}}
 
 /**
  * @brief Check state enum
@@ -260,13 +255,13 @@ typedef struct
 typedef struct 
 {
   /* Active game board */
-  ftk_board_s    board;
+  ftk_board_s      board;
 
   /* Current En Passant target position */
-  ftk_position_t ep;
+  ftk_position_t   ep;
 
   /* Current turn color */
-  ftk_color_e turn;
+  ftk_color_e      turn;
 
   /* Number of half moves since last capture or pawn movement */
   ftk_move_count_t half_move;
@@ -330,8 +325,8 @@ typedef struct
    ((move_a).ep                        == (move_b).ep) &&                        \
    ((move_a).pawn_promotion            == (move_b).pawn_promotion) &&            \
    ((move_a).turn                      == (move_b).turn) &&                      \
-   ((move_a).half_move                  == (move_b).half_move) &&                  \
-   ((move_a).full_move                  == (move_b).full_move))
+   ((move_a).half_move                 == (move_b).half_move) &&                  \
+   ((move_a).full_move                 == (move_b).full_move))
 
 /**
  * @brief Move list structure

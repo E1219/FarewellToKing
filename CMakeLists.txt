@@ -1,24 +1,9 @@
-cmake_minimum_required (VERSION 3.13.4)
+cmake_minimum_required (VERSION 3.26)
 project (farewell_to_king)
 
-subdirs(src test)
-set(HEADERS "${CMAKE_SOURCE_DIR}/include")
-include_directories(${HEADERS})
-
-option (BUILD_SHARED "Build farewell_to_king as a shared library." OFF)
-option (BUILD_STATIC "Build farewell_to_king as a static library." ON)
 option (INCLUDE_STR "Build farewell_to_king_strings, includes operations to generate formatted strings." ON)
 
-option (BUILD_TEST "Build executable to test Farewell to King." ON)
-option (BUILD_DEBUG "Build Farewell to King with debug symbols enabled." ON)
-
-if(NOT (BUILD_SHARED OR BUILD_STATIC))
-  message(FATAL_ERROR "BUILD_STATIC and/or BUILD_SHARED must specified to build Farewell to King")
-endif ()
-
-if(BUILD_DEBUG)
-  set(CMAKE_BUILD_TYPE Debug)
-endif(BUILD_DEBUG)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFTK_DEBUG_BUILD")
 
 if (MSVC)
     # warning level 4 and all warnings as errors
@@ -28,4 +13,19 @@ else()
     add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-install (FILES ${HEADERS}/farewell_to_king.h ${HEADERS}/farewell_to_king_types.h ${HEADERS}/farewell_to_king_mask.h ${HEADERS}/farewell_to_king_board.h  ${HEADERS}/farewell_to_king_bitops.h DESTINATION include)
+set(farewell_to_king_source src/farewell_to_king.c
+                            src/farewell_to_king_bitops.c
+                            src/farewell_to_king_board.c
+                            src/farewell_to_king_mask.c)
+if(INCLUDE_STR)
+  list(APPEND farewell_to_king_source src/farewell_to_king_strings.c)
+endif()
+
+add_library(farewell_to_king STATIC ${farewell_to_king_source})
+target_include_directories(farewell_to_king PRIVATE include)
+
+add_library(farewell_to_king_shared SHARED ${farewell_to_king_source})
+target_include_directories(farewell_to_king_shared PRIVATE include)
+
+add_executable(farewell_to_king_test test/farewell_to_king_test.c)
+target_link_libraries(farewell_to_king_test farewell_to_king)

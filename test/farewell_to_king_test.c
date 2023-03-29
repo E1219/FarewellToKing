@@ -23,9 +23,6 @@ int main(){
   ftk_move_s move = {0};
 
   for(;;){
-    //printBoard(game.board, out);
-    ftk_board_to_string_with_coordinates(&game.board, out);
-    printf("%s\r\n", out);
 
     game_end = ftk_check_for_game_end(&game);
     if(FTK_END_NOT_OVER == game_end)
@@ -50,9 +47,9 @@ int main(){
     ftk_game_to_fen_string(&game, out);
     printf("%s\r\n", out);
 
-    scanf("%s", input);
+    int ret = scanf("%s", input);
 
-    if(strcmp("q",input) == 0 || strcmp("quit",input)==0)
+    if(EOF == ret || strcmp("q",input) == 0 || strcmp("quit",input)==0)
         break;
 
     if(strcmp("u",input) == 0)
@@ -67,6 +64,11 @@ int main(){
     {
       ftk_begin_standard_game(&game);
     }
+    else if(strcmp("p",input) == 0)
+    {
+      ftk_board_to_string_with_coordinates(&game.board, out);
+      printf("%s\r\n", out);
+    }
     else 
     {
       ftk_position_t target = FTK_XX;
@@ -77,9 +79,8 @@ int main(){
       ftk_xboard_move(input, &target, &source, &pawn_promo_type, &castle_type);
 
       move = ftk_move_piece(&game, target, source, pawn_promo_type);
-
       ftk_move_backward(&game, &move);
-      printf("%d\n\n", ftk_move_forward(&game, &move));
+      ftk_move_forward(&game, &move);
     }
   }
 

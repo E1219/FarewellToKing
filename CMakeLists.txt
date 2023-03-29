@@ -22,10 +22,12 @@ if(INCLUDE_STR)
 endif()
 
 add_library(farewelltoking STATIC ${farewell_to_king_source})
-target_include_directories(farewelltoking PRIVATE include)
+target_include_directories(farewelltoking PUBLIC include)
 
 add_library(farewelltoking-shared SHARED ${farewell_to_king_source})
-target_include_directories(farewelltoking-shared PRIVATE include)
+target_include_directories(farewelltoking-shared PUBLIC include)
 
 add_executable(farewelltoking-test test/farewell_to_king_test.c)
 target_link_libraries(farewelltoking-test farewelltoking)
+enable_testing()
+add_test("Fischer-Spassky 1972 Game 6" sh -c "diff -u ../test/fischer-spassky_1972_game6.ftk_key <(cat ../test/fischer-spassky_1972_game6.ftk_test | ./farewelltoking-test)")

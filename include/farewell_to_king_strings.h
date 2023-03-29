@@ -7,12 +7,12 @@
  Contains declarations of all methods that generate formatted strings for human readable output.
 */
 
-#ifndef FAREWELLTOKINGSTR_H
-#define FAREWELLTOKINGSTR_H
+#ifndef __FAREWELL_TO_KING_STRINGS_H__
+#define __FAREWELL_TO_KING_STRINGS_H__
 #include "farewell_to_king_types.h"
 
 /**
- * @brief type to represent string indiceis
+ * @brief type to represent string indicies
  *
  */
 typedef uint32_t ftk_string_index_t;
@@ -25,10 +25,11 @@ typedef uint32_t ftk_string_index_t;
  */
 ftk_type_e ftk_char_to_piece_type(char input);
 
+#define FTK_POSITION_STRING 3
 /**
  * @brief Converts chess coordinate to square number
  * 
- * @param input Chess coordinate string. size 2
+ * @param input Chess coordinate string. size FTK_POSITION_STRING-1 bytes (-1 since \0 is not used by this function)
  * @return ftk_position_t 
  */
 ftk_position_t ftk_string_to_position(const char *input);
@@ -37,7 +38,7 @@ ftk_position_t ftk_string_to_position(const char *input);
  * @brief Converts square number to chess coordinate
  * 
  * @param position position to be converted
- * @param coordinate string representing position. size 3
+ * @param coordinate string representing position. size FTK_POSITION_STRING bytes
  */
 void ftk_position_to_string(ftk_position_t position, char *coordinate);
 
@@ -87,11 +88,12 @@ ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
                              ftk_position_t *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle);
 
+#define FTK_BOARD_STRING_SIZE 144
 /**
  * @brief Create string for mask without board coordinates
  * 
  * @param mask Mask to convert
- * @param output size 144.  Lines ended with "\r\n".
+ * @param output size FTK_BOARD_STRING_SIZE bytes.  Lines ended with "\r\n".
  */
 void ftk_mask_to_string(ftk_board_mask_t mask, char *output);
 
@@ -99,15 +101,16 @@ void ftk_mask_to_string(ftk_board_mask_t mask, char *output);
  * @brief Create string for board without board coordinates
  * 
  * @param board Board to convert
- * @param output size 144.  Lines ended with "\r\n".
+ * @param output size FTK_BOARD_STRING_SIZE bytes.  Lines ended with "\r\n".
  */
 void ftk_board_to_string(const ftk_board_s *board, char *output);
 
+#define FTK_BOARD_STRING_WITH_COORDINATES_SIZE 210
 /**
  * @brief Create string for mask with board coordinates
  * 
  * @param mask Mask to convert
- * @param output size 210.  Lines ended with "\r\n".
+ * @param output size FTK_BOARD_STRING_WITH_COORDINATES_SIZE bytes.  Lines ended with "\r\n".
  */
 void ftk_mask_to_string_with_coordinates(ftk_board_mask_t mask, char *output);
 
@@ -115,15 +118,17 @@ void ftk_mask_to_string_with_coordinates(ftk_board_mask_t mask, char *output);
  * @brief Create string for board with board coordinates
  * 
  * @param board Board to convert
- * @param output size 210.  Lines ended with "\r\n".
+ * @param output size FTK_BOARD_STRING_WITH_COORDINATES_SIZE bytes.  Lines ended with "\r\n".
  */
 void ftk_board_to_string_with_coordinates(const ftk_board_s *board, char *output);
 
+/* 64(pieces)+7(slashes)+1(turn color)+4(castle flags)+2(en passant square)+3(half move digits)+4(full move digits)+5(spaces) = 90 bytes */
+#define FTK_FEN_STRING_SIZE 90
 /**
  * @brief Create Forsyth-Edwards Notation representation of 'game'.
  * 
  * @param game 
- * @param output 
+ * @param output buffer at least FTK_FEN_STRING_SIZE bytes
  */
 void ftk_game_to_fen_string(const ftk_game_s *game, char *output);
 

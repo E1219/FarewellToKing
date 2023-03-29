@@ -223,10 +223,10 @@ ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
 }
 
 void ftk_mask_to_string(ftk_board_mask_t mask, char *output) {
-  char ret[144]; //(2*8 columns + '\r\n')*8rows
+  char ret[FTK_BOARD_STRING_SIZE]; //(2*8 columns + '\r\n')*8rows
 
   int i;
-  for (i = 0; i < 144; i++)
+  for (i = 0; i < FTK_BOARD_STRING_SIZE; i++)
     ret[i] = ' ';
   for (i = 0; i < 8; i++) {
     ret[(i * (17) + 15)] = '\r';
@@ -246,19 +246,19 @@ void ftk_mask_to_string(ftk_board_mask_t mask, char *output) {
     ret[((j * 2) + (j / 8))] = name;
   }
   ret[143] = '\0';
-  memcpy(output, ret, 144);
+  memcpy(output, ret, FTK_BOARD_STRING_SIZE);
 }
 /**
- * @brief Creates a monospace represenation of a chess board ('\r\n' for newlines)
+ * @brief Creates a monospace representation of a chess board ('\r\n' for newlines)
  * 
  * @param board Board to create a string for
- * @param output Output string, needs to store at least 144 characters
+ * @param output Output string, needs to store at least FTK_BOARD_STRING_SIZE characters
  */
 void ftk_board_to_string(const ftk_board_s *board, char *output) {
-  char ret[144]; //(2*8 columns + '\r\n')*8rows
+  char ret[FTK_BOARD_STRING_SIZE]; //(2*8 columns + '\r\n')*8rows
 
   int i;
-  for (i = 0; i < 144; i++)
+  for (i = 0; i < FTK_BOARD_STRING_SIZE; i++)
     ret[i] = ' ';
   for (i = 0; i < 8; i++) {
     ret[(i * (17) + 15)] = '\r';
@@ -276,20 +276,20 @@ void ftk_board_to_string(const ftk_board_s *board, char *output) {
     ret[((j * 2) + (j / 8))] = name;
   }
   ret[143] = '\0';
-  memcpy(output, ret, 144);
+  memcpy(output, ret, FTK_BOARD_STRING_SIZE);
 }
 /**
- * @brief Creates a monospace represenation of a chess board bitmask with coordinate ('\r\n' for newlines)
+ * @brief Creates a monospace representation of a chess board bitmask with coordinate ('\r\n' for newlines)
  * 
  * @param board Board to create a string for
- * @param output Output string, needs to store at least 210 characters
+ * @param output Output string, needs to store at least FTK_BOARD_STRING_WITH_COORDINATES_SIZE characters
  */
 void ftk_mask_to_string_with_coordinates(ftk_board_mask_t mask,
                                          char *output) {
-  char ret[210]; //('a  ' + 2*8 columns + '\r\n')*10rows (8 + gap + coordinate)
+  char ret[FTK_BOARD_STRING_WITH_COORDINATES_SIZE]; //('a  ' + 2*8 columns + '\r\n')*10rows (8 + gap + coordinate)
 
   int i;
-  for (i = 0; i < 210; i++)
+  for (i = 0; i < FTK_BOARD_STRING_WITH_COORDINATES_SIZE; i++)
     ret[i] = ' ';
   for (i = 0; i < 10; i++) {
     ret[(i * (20) + 18)] = '\r';
@@ -315,19 +315,19 @@ void ftk_mask_to_string_with_coordinates(ftk_board_mask_t mask,
         'a' + i - 8 - FTK_STD_BOARD_SIZE;
   }
   ret[209] = '\0';
-  memcpy(output, ret, 210);
+  memcpy(output, ret, FTK_BOARD_STRING_WITH_COORDINATES_SIZE);
 }
 /**
- * @brief Creates a monospace represenation of a chess board with coordinate ('\r\n' for newlines)
+ * @brief Creates a monospace representation of a chess board with coordinate ('\r\n' for newlines)
  * 
  * @param board Board to create a string for
- * @param output Output string, needs to store at least 210 characters
+ * @param output Output string, needs to store at least FTK_BOARD_STRING_WITH_COORDINATES_SIZE characters
  */
 void ftk_board_to_string_with_coordinates(const ftk_board_s *board, char *output) {
-  char ret[210]; //('a  ' + 2*8 columns + '\r\n')*10rows
+  char ret[FTK_BOARD_STRING_WITH_COORDINATES_SIZE]; //('a  ' + 2*8 columns + '\r\n')*10rows
 
   int i;
-  for (i = 0; i < 210; i++)
+  for (i = 0; i < FTK_BOARD_STRING_WITH_COORDINATES_SIZE; i++)
     ret[i] = ' ';
   for (i = 0; i < 10; i++) {
     ret[(i * (20) + 18)] = '\r';
@@ -350,20 +350,17 @@ void ftk_board_to_string_with_coordinates(const ftk_board_s *board, char *output
         'a' + i - 8 - FTK_STD_BOARD_SIZE;
   }
   ret[209] = '\0';
-  memcpy(output, ret, 210);
+  memcpy(output, ret, FTK_BOARD_STRING_WITH_COORDINATES_SIZE);
 }
-void ftk_game_to_fen_string(const ftk_game_s *game, char *output) {
-  int i;
-  int j;
-  for (i = 0; i < 86; i++) {
-    output[i] = 0;
-  }
+void ftk_game_to_fen_string(const ftk_game_s *game, char *output) 
+{
+  memset(output, 0, FTK_FEN_STRING_SIZE);
 
   int outI = 0;
-  for (i = 7; i >= 0; i--) {
+  for (int i = 7; i >= 0; i--) {
     int count = 0;
 
-    for (j = 0; j < 8; j++) {
+    for (unsigned int j = 0; j < 8; j++) {
       if (game->board.square[i * 8 + j].type == FTK_TYPE_EMPTY) {
         count++;
       } else {
@@ -455,9 +452,9 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output) {
       digits++;
       num /= 10;
     }
-    for (i = 0; i < digits; i++) {
+    for (int i = 0; i < digits; i++) {
       num = game->half_move;
-      for (j = i + 1; j < digits; j++) {
+      for (int j = i + 1; j < digits; j++) {
         num /= 10;
       }
       output[outI] = num % 10 + '0';
@@ -476,9 +473,9 @@ void ftk_game_to_fen_string(const ftk_game_s *game, char *output) {
       digits++;
       num /= 10;
     }
-    for (i = 0; i < digits; i++) {
+    for (int i = 0; i < digits; i++) {
       num = game->full_move;
-      for (j = i + 1; j < digits; j++) {
+      for (int j = i + 1; j < digits; j++) {
         num /= 10;
       }
       output[outI] = num % 10 + '0';

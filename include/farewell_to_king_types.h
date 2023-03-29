@@ -71,8 +71,8 @@ typedef enum
   FTK_CHECK_IN_CHECK,
 } ftk_check_e;
 
-#define FTK_FULL_MOVES_TO_HALF_MOVES(moves) (moves << 2)
-#define FTK_HALF_MOVES_TO_FULL_MOVES(moves) (moves >> 2)
+#define FTK_FULL_MOVES_TO_HALF_MOVES(moves) (moves << 1) /* Full Moves * 2 */
+#define FTK_HALF_MOVES_TO_FULL_MOVES(moves) (moves >> 1) /* Full Moves / 2 */
 
 #define FTK_DRAW_FULL_MOVES 50
 #define FTK_DRAW_HALF_MOVES FTK_FULL_MOVES_TO_HALF_MOVES(FTK_DRAW_FULL_MOVES)

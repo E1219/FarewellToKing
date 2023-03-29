@@ -48,7 +48,7 @@ void ftk_build_all_masks(ftk_board_s *board);
  * 
  * @param board Board information
  * @param position Position to build move mask for
- * @param ep Output indicating en pasant square if valid
+ * @param ep Output indicating en passant square if valid
  * @return ftk_board_mask_t Mask of basic legal moves
  */
 ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_position_t position, ftk_position_t *ep);

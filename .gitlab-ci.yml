@@ -28,6 +28,11 @@ stages:          # List of stages for jobs, and their order of execution
 
 .build_step: &build_step
   - echo "Compiling the code..."
+  - mkdir build-debug
+  - cd build-debug
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug
+  - make -j$(nproc)
+  - make -j$(nproc) test
   - mkdir build
   - cd build
   - cmake ..
@@ -50,6 +55,9 @@ build-debian:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
       - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
+      - /builds/edward/farewell-to-king/build-debug/libfarewelltoking.a
+      - /builds/edward/farewell-to-king/build-debug/farewelltoking-test
+      - /builds/edward/farewell-to-king/build-debug/Testing/Temporary/LastTest.log
 
 build-debian-arm64:
   stage: build
@@ -66,6 +74,9 @@ build-debian-arm64:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
       - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
+      - /builds/edward/farewell-to-king/build-debug/libfarewelltoking.a
+      - /builds/edward/farewell-to-king/build-debug/farewelltoking-test
+      - /builds/edward/farewell-to-king/build-debug/Testing/Temporary/LastTest.log
 
 build-ubuntu:
   stage: build
@@ -79,7 +90,9 @@ build-ubuntu:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
       - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
-
+      - /builds/edward/farewell-to-king/build-debug/libfarewelltoking.a
+      - /builds/edward/farewell-to-king/build-debug/farewelltoking-test
+      - /builds/edward/farewell-to-king/build-debug/Testing/Temporary/LastTest.log
 
 build-fedora:
   stage: build
@@ -95,6 +108,9 @@ build-fedora:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
       - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
+      - /builds/edward/farewell-to-king/build-debug/libfarewelltoking.a
+      - /builds/edward/farewell-to-king/build-debug/farewelltoking-test
+      - /builds/edward/farewell-to-king/build-debug/Testing/Temporary/LastTest.log
 
 include:
   - template: Security/SAST.gitlab-ci.yml

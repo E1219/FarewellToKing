@@ -33,6 +33,7 @@ stages:          # List of stages for jobs, and their order of execution
   - cmake .. -DCMAKE_BUILD_TYPE=Debug
   - make -j$(nproc)
   - make -j$(nproc) test
+  - cd ..
   - mkdir build
   - cd build
   - cmake ..

@@ -45,6 +45,7 @@ build-debian:
     - *apt_dependencies
     - *build_step
   artifacts:
+    when: always
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
@@ -60,6 +61,7 @@ build-debian-arm64:
     - *apt_dependencies
     - *build_step
   artifacts:
+    when: always
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
@@ -72,6 +74,7 @@ build-ubuntu:
     - *apt_dependencies
     - *build_step
   artifacts:
+    when: always
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
@@ -87,6 +90,7 @@ build-fedora:
     - echo "Installing dependencies complete."
     - *build_step
   artifacts:
+    when: always
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test

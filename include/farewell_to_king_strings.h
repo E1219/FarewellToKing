@@ -70,7 +70,7 @@ char ftk_square_to_char(ftk_square_s piece);
  * @param castle output castle type request (will always return white castle as color is unknown)
  * @return ftk_result_e
  */
-ftk_result_e ftk_long_algebraic_move(char *input, ftk_position_t *target,
+ftk_result_e ftk_long_algebraic_move(const char *input, ftk_position_t *target,
                              ftk_position_t *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle);
 
@@ -84,7 +84,7 @@ ftk_result_e ftk_long_algebraic_move(char *input, ftk_position_t *target,
  * @param castle output castle type request (will always return white castle as color is unknown)
  * @return ftk_result_e
  */
-ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
+ftk_result_e ftk_xboard_move(const char *input, ftk_position_t *target,
                              ftk_position_t *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle);
 

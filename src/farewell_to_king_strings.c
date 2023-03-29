@@ -171,7 +171,7 @@ char ftk_type_to_char(ftk_type_e type) {
   }
 }
 
-ftk_result_e ftk_long_algebraic_move(char *input, ftk_position_t *target,
+ftk_result_e ftk_long_algebraic_move(const char *input, ftk_position_t *target,
                              ftk_position_t *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle) 
 {
@@ -215,7 +215,7 @@ ftk_result_e ftk_long_algebraic_move(char *input, ftk_position_t *target,
   return result;
 }
 
-ftk_result_e ftk_xboard_move(char *input, ftk_position_t *target,
+ftk_result_e ftk_xboard_move(const char *input, ftk_position_t *target,
                              ftk_position_t *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle) 
 {

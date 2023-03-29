@@ -23,7 +23,7 @@ stages:          # List of stages for jobs, and their order of execution
 .apt_dependencies: &apt_dependencies
   - echo "Installing dependencies..."
   - apt update
-  - apt install -y --no-install-recommends gcc g++ make cmake
+  - apt install -y --no-install-recommends gcc g++ make cmake diffutils
   - echo "Installing dependencies complete."
 
 .build_step: &build_step
@@ -83,7 +83,7 @@ build-fedora:
   image: fedora:latest
   script:
     - echo "Installing dependencies..."
-    - dnf install -y gcc gcc-c++ cmake
+    - dnf install -y gcc gcc-c++ cmake diffutils
     - echo "Installing dependencies complete."
     - *build_step
   artifacts:

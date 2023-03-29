@@ -25,14 +25,4 @@ void ftk_clear_board(ftk_board_s *board);
  */
 void ftk_set_standard_board(ftk_board_s *board);
 
-/**
- * @brief Sets a square with the given content
- * 
- * @param board Board to configure a square
- * @param new_content New square content
- * @param position position to modify
- * @return ftk_square_s previous contents of square
- */
-ftk_square_s ftk_set_square(ftk_board_s *board, ftk_square_s new_content, ftk_position_t *position);
-
 #endif //_FAREWELL_TO_KING_BOARD_H_

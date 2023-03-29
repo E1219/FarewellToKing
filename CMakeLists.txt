@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.18)
-project (farewelltoking C)
+project (farewelltoking)
 
 option (INCLUDE_STR "Build farewell_to_king_strings, includes operations to generate formatted strings." ON)
 

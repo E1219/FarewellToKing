@@ -48,6 +48,7 @@ build-debian:
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
+      - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
 
 build-debian-arm64:
   stage: build
@@ -62,6 +63,7 @@ build-debian-arm64:
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
+      - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
 
 build-ubuntu:
   stage: build
@@ -73,6 +75,7 @@ build-ubuntu:
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
+      - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
 
 
 build-fedora:
@@ -87,6 +90,7 @@ build-fedora:
     paths:
       - /builds/edward/farewell-to-king/build/libfarewelltoking.a
       - /builds/edward/farewell-to-king/build/farewelltoking-test
+      - /builds/edward/farewell-to-king/build/Testing/Temporary/LastTest.log
 
 include:
   - template: Security/SAST.gitlab-ci.yml

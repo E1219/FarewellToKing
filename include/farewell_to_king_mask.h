@@ -51,7 +51,7 @@ void ftk_build_all_masks(ftk_board_s *board);
  * @param ep Output indicating en passant square if valid
  * @return ftk_board_mask_t Mask of basic legal moves
  */
-ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_position_t position, ftk_position_t *ep);
+ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_square_e position, ftk_square_e *ep);
 
 /**
  * @brief Builds mask describing a path to a specified square 
@@ -63,8 +63,8 @@ ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_position_t po
  * @return ftk_board_mask_t 
  */
 ftk_board_mask_t ftk_build_path_mask(ftk_square_s     square,
-                                     ftk_position_t   target,
-                                     ftk_position_t   source,
+                                     ftk_square_e   target,
+                                     ftk_square_e   source,
                                      ftk_board_mask_t moves);
 
 /**
@@ -88,6 +88,6 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn);
  * @brief Converts a mask bit to position index (Returns mask MSB if multiple bits are set)
  * 
  */
-ftk_position_t ftk_mask_to_position(ftk_board_mask_t mask);
+ftk_square_e ftk_mask_to_position(ftk_board_mask_t mask);
 
 #endif //_FAREWELL_TO_KING_MASK_H_

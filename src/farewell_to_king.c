@@ -66,7 +66,7 @@ void ftk_update_board_masks(ftk_game_s *game)
   {
     ftk_build_all_masks(&game->board);
 
-    ftk_position_t i;
+    ftk_square_e i;
     for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
     {
       game->board.move_mask[i] = ftk_build_move_mask(&game->board, i, &game->ep);
@@ -80,7 +80,7 @@ void ftk_update_board_masks(ftk_game_s *game)
   }
 }
 
-ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
+ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_square_e target, ftk_square_e source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
   if((game->board.move_mask[source] & (1ULL << target)) != 0 && game->board.square[source].color == game->turn)
@@ -149,7 +149,7 @@ ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_pos
   return move;
 }
 
-ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
+ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_square_e target, ftk_square_e source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
 
@@ -267,7 +267,7 @@ ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_pos
   return move;
 }
 
-ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion) 
+ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_square_e target, ftk_square_e source, ftk_type_e pawn_promotion) 
 {
   ftk_move_s move;
 
@@ -385,7 +385,7 @@ ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move)
 
 ftk_check_e ftk_check_for_check(const ftk_game_s *game)
 {
-  ftk_position_t i;
+  ftk_square_e i;
   ftk_check_e check_status = FTK_CHECK_NO_CHECK;
   ftk_board_mask_t player_king_mask = game->board.king_mask & ((FTK_COLOR_WHITE == game->turn)?game->board.white_mask:game->board.black_mask);
 
@@ -404,7 +404,7 @@ ftk_check_e ftk_check_for_check(const ftk_game_s *game)
 bool ftk_check_legal_moves(const ftk_game_s *game)
 {
   bool ret_val = false;
-  ftk_position_t i;
+  ftk_square_e i;
 
   for(i = 0; i < FTK_STD_BOARD_SIZE; i++)
   {
@@ -444,7 +444,7 @@ ftk_game_end_e ftk_check_for_game_end(const ftk_game_s *game)
 void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
 {
   int i; 
-  ftk_position_t target;
+  ftk_square_e target;
   ftk_board_mask_t move_mask_temp;
   ftk_move_count_t move_index = 0;
   ftk_move_count_t base_move_count = 0;

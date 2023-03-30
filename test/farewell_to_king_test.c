@@ -71,8 +71,8 @@ int main(){
     }
     else 
     {
-      ftk_position_t target = FTK_XX;
-      ftk_position_t source = FTK_XX;
+      ftk_square_e target = FTK_XX;
+      ftk_square_e source = FTK_XX;
 
       ftk_type_e   pawn_promo_type = FTK_TYPE_EMPTY;
       ftk_castle_e castle_type     = FTK_CASTLE_NONE;

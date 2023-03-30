@@ -18,10 +18,9 @@
  */
 #define FTK_STD_BOARD_ROWS    8
 #define FTK_STD_BOARD_COLUMNS 8
-#define FTK_STD_BOARD_SIZE    (FTK_STD_BOARD_ROWS * FTK_STD_BOARD_COLUMNS)
 
 /**
- * @brief Enum for representing functionresults
+ * @brief Enum for representing function results
  * 
  */
 typedef enum
@@ -49,10 +48,21 @@ typedef uint_fast64_t ftk_max_mask_size_t;
 typedef uint_fast64_t ftk_board_mask_t;
 
 /**
- * @brief Type for representing board positions
+ * @brief Type for representing board squares
  * 
  */
-typedef uint_fast8_t ftk_position_t;
+typedef enum
+{
+  FTK_A8 = 56, FTK_B8 = 57, FTK_C8 = 58, FTK_D8 = 59, FTK_E8 = 60, FTK_F8 = 61, FTK_G8 = 62, FTK_H8 = 63,
+  FTK_A7 = 48, FTK_B7 = 49, FTK_C7 = 50, FTK_D7 = 51, FTK_E7 = 52, FTK_F7 = 53, FTK_G7 = 54, FTK_H7 = 55,
+  FTK_A6 = 40, FTK_B6 = 41, FTK_C6 = 42, FTK_D6 = 43, FTK_E6 = 44, FTK_F6 = 45, FTK_G6 = 46, FTK_H6 = 47,
+  FTK_A5 = 32, FTK_B5 = 33, FTK_C5 = 34, FTK_D5 = 35, FTK_E5 = 36, FTK_F5 = 37, FTK_G5 = 38, FTK_H5 = 39,
+  FTK_A4 = 24, FTK_B4 = 25, FTK_C4 = 26, FTK_D4 = 27, FTK_E4 = 28, FTK_F4 = 29, FTK_G4 = 30, FTK_H4 = 31,
+  FTK_A3 = 16, FTK_B3 = 17, FTK_C3 = 18, FTK_D3 = 19, FTK_E3 = 20, FTK_F3 = 21, FTK_G3 = 22, FTK_H3 = 23,
+  FTK_A2 =  8, FTK_B2 =  9, FTK_C2 = 10, FTK_D2 = 11, FTK_E2 = 12, FTK_F2 = 13, FTK_G2 = 14, FTK_H2 = 15,
+  FTK_A1 =  0, FTK_B1 =  1, FTK_C1 =  2, FTK_D1 =  3, FTK_E1 =  4, FTK_F1 =  5, FTK_G1 =  6, FTK_H1 =  7,
+  FTK_STD_BOARD_SIZE = 64, FTK_XX = FTK_STD_BOARD_SIZE, FTK_SQUARE_INVALID = -1,
+} ftk_square_e;
 
 /**
  * @brief Converts a position index to a mask bit
@@ -258,7 +268,7 @@ typedef struct
   ftk_board_s      board;
 
   /* Current En Passant target position */
-  ftk_position_t   ep;
+  ftk_square_e   ep;
 
   /* Current turn color */
   ftk_color_e      turn;
@@ -276,9 +286,9 @@ typedef struct
 typedef struct 
 {
   /* Move target position */
-  ftk_position_t   target;
+  ftk_square_e   target;
   /* Move source position */
-  ftk_position_t   source;
+  ftk_square_e   source;
 
   /* Moved piece before this move */
   ftk_square_s     moved;
@@ -286,7 +296,7 @@ typedef struct
   ftk_square_s     capture;
 
   /* En Passant target position before this move */
-  ftk_position_t   ep;
+  ftk_square_e   ep;
   /* Type Pawn is promoted to */
   ftk_type_e       pawn_promotion;
 
@@ -340,75 +350,5 @@ typedef struct
   ftk_move_s       *move;
 
 } ftk_move_list_s;
-
-//Square value table
-typedef enum
-{
-  FTK_A1 = 0,
-  FTK_B1 = 1,
-  FTK_C1 = 2,
-  FTK_D1 = 3,
-  FTK_E1 = 4,
-  FTK_F1 = 5,
-  FTK_G1 = 6,
-  FTK_H1 = 7,
-  FTK_A2 = 8,
-  FTK_B2 = 9,
-  FTK_C2 = 10,
-  FTK_D2 = 11,
-  FTK_E2 = 12,
-  FTK_F2 = 13,
-  FTK_G2 = 14,
-  FTK_H2 = 15,
-  FTK_A3 = 16,
-  FTK_B3 = 17,
-  FTK_C3 = 18,
-  FTK_D3 = 19,
-  FTK_E3 = 20,
-  FTK_F3 = 21,
-  FTK_G3 = 22,
-  FTK_H3 = 23,
-  FTK_A4 = 24,
-  FTK_B4 = 25,
-  FTK_C4 = 26,
-  FTK_D4 = 27,
-  FTK_E4 = 28,
-  FTK_F4 = 29,
-  FTK_G4 = 30,
-  FTK_H4 = 31,
-  FTK_A5 = 32,
-  FTK_B5 = 33,
-  FTK_C5 = 34,
-  FTK_D5 = 35,
-  FTK_E5 = 36,
-  FTK_F5 = 37,
-  FTK_G5 = 38,
-  FTK_H5 = 39,
-  FTK_A6 = 40,
-  FTK_B6 = 41,
-  FTK_C6 = 42,
-  FTK_D6 = 43,
-  FTK_E6 = 44,
-  FTK_F6 = 45,
-  FTK_G6 = 46,
-  FTK_H6 = 47,
-  FTK_A7 = 48,
-  FTK_B7 = 49,
-  FTK_C7 = 50,
-  FTK_D7 = 51,
-  FTK_E7 = 52,
-  FTK_F7 = 53,
-  FTK_G7 = 54,
-  FTK_H7 = 55,
-  FTK_A8 = 56,
-  FTK_B8 = 57,
-  FTK_C8 = 58,
-  FTK_D8 = 59,
-  FTK_E8 = 60,
-  FTK_F8 = 61,
-  FTK_G8 = 62,
-  FTK_H8 = 63,
-  FTK_XX = 64,
-} ftk_square_name_e;
 
 #endif //_FAREWELL_TO_KING_TYPES_H_

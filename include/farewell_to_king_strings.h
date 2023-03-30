@@ -32,7 +32,7 @@ ftk_type_e ftk_char_to_piece_type(char input);
  * @param input Chess coordinate string. size FTK_POSITION_STRING-1 bytes (-1 since \0 is not used by this function)
  * @return ftk_position_t 
  */
-ftk_position_t ftk_string_to_position(const char *input);
+ftk_square_e ftk_string_to_position(const char *input);
 
 /**
  * @brief Converts square number to chess coordinate
@@ -40,7 +40,7 @@ ftk_position_t ftk_string_to_position(const char *input);
  * @param position position to be converted
  * @param coordinate string representing position. size FTK_POSITION_STRING bytes
  */
-void ftk_position_to_string(ftk_position_t position, char *coordinate);
+void ftk_position_to_string(ftk_square_e position, char *coordinate);
 
 /**
  * @brief Converts character to a square
@@ -70,8 +70,8 @@ char ftk_square_to_char(ftk_square_s piece);
  * @param castle output castle type request (will always return white castle as color is unknown)
  * @return ftk_result_e
  */
-ftk_result_e ftk_long_algebraic_move(const char *input, ftk_position_t *target,
-                             ftk_position_t *source, ftk_type_e *pawn_promotion,
+ftk_result_e ftk_long_algebraic_move(const char *input, ftk_square_e *target,
+                             ftk_square_e *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle);
 
 /**
@@ -84,8 +84,8 @@ ftk_result_e ftk_long_algebraic_move(const char *input, ftk_position_t *target,
  * @param castle output castle type request (will always return white castle as color is unknown)
  * @return ftk_result_e
  */
-ftk_result_e ftk_xboard_move(const char *input, ftk_position_t *target,
-                             ftk_position_t *source, ftk_type_e *pawn_promotion,
+ftk_result_e ftk_xboard_move(const char *input, ftk_square_e *target,
+                             ftk_square_e *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle);
 
 #define FTK_BOARD_STRING_SIZE 144

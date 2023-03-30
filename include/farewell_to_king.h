@@ -58,7 +58,7 @@ void ftk_update_board_masks(ftk_game_s *game);
  * @param pawn_promotion Type to convert Pawn to in case of promotion, ignored in other cases (may use 'don't care').  Assumed Queen if not provided or invalid
  * @return Move Description of modifications made to game
  */
-ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion);
+ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_square_e target, ftk_square_e source, ftk_type_e pawn_promotion);
 
 /**
  * @brief Make a move in a game
@@ -69,7 +69,7 @@ ftk_move_s ftk_stage_move(const ftk_game_s *game, ftk_position_t target, ftk_pos
  * @param pawn_promotion Type to convert Pawn to in case of promotion, ignored in other cases (may use 'don't care').  Assumed Queen if not provided or invalid
  * @return Move Description of modifications made to game
  */
-ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion);
+ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_square_e target, ftk_square_e source, ftk_type_e pawn_promotion);
 
 /**
  * @brief Make a move in a game without generating masks (Masks must be generated via ftk_update_board_masks() before use)
@@ -80,7 +80,7 @@ ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_position_t target, ftk_position_
  * @param pawn_promotion Type to convert Pawn to in case of promotion, ignored in other cases (may use 'don't care').  Assumed Queen if not provided or invalid
  * @return Move Description of modifications made to game
  */
-ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_position_t target, ftk_position_t source, ftk_type_e pawn_promotion);
+ftk_move_s ftk_move_piece_quick(ftk_game_s *game, ftk_square_e target, ftk_square_e source, ftk_type_e pawn_promotion);
 
 /**
  * @brief Move forward based on move structure

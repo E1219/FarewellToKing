@@ -116,7 +116,7 @@ void ftk_build_all_masks(ftk_board_s *board)
   }
 }
 
-ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t board_mask, ftk_board_mask_t opponent_mask, ftk_position_t position, ftk_position_t *ep)
+ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t board_mask, ftk_board_mask_t opponent_mask, ftk_square_e position, ftk_square_e *ep)
 {
   ftk_board_mask_t mask = 0;
 
@@ -306,7 +306,7 @@ ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t b
 
   return mask;
 }
-ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_position_t position, ftk_position_t *ep)
+ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_square_e position, ftk_square_e *ep)
 {
   ftk_square_s     square        = board->square[position];
   ftk_board_mask_t opponent_mask = (FTK_COLOR_WHITE == square.color) ? board->black_mask : board->white_mask;
@@ -314,7 +314,7 @@ ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_position_t po
   return ftk_build_move_mask_raw(square, board->board_mask, opponent_mask, position, ep);
 }
 
-ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target, ftk_position_t source, ftk_board_mask_t moves) 
+ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_square_e target, ftk_square_e source, ftk_board_mask_t moves) 
 {
   ftk_board_mask_t mask = 0;
 
@@ -406,8 +406,8 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_position_t target,
 ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
 {
   ftk_check_e check = FTK_CHECK_NO_CHECK;
-  ftk_position_t   i,j;
-  ftk_position_t   ep;
+  ftk_square_e   i,j;
+  ftk_square_e   ep;
   ftk_board_mask_t temp_mask;
   ftk_board_mask_t path;
   ftk_board_mask_t cross;
@@ -415,9 +415,9 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
   ftk_board_mask_t opponent_mask = (FTK_COLOR_WHITE == turn) ? board->black_mask : board->white_mask;
   ftk_board_mask_t move_mask_no_opponent;
   ftk_board_mask_t king_moves_temp;
-  ftk_position_t   protecting;
-  ftk_position_t   king_position;
-  ftk_position_t   move_under_test;
+  ftk_square_e   protecting;
+  ftk_square_e   king_position;
+  ftk_square_e   move_under_test;
   int              pawn_direction, pawn_test_square;
   ftk_board_s      board_copy;
   king_position = ftk_mask_to_position(board->king_mask & turn_mask);
@@ -547,7 +547,7 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
   ftk_castle_mask_t castle = FTK_CASTLE_NONE;
   ftk_board_mask_t QS;
   ftk_board_mask_t KS;
-  ftk_position_t i = 0;
+  ftk_square_e i = 0;
 
   if(turn == FTK_COLOR_WHITE)
   {
@@ -667,9 +667,9 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
   }
 }
 
-ftk_position_t ftk_mask_to_position(ftk_board_mask_t mask)
+ftk_square_e ftk_mask_to_position(ftk_board_mask_t mask)
 { 
-  ftk_position_t position    = 0; 
+  ftk_square_e position    = 0; 
   ftk_board_mask_t temp_mask = mask; 
   while(temp_mask)
   {

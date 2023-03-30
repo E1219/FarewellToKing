@@ -35,7 +35,7 @@ static bool ftk_increment_string_index(const char * str, ftk_string_index_t *ind
   return ret_val;
 }
 
-ftk_position_t ftk_string_to_position(const char *input) {
+ftk_square_e ftk_string_to_position(const char *input) {
   if(input[0] >= 'A' && input[0] <= 'H' && input[1] >= '1' && input[1] <= '8')
   {
     return (input[1] - '1')*8 + (input[0] - 'A');
@@ -49,7 +49,7 @@ ftk_position_t ftk_string_to_position(const char *input) {
     return FTK_XX;
   }
 }
-void ftk_position_to_string(ftk_position_t square, char coordinate[]) {
+void ftk_position_to_string(ftk_square_e square, char coordinate[]) {
   if(square < FTK_XX){
     coordinate[0] = (square % 8) + 'a';
     coordinate[1] = (square / 8) + '1';
@@ -171,8 +171,8 @@ char ftk_type_to_char(ftk_type_e type) {
   }
 }
 
-ftk_result_e ftk_long_algebraic_move(const char *input, ftk_position_t *target,
-                             ftk_position_t *source, ftk_type_e *pawn_promotion,
+ftk_result_e ftk_long_algebraic_move(const char *input, ftk_square_e *target,
+                             ftk_square_e *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle) 
 {
 
@@ -215,8 +215,8 @@ ftk_result_e ftk_long_algebraic_move(const char *input, ftk_position_t *target,
   return result;
 }
 
-ftk_result_e ftk_xboard_move(const char *input, ftk_position_t *target,
-                             ftk_position_t *source, ftk_type_e *pawn_promotion,
+ftk_result_e ftk_xboard_move(const char *input, ftk_square_e *target,
+                             ftk_square_e *source, ftk_type_e *pawn_promotion,
                              ftk_castle_e *castle) 
 {
   return ftk_long_algebraic_move(input, target, source, pawn_promotion, castle);
@@ -494,7 +494,7 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen) 
   ftk_result_e ret_val = FTK_SUCCESS;
   ftk_string_index_t inI = 0;
 
-  ftk_position_t squareI;
+  ftk_square_e squareI;
   
   int i;
 

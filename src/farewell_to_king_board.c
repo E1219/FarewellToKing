@@ -59,7 +59,7 @@ void ftk_set_standard_board(ftk_board_s *board) {
   return;
 }
 
-ftk_square_s ftk_place_piece(ftk_board_s *board, ftk_square_s newPiece, ftk_position_t *position) 
+ftk_square_s ftk_place_piece(ftk_board_s *board, ftk_square_s newPiece, ftk_square_e *position) 
 {
   ftk_square_s old = board->square[*position];
   board->square[*position] = newPiece;

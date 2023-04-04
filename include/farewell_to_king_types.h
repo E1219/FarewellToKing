@@ -180,10 +180,11 @@ typedef enum
  * @brief Square state information
  * 
  */
-typedef struct {
+typedef struct __attribute__((__packed__)) {
   ftk_type_e         type:3;
   ftk_color_e        color:2;
   ftk_moved_status_e moved:2;
+  uint8_t            padding:1;
 } ftk_square_s;
 
 /**
@@ -283,29 +284,31 @@ typedef struct
  * @brief Structure storing details of a move
  * 
  */
-typedef struct 
+typedef struct __attribute__((__packed__))
 {
   /* Move target position */
-  ftk_square_e   target;
+  ftk_square_e     target:8;
   /* Move source position */
-  ftk_square_e   source;
+  ftk_square_e     source:8;
+
+  /* En Passant target position before this move */
+  ftk_square_e     ep:8;
+  /* Type Pawn is promoted to */
+  ftk_type_e       pawn_promotion:3;
+
+  /* Current turn color */
+  ftk_color_e      turn:2;
+  uint32_t         padding:3;
 
   /* Moved piece before this move */
   ftk_square_s     moved;
   /* Piece captured in this move, or Rook in castle case */
   ftk_square_s     capture;
 
-  /* En Passant target position before this move */
-  ftk_square_e   ep;
-  /* Type Pawn is promoted to */
-  ftk_type_e       pawn_promotion;
-
-  /* Current turn color */
-  ftk_color_e      turn;
-
   /* Number of moves before this move */
-  ftk_move_count_t half_move;
+  ftk_move_count_t half_move:16;
   ftk_move_count_t full_move;
+
 } ftk_move_s;
 
 /**

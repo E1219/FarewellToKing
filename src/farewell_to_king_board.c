@@ -7,16 +7,13 @@
  Contains implementation of all methods for board manipulation. 
 */
 
+#include <string.h>
+
 #include "farewell_to_king_board.h"
 
 void ftk_clear_board(ftk_board_s *board) {
-  int i;
 
-  for(i = 0; i < FTK_STD_BOARD_SIZE; i++){
-      FTK_SQUARE_CLEAR(board->square[i]);
-  }
-
-  return;
+  memset(board, 0, sizeof(ftk_board_s));
 }
 
 void ftk_board_set_pawns(ftk_board_s *board)

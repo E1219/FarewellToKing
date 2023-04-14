@@ -506,6 +506,7 @@ void ftk_get_move_list(const ftk_game_s *game, ftk_move_list_s * move_list)
 void ftk_delete_move_list(ftk_move_list_s * move_list)
 {
   free(move_list->move);
+  memset(move_list, 0, sizeof(ftk_move_list_s));
 }
 
 /**

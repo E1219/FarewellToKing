@@ -35,6 +35,13 @@ ftk_type_e ftk_char_to_piece_type(char input);
 ftk_square_e ftk_string_to_position(const char *input);
 
 /**
+ * @brief Converts square number to chess coordinate string constant pointer
+ * 
+ * @param position position to be converted
+ */
+const char *ftk_position_to_string_const_ptr(ftk_square_e position);
+
+/**
  * @brief Converts square number to chess coordinate
  * 
  * @param position position to be converted

@@ -49,17 +49,28 @@ ftk_square_e ftk_string_to_position(const char *input) {
     return FTK_XX;
   }
 }
-void ftk_position_to_string(ftk_square_e square, char coordinate[]) {
-  if(square < FTK_XX){
-    coordinate[0] = (square % 8) + 'a';
-    coordinate[1] = (square / 8) + '1';
-    coordinate[2] = 0;
-  }
-  else{
-    coordinate[0] = 'X';
-    coordinate[1] = 'X';
-    coordinate[2] =  0 ;
-  }
+
+const char *ftk_position_to_string_lut[FTK_STD_BOARD_SIZE+1] =
+{
+  "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
+  "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
+  "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
+  "a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4",
+  "a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5",
+  "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6",
+  "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
+  "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
+  "xx"
+};
+
+const char *ftk_position_to_string_const_ptr(ftk_square_e square)
+{
+  return ((square >= 0) && (square < FTK_XX))?(ftk_position_to_string_lut[square]):ftk_position_to_string_lut[FTK_XX];
+}
+
+void ftk_position_to_string(ftk_square_e square, char coordinate[])
+{
+  strcpy(coordinate, ftk_position_to_string_const_ptr(square));
 }
 
 ftk_type_e ftk_char_to_piece_type(char input){

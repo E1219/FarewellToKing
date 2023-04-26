@@ -26,37 +26,34 @@ https://web.archive.org/web/20230315030129/https://www.chessprogramming.org/Zobr
 #define FTK_ZOBRIST_RANDOM_ARRAY_SIZE 781
 typedef uint_fast64_t ftk_zobrist_hash_key_t;
 
-typedef struct
-{
-  ftk_zobrist_hash_key_t random[FTK_ZOBRIST_RANDOM_ARRAY_SIZE];
-} ftk_zobrist_hash_config_s;
-
-
+/**
+ * Enum of different Zobrist hashing function flavors
+*/
 typedef enum
 {
-  FTK_HASH_TYPE_INVALID,
-  FTK_HASH_TYPE_ZOBRIST,
+  FTK_ZOBRIST_HASH_FLAVOR_DEFAULT,
+  FTK_ZOBRIST_HASH_FLAVOR_POLYGLOT = FTK_ZOBRIST_HASH_FLAVOR_DEFAULT
 
-} ftk_hash_type_e;
+} ftk_zobrist_hash_flavor_e;
 
-typedef union
-{
-  ftk_zobrist_hash_key_t zobrist;
-} ftk_hash_key_u;
-
-typedef union
-{
-  const ftk_zobrist_hash_config_s *zobrist;
-} ftk_hash_config_u;
-
+/**
+ * Configuration for Zobrist hashing functions
+*/
 typedef struct
 {
-  ftk_hash_type_e type;
-  ftk_hash_key_u  key;
-  ftk_hash_key_u  config;
+  ftk_zobrist_hash_flavor_e flavor;
+  ftk_zobrist_hash_key_t    random[FTK_ZOBRIST_RANDOM_ARRAY_SIZE];
+} ftk_zobrist_hash_config_s;
 
-} ftk_hash_data_s;
-
+/**
+ * @brief Logic to hash a chess game with the Zobrist hashing function
+ * 
+ * @param game   Game to be hashed
+ * @param config Zobrist hashing function configuration
+ * 
+ * @return hash key representing the given game or 0 if error
+*/
+ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_zobrist_hash_config_s *hash_config);
 
 
 #endif /* __FAREWELL_TO_KING_HASH_H__ */

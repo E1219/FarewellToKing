@@ -167,3 +167,82 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
 
   return hash_key;
 }
+
+ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game, const ftk_zobrist_hash_config_s *hash_config, const ftk_move_s *move, ftk_zobrist_hash_key_t prev_hash_key)
+{
+  ftk_zobrist_hash_key_t new_hash_key = prev_hash_key;
+
+  /* Remove Castle Rights */
+  if((FTK_E1 == move->source) && (game->board.square[FTK_E1].moved == FTK_MOVED_NOT_MOVED))
+  {
+    /* White king is moving, remove castle rights for rooks which have not moved */
+    if(game->board.square[FTK_H1].moved == FTK_MOVED_NOT_MOVED)
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_WHITE_KING_SIDE];
+    }
+    if(game->board.square[FTK_A1].moved == FTK_MOVED_NOT_MOVED)
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_WHITE_QUEEN_SIDE];
+    }
+  }
+  else if((FTK_E8 == move->source) && (game->board.square[FTK_E8].moved == FTK_MOVED_NOT_MOVED))
+  {
+    /* Black king is moving, remove castle rights for rooks which have not moved */
+    if(game->board.square[FTK_H8].moved == FTK_MOVED_NOT_MOVED)
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_BLACK_KING_SIDE];
+    }
+    if(game->board.square[FTK_A8].moved == FTK_MOVED_NOT_MOVED)
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_BLACK_QUEEN_SIDE];
+    }
+  }
+  if(game->board.square[FTK_E1].moved == FTK_MOVED_NOT_MOVED)
+  {
+    /* White king has not moved, remove castle rights if white rook is moving */
+    if((FTK_H1 == move->source) && (game->board.square[FTK_H1].moved == FTK_MOVED_NOT_MOVED))
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_WHITE_KING_SIDE];
+    }
+    else if((FTK_A1 == move->source) && (game->board.square[FTK_A1].moved == FTK_MOVED_NOT_MOVED))
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_WHITE_QUEEN_SIDE];
+    }
+  }
+  if(game->board.square[FTK_E8].moved == FTK_MOVED_NOT_MOVED)
+  {
+    /* Black king has not moved, remove castle rights if black rook is moving */
+    if((FTK_H8 == move->source) && (game->board.square[FTK_H8].moved == FTK_MOVED_NOT_MOVED))
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_BLACK_KING_SIDE];
+    }
+    else if((FTK_A8 == move->source) && (game->board.square[FTK_A8].moved == FTK_MOVED_NOT_MOVED))
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_BLACK_QUEEN_SIDE];
+    }
+  }
+
+  /* TODO: remove previous en passant hash */
+
+  /* TODO: add new en passant hash */
+
+  /* Remove contents from previous target square */
+  if(game->board.square[move->target].type != FTK_TYPE_EMPTY)
+  {
+    new_hash_key ^= hash_config->random[move->target + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[move->target])];
+  }
+  /* Add contests for new target square */
+  ftk_square_s new_target_square = game->board.square[move->source];
+  if((move->pawn_promotion > FTK_TYPE_PAWN) && (move->pawn_promotion < FTK_TYPE_DONT_CARE))
+  {
+    new_target_square.type = move->pawn_promotion;
+  }
+  new_hash_key ^= hash_config->random[move->target + 64*get_zobrist_hash_piece_type_polyglot(&new_target_square)];
+  /* Remove previous source square */
+  new_hash_key ^= hash_config->random[move->source + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[move->source])];
+
+  /* Toggle color to move */
+  new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_TURN_OFFSET];
+
+  return new_hash_key;
+}

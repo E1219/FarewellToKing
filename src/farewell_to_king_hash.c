@@ -101,7 +101,7 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
 
   if((game != NULL) && (hash_config != NULL))
   {
-    /* Individual squares */
+    /* Individual Squares */
     for(unsigned int i = 0; i < FTK_STD_BOARD_SIZE; i ++)
     {
       if(game->board.square[i].type != FTK_TYPE_EMPTY)
@@ -110,7 +110,7 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
       }
     }
 
-    /* Castle abilities */
+    /* Castle Rights */
     if(game->board.square[FTK_E1].moved == FTK_MOVED_NOT_MOVED)
     {
       if(game->board.square[FTK_H1].moved == FTK_MOVED_NOT_MOVED)
@@ -137,19 +137,24 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
     /* En Passant Square */
     if(game->ep < FTK_XX)
     {
+      const unsigned int ep_file = (game->ep % 8);
       if(((game->turn == FTK_COLOR_WHITE) &&
-          (((game->board.square[game->ep-7].type  == FTK_TYPE_PAWN) &&
+          (((ep_file < 7) &&
+            (game->board.square[game->ep-7].type  == FTK_TYPE_PAWN) &&
             (game->board.square[game->ep-7].color == FTK_COLOR_WHITE)) ||
-           ((game->board.square[game->ep-9].type  == FTK_TYPE_PAWN) &&
+           ((ep_file > 0) &&
+            (game->board.square[game->ep-9].type  == FTK_TYPE_PAWN) &&
             (game->board.square[game->ep-9].color == FTK_COLOR_WHITE)))) ||
          ((game->turn == FTK_COLOR_BLACK) &&
-          (((game->board.square[game->ep+7].type  == FTK_TYPE_PAWN) &&
+          (((ep_file > 0) &&
+            (game->board.square[game->ep+7].type  == FTK_TYPE_PAWN) &&
             (game->board.square[game->ep+7].color == FTK_COLOR_BLACK)) ||
-           ((game->board.square[game->ep+9].type  == FTK_TYPE_PAWN) &&
+           ((ep_file < 7) &&
+            (game->board.square[game->ep+9].type  == FTK_TYPE_PAWN) &&
             (game->board.square[game->ep+9].color == FTK_COLOR_BLACK)))))
       {
         /* Polyglot flavor only counts En Passant square if the current player can capture unlike FEN which is unconditional */
-        hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(game->ep % 8)];
+        hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+ep_file];
       }
     }
 

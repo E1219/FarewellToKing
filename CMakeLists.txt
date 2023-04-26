@@ -1,7 +1,8 @@
 cmake_minimum_required (VERSION 3.18)
 project (farewelltoking)
 
-option (INCLUDE_STR "Build farewell_to_king_strings, includes operations to generate formatted strings." ON)
+option (INCLUDE_STR  "Build farewell_to_king_strings, includes operations to generate formatted strings." ON)
+option (INCLUDE_HASH "Build farewell_to_king_hash,    includes operations to generate and compare hashes." ON)
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DFTK_DEBUG_BUILD")
 
@@ -19,6 +20,9 @@ set(farewell_to_king_source src/farewell_to_king.c
                             src/farewell_to_king_mask.c)
 if(INCLUDE_STR)
   list(APPEND farewell_to_king_source src/farewell_to_king_strings.c)
+endif()
+if(INCLUDE_HASH)
+  list(APPEND farewell_to_king_source src/farewell_to_king_hash.c)
 endif()
 
 add_library(farewelltoking STATIC ${farewell_to_king_source})

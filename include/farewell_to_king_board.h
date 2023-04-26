@@ -4,7 +4,7 @@
  Edward Sandor
  January 2015 - 2020
  
- Contains delcarations of all methods for board manipulation. 
+ Contains declarations of all methods for board manipulation. 
 */
 
 #ifndef _FAREWELL_TO_KING_BOARD_H_

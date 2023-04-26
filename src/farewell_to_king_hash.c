@@ -35,7 +35,7 @@ typedef enum
   FTK_ZOBRIST_HASH_POLYGLOT_WHITE_KING   = 11
 } zobrist_hash_piece_type_polyglot_e;
 
-inline zobrist_hash_piece_type_polyglot_e get_zobrist_hash_piece_type_polyglot(const ftk_square_s *square)
+zobrist_hash_piece_type_polyglot_e get_zobrist_hash_piece_type_polyglot(const ftk_square_s *square)
 {
   zobrist_hash_piece_type_polyglot_e ret_val = 0;
 
@@ -106,30 +106,29 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
     {
       if(game->board.square[i].type != FTK_TYPE_EMPTY)
       {
-        const unsigned int piece_offset = 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[i])+i;
-        hash_key ^= hash_config->random[piece_offset];
+        hash_key ^= hash_config->random[i + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[i])];
       }
     }
 
     /* Castle abilities */
-    if(game->board.square[FTK_E1].moved == false)
+    if(game->board.square[FTK_E1].moved == FTK_MOVED_NOT_MOVED)
     {
-      if(game->board.square[FTK_H1].moved == false)
+      if(game->board.square[FTK_H1].moved == FTK_MOVED_NOT_MOVED)
       {
         hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_WHITE_KING_SIDE];
       }
-      if(game->board.square[FTK_A1].moved == false)
+      if(game->board.square[FTK_A1].moved == FTK_MOVED_NOT_MOVED)
       {
         hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_WHITE_QUEEN_SIDE];
       }
     }
-    if(game->board.square[FTK_E8].moved == false)
+    if(game->board.square[FTK_E8].moved == FTK_MOVED_NOT_MOVED)
     {
-      if(game->board.square[FTK_H8].moved == false)
+      if(game->board.square[FTK_H8].moved == FTK_MOVED_NOT_MOVED)
       {
         hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_BLACK_KING_SIDE];
       }
-      if(game->board.square[FTK_A8].moved == false)
+      if(game->board.square[FTK_A8].moved == FTK_MOVED_NOT_MOVED)
       {
         hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_BLACK_QUEEN_SIDE];
       }

@@ -35,7 +35,7 @@ typedef enum
   FTK_ZOBRIST_HASH_POLYGLOT_WHITE_KING   = 11
 } zobrist_hash_piece_type_polyglot_e;
 
-zobrist_hash_piece_type_polyglot_e get_zobrist_hash_piece_type_polyglot(const ftk_square_s *square)
+static inline zobrist_hash_piece_type_polyglot_e get_zobrist_hash_piece_type_polyglot(const ftk_square_s *square)
 {
   zobrist_hash_piece_type_polyglot_e ret_val = 0;
 
@@ -225,6 +225,8 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
   /* TODO: remove previous en passant hash */
 
   /* TODO: add new en passant hash */
+
+  
 
   /* Remove contents from previous target square */
   if(game->board.square[move->target].type != FTK_TYPE_EMPTY)

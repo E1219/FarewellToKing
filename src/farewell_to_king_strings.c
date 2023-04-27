@@ -14,7 +14,7 @@
 
 #define FTK_MASK_STRING_CHAR 'X'
 
-static bool ftk_increment_string_index(const char * str, ftk_string_index_t *index, ftk_string_index_t increment)
+static inline bool ftk_increment_string_index(const char * str, ftk_string_index_t *index, ftk_string_index_t increment)
 {
   ftk_string_index_t i = 0;
   bool ret_val = true;
@@ -50,7 +50,7 @@ ftk_square_e ftk_string_to_position(const char *input) {
   }
 }
 
-const char *ftk_position_to_string_lut[FTK_STD_BOARD_SIZE+1] =
+static const char *ftk_position_to_string_lut[FTK_STD_BOARD_SIZE+1] =
 {
   "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
   "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
@@ -156,7 +156,7 @@ char ftk_square_to_char(ftk_square_s square) {
  * @param type Type to convert
  * @return char Character representing the given type, 'X' if invalid 
  */
-char ftk_type_to_char(ftk_type_e type) {
+static inline char ftk_type_to_char(ftk_type_e type) {
   switch(type)
   {
     case FTK_TYPE_PAWN:

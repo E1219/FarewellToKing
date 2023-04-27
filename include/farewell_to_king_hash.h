@@ -51,7 +51,7 @@ typedef struct
  * @param game   Game to be hashed
  * @param config Zobrist hashing function configuration
  * 
- * @return hash key representing the given game or 0 if error
+ * @return hash key representing the given game
 */
 ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_zobrist_hash_config_s *hash_config);
 
@@ -63,7 +63,7 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
  * @param move          Move to incrementally update hash with
  * @param prev_hash_key Previous hash to be updated by 'move'
  * 
- * @return hash key representing the given game or 0 if error
+ * @return hash key representing the given game
 */
 ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game, const ftk_zobrist_hash_config_s *hash_config, const ftk_move_s *move, ftk_zobrist_hash_key_t prev_hash_key);
 

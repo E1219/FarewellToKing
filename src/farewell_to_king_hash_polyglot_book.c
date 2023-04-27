@@ -4,7 +4,8 @@
   Edward Sandor
   April 2023
 
-  Contains logic for all functions and types for hashing chess games in the polyglot book format
+  Contains logic for all functions and types for hashing chess games in the polyglot book format 
+  (https://web.archive.org/web/20230314224143/http://hgm.nubati.net/book_format.html)
 */
 
 #include "farewell_to_king_hash_polyglot_book.h"

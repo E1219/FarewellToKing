@@ -7,8 +7,10 @@
   Contains logic for all functions and types for hashing chess games
 */
 
+#include <string.h>
 #include <stddef.h>
 
+#include "farewell_to_king.h"
 #include "farewell_to_king_hash.h"
 
 #define FTK_ZOBRIST_HASH_POLYGLOT_CASTLE_OFFSET     768
@@ -303,4 +305,31 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
   new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_TURN_OFFSET];
 
   return new_hash_key;
+}
+
+ftk_result_e ftk_zobrist_hash_generate_config_custom(ftk_zobrist_hash_flavor_e flavor, ftk_zobrist_hash_config_s *config, ftk_rand64_f rand64_f, void *user_ptr)
+{
+  ftk_result_e ret_val = FTK_SUCCESS;
+
+  if((flavor < FTK_ZOBRIST_HASH_FLAVOR_MAX) && (config != NULL) && (rand64_f != NULL))
+  {
+    memset(config, 0, sizeof(ftk_zobrist_hash_config_s));
+
+    for(unsigned int i = 0; i < FTK_ZOBRIST_RANDOM_ARRAY_SIZE; i++)
+    {
+      config->random[i] = rand64_f(user_ptr);
+      /* TODO: Detect duplicates */
+    }
+  }
+  else
+  {
+    ret_val = FTK_INVALID_ARGUMENT;
+  }
+
+  return ret_val;
+}
+
+ftk_result_e ftk_zobrist_hash_generate_config(ftk_zobrist_hash_flavor_e flavor, ftk_zobrist_hash_config_s *config)
+{
+  return ftk_zobrist_hash_generate_config_custom(flavor, config, ftk_rand64, NULL);
 }

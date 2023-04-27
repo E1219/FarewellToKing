@@ -528,3 +528,20 @@ void ftk_invalidate_move(ftk_move_s *move)
   move->full_move = 0;
   move->half_move = 0;
 }
+
+uint64_t ftk_rand64(void * unused_user_ptr)
+{
+  (void)(unused_user_ptr);
+
+  uint_fast64_t ret_val = rand();
+
+  /* Generate 15 bits at a time since RAND_MAX is only guaranteed to be at least 0x7FFF (15 bits)
+      64 bits/15 bits is 4.26666.  Iterate 5 times to fill uint64_t */
+  for(unsigned int i = 0; i < 4; i++)
+  {
+    ret_val <<= 15;
+    ret_val |= (rand() & 0x7FFF);
+  }
+
+  return ret_val;
+}

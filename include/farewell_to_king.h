@@ -165,4 +165,14 @@ void ftk_delete_move_list(ftk_move_list_s * move_list);
  */
 void ftk_invalidate_move(ftk_move_s *move);
 
+/**
+ * @brief Random uint64 generator.  Based on the C standard rand() function will be used without calling srand() (seed unmodified).
+
+ * 
+ * @param void* Unused by this implementation, but present to satisfy ftk_rand64_f type.  Pass as NULL
+ * 
+ * @return random uint64_t
+*/
+uint64_t ftk_rand64(void *);
+
 #endif // _FAREWELL_TO_KING_H_

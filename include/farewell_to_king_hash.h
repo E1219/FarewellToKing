@@ -32,7 +32,8 @@ typedef uint_fast64_t ftk_zobrist_hash_key_t;
 typedef enum
 {
   FTK_ZOBRIST_HASH_FLAVOR_DEFAULT,
-  FTK_ZOBRIST_HASH_FLAVOR_POLYGLOT = FTK_ZOBRIST_HASH_FLAVOR_DEFAULT
+  FTK_ZOBRIST_HASH_FLAVOR_POLYGLOT = FTK_ZOBRIST_HASH_FLAVOR_DEFAULT,
+  FTK_ZOBRIST_HASH_FLAVOR_MAX,
 
 } ftk_zobrist_hash_flavor_e;
 
@@ -44,6 +45,29 @@ typedef struct
   ftk_zobrist_hash_flavor_e flavor;
   ftk_zobrist_hash_key_t    random[FTK_ZOBRIST_RANDOM_ARRAY_SIZE];
 } ftk_zobrist_hash_config_s;
+
+/**
+ * @brief Function to generate a zobrist hash config
+ * 
+ * @param flavor   Flavor of zobrist hash to build
+ * @param config   Output structure with newly generated config
+ * @param rand64_f Function pointer to custom random uint64_t generator
+ * @param user_ptr Void user data pointer to be passed to the rand64_f
+ * 
+ * @return Success if no error is detected
+*/
+ftk_result_e ftk_zobrist_hash_generate_config_custom(ftk_zobrist_hash_flavor_e flavor, ftk_zobrist_hash_config_s *config, ftk_rand64_f rand64_f, void *user_ptr);
+
+/**
+ * @brief Function to generate a zobrist hash config using ftk_uint64() as the random number generator
+ * 
+ * @param flavor   Flavor of zobrist hash to build
+ * @param config   Output structure with newly generated config
+ * 
+ * @return Success if no error is detected
+*/
+ftk_result_e ftk_zobrist_hash_generate_config(ftk_zobrist_hash_flavor_e flavor, ftk_zobrist_hash_config_s *config);
+
 
 /**
  * @brief Logic to hash a chess game with the Zobrist hashing function

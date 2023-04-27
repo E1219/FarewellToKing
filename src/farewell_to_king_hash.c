@@ -239,10 +239,15 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
     new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(game->ep % 8)];
   }
   if( (game->board.square[move->source].type == FTK_TYPE_PAWN) &&
-      ((move->target-move->source) == ((game->turn == FTK_COLOR_WHITE)?16:-16)) &&
-      check_polyglot_book_en_passant(&game->board, move->target, ((game->turn == FTK_COLOR_WHITE)?FTK_COLOR_BLACK:FTK_COLOR_WHITE)) )
-  {
-    new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(game->ep % 8)];
+      ((move->target-move->source) == ((game->turn == FTK_COLOR_WHITE)?16:-16)) )
+ {
+    ftk_square_e ep_square = move->target - ((game->turn == FTK_COLOR_WHITE)?8:-8);
+    if(check_polyglot_book_en_passant( &game->board, 
+        (ep_square), 
+        ((game->turn == FTK_COLOR_WHITE)?FTK_COLOR_BLACK:FTK_COLOR_WHITE)) )
+    {
+      new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(ep_square % 8)];
+    }
   }
 
   /* Remove contents from previous target square */

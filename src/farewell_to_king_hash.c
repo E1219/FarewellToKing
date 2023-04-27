@@ -250,10 +250,19 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
     }
   }
 
-  /* Remove contents from previous target square */
-  if(game->board.square[move->target].type != FTK_TYPE_EMPTY)
+  if(move->target == game->ep)
   {
-    new_hash_key ^= hash_config->random[move->target + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[move->target])];
+    /* Remove en passant pawn */
+    ftk_square_e ep_square = move->target - ((game->turn == FTK_COLOR_WHITE)?8:-8);
+    new_hash_key ^= hash_config->random[ep_square + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[ep_square])];
+  }
+  else
+  {
+    /* Remove contents from previous target square */
+    if(game->board.square[move->target].type != FTK_TYPE_EMPTY)
+    {
+      new_hash_key ^= hash_config->random[move->target + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[move->target])];
+    }
   }
   /* Add contests for new target square */
   ftk_square_s new_target_square = game->board.square[move->source];

@@ -95,6 +95,36 @@ static inline zobrist_hash_piece_type_polyglot_e get_zobrist_hash_piece_type_pol
   return ret_val;
 }
 
+static inline bool check_polyglot_book_en_passant(const ftk_board_s *board, ftk_square_e ep_square, ftk_color_e turn)
+{
+  bool ret_val = false;
+
+  if(ep_square < FTK_XX)
+  {
+    const unsigned int ep_file = (ep_square % 8);
+    if(((turn == FTK_COLOR_WHITE) &&
+        (((ep_file < 7) &&
+          (board->square[ep_square-7].type  == FTK_TYPE_PAWN) &&
+          (board->square[ep_square-7].color == FTK_COLOR_WHITE)) ||
+          ((ep_file > 0) &&
+          (board->square[ep_square-9].type  == FTK_TYPE_PAWN) &&
+          (board->square[ep_square-9].color == FTK_COLOR_WHITE)))) ||
+        ((turn == FTK_COLOR_BLACK) &&
+        (((ep_file > 0) &&
+          (board->square[ep_square+7].type  == FTK_TYPE_PAWN) &&
+          (board->square[ep_square+7].color == FTK_COLOR_BLACK)) ||
+          ((ep_file < 7) &&
+          (board->square[ep_square+9].type  == FTK_TYPE_PAWN) &&
+          (board->square[ep_square+9].color == FTK_COLOR_BLACK)))))
+    {
+      /* Polyglot flavor only counts En Passant square if the current player can capture unlike FEN which is unconditional */
+      ret_val = true;
+    }
+  }
+
+  return ret_val;
+}
+
 ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_zobrist_hash_config_s * hash_config)
 {
   ftk_zobrist_hash_key_t hash_key = 0;
@@ -135,27 +165,9 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist(const ftk_game_s *game, const ftk_z
     }
 
     /* En Passant Square */
-    if(game->ep < FTK_XX)
+    if(check_polyglot_book_en_passant(&game->board, game->ep, game->turn))
     {
-      const unsigned int ep_file = (game->ep % 8);
-      if(((game->turn == FTK_COLOR_WHITE) &&
-          (((ep_file < 7) &&
-            (game->board.square[game->ep-7].type  == FTK_TYPE_PAWN) &&
-            (game->board.square[game->ep-7].color == FTK_COLOR_WHITE)) ||
-           ((ep_file > 0) &&
-            (game->board.square[game->ep-9].type  == FTK_TYPE_PAWN) &&
-            (game->board.square[game->ep-9].color == FTK_COLOR_WHITE)))) ||
-         ((game->turn == FTK_COLOR_BLACK) &&
-          (((ep_file > 0) &&
-            (game->board.square[game->ep+7].type  == FTK_TYPE_PAWN) &&
-            (game->board.square[game->ep+7].color == FTK_COLOR_BLACK)) ||
-           ((ep_file < 7) &&
-            (game->board.square[game->ep+9].type  == FTK_TYPE_PAWN) &&
-            (game->board.square[game->ep+9].color == FTK_COLOR_BLACK)))))
-      {
-        /* Polyglot flavor only counts En Passant square if the current player can capture unlike FEN which is unconditional */
-        hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+ep_file];
-      }
+      hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(game->ep % 8)];
     }
 
     /* White to move */
@@ -222,11 +234,16 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
     }
   }
 
-  /* TODO: remove previous en passant hash */
-
-  /* TODO: add new en passant hash */
-
-  
+  if(check_polyglot_book_en_passant(&game->board, game->ep, game->turn))
+  {
+    new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(game->ep % 8)];
+  }
+  if( (game->board.square[move->source].type == FTK_TYPE_PAWN) &&
+      ((move->target-move->source) == ((game->turn == FTK_COLOR_WHITE)?16:-16)) &&
+      check_polyglot_book_en_passant(&game->board, move->target, ((game->turn == FTK_COLOR_WHITE)?FTK_COLOR_BLACK:FTK_COLOR_WHITE)) )
+  {
+    new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_EN_PASSANT_OFFSET+(game->ep % 8)];
+  }
 
   /* Remove contents from previous target square */
   if(game->board.square[move->target].type != FTK_TYPE_EMPTY)

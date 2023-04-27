@@ -130,3 +130,8 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_polyglot_book(const ftk_game_s *gam
 {
   return ftk_hash_game_zobrist(game, &polyglot_zobrist_hash_config);
 }
+
+ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental_polyglot_book(const ftk_game_s *game, const ftk_move_s *move, ftk_zobrist_hash_key_t prev_hash_key)
+{
+  return ftk_hash_game_zobrist_incremental(game, &polyglot_zobrist_hash_config, move, prev_hash_key);
+}

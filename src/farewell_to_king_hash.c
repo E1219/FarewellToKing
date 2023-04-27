@@ -274,6 +274,31 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
   /* Remove previous source square */
   new_hash_key ^= hash_config->random[move->source + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[move->source])];
 
+  if((move->source == FTK_E1) && (move->target == FTK_G1) && (game->board.square[FTK_E1].type == FTK_TYPE_KING))
+  {
+    /* Move Rook */
+    new_hash_key ^= hash_config->random[FTK_F1 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_H1])];
+    new_hash_key ^= hash_config->random[FTK_H1 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_H1])];
+  }
+  else if((move->source == FTK_E1) && (move->target == FTK_C1) && (game->board.square[FTK_E1].type == FTK_TYPE_KING))
+  {
+    /* Move Rook */
+    new_hash_key ^= hash_config->random[FTK_D1 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_A1])];
+    new_hash_key ^= hash_config->random[FTK_A1 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_A1])];
+  }
+  else if((move->source == FTK_E8) && (move->target == FTK_G8) && (game->board.square[FTK_E8].type == FTK_TYPE_KING))
+  {
+    /* Move Rook */
+    new_hash_key ^= hash_config->random[FTK_F8 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_H8])];
+    new_hash_key ^= hash_config->random[FTK_H8 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_H8])];
+  }
+  else if((move->source == FTK_E8) && (move->target == FTK_C8) && (game->board.square[FTK_E8].type == FTK_TYPE_KING))
+  {
+    /* Move Rook */
+    new_hash_key ^= hash_config->random[FTK_D8 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_A8])];
+    new_hash_key ^= hash_config->random[FTK_A8 + 64*get_zobrist_hash_piece_type_polyglot(&game->board.square[FTK_A8])];
+  }
+
   /* Toggle color to move */
   new_hash_key ^= hash_config->random[FTK_ZOBRIST_HASH_POLYGLOT_TURN_OFFSET];
 

@@ -6,17 +6,19 @@
  
  Main function can be used to test different aspects of FarewellToKing
 */
-
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include "farewell_to_king.h"
 #include "farewell_to_king_strings.h"
 #include "farewell_to_king_types.h"
+#include "farewell_to_king_hash_polyglot_book.h"
 
 int main(){
   ftk_game_s game;
   ftk_game_end_e game_end;
   ftk_begin_standard_game(&game);
+  ftk_zobrist_hash_key_t incremental_hash_key = ftk_hash_game_zobrist_polyglot_book(&game);
 
   char input[128];
   char out[1024];
@@ -46,6 +48,10 @@ int main(){
 
     ftk_game_to_fen_string(&game, out);
     printf("%s\r\n", out);
+    ftk_zobrist_hash_key_t hash_key = ftk_hash_game_zobrist_polyglot_book(&game);
+    printf("Raw: 0x%016lx\r\n", hash_key);
+    printf("Inc: 0x%016lx\r\n", incremental_hash_key);
+    assert(incremental_hash_key == hash_key);
 
     int ret = scanf("%s", input);
 
@@ -80,6 +86,7 @@ int main(){
 
       move = ftk_move_piece(&game, target, source, pawn_promo_type);
       ftk_move_backward(&game, &move);
+      incremental_hash_key = ftk_hash_game_zobrist_incremental_polyglot_book(&game, &move, incremental_hash_key);
       ftk_move_forward(&game, &move);
     }
   }

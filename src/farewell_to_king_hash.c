@@ -307,6 +307,22 @@ ftk_zobrist_hash_key_t ftk_hash_game_zobrist_incremental(const ftk_game_s *game,
   return new_hash_key;
 }
 
+static inline bool check_hash_in_array(ftk_zobrist_hash_key_t key, const ftk_zobrist_hash_key_t * hash_array, unsigned int array_length)
+{
+  bool ret_val = false;
+
+  for(unsigned int i = 0; i < array_length; i++)
+  {
+    if(hash_array[i] == key)
+    {
+      ret_val = true;
+      break;
+    }
+  }
+
+  return ret_val;
+}
+
 ftk_result_e ftk_zobrist_hash_generate_config_custom(ftk_zobrist_hash_flavor_e flavor, ftk_zobrist_hash_config_s *config, ftk_rand64_f rand64_f, void *user_ptr)
 {
   ftk_result_e ret_val = FTK_SUCCESS;
@@ -317,8 +333,10 @@ ftk_result_e ftk_zobrist_hash_generate_config_custom(ftk_zobrist_hash_flavor_e f
 
     for(unsigned int i = 0; i < FTK_ZOBRIST_RANDOM_ARRAY_SIZE; i++)
     {
-      config->random[i] = rand64_f(user_ptr);
-      /* TODO: Detect duplicates */
+      do
+      {
+        config->random[i] = rand64_f(user_ptr);
+      } while (check_hash_in_array(config->random[i], config->random, i));
     }
   }
   else

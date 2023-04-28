@@ -331,6 +331,8 @@ ftk_result_e ftk_zobrist_hash_generate_config_custom(ftk_zobrist_hash_flavor_e f
   {
     memset(config, 0, sizeof(ftk_zobrist_hash_config_s));
 
+    config->flavor = flavor;
+
     for(unsigned int i = 0; i < FTK_ZOBRIST_RANDOM_ARRAY_SIZE; i++)
     {
       do

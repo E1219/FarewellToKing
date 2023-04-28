@@ -8,7 +8,7 @@
   (https://web.archive.org/web/20230314224143/http://hgm.nubati.net/book_format.html)
 */
 
-#include "farewell_to_king_hash_polyglot_book.h"
+#include "farewell_to_king_polyglot_book.h"
 
 #ifdef _MSC_VER
 #  define U64(u) (u##ui64)

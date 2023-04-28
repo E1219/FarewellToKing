@@ -26,7 +26,7 @@ if(INCLUDE_HASH)
   list(APPEND farewell_to_king_source src/farewell_to_king_hash.c)
 endif()
 if(INCLUDE_POLYGLOT_BOOK)
-  list(APPEND farewell_to_king_source src/farewell_to_king_hash_polyglot_book.c)
+  list(APPEND farewell_to_king_source src/farewell_to_king_polyglot_book.c)
 endif()
 
 add_library(farewelltoking STATIC ${farewell_to_king_source})

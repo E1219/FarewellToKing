@@ -15,7 +15,7 @@
 #include "farewell_to_king.h"
 #include "farewell_to_king_strings.h"
 #include "farewell_to_king_types.h"
-#include "farewell_to_king_hash_polyglot_book.h"
+#include "farewell_to_king_polyglot_book.h"
 
 int main(int argc, char * const argv[]){
   ftk_game_s game;

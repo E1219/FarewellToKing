@@ -27,7 +27,17 @@ typedef enum
 {
   FTK_SUCCESS,
   FTK_FAILURE,
+  FTK_INVALID_ARGUMENT,
 } ftk_result_e;
+
+/**
+ * @brief Function pointer for a random uint64 generator
+ * 
+ * @param void* User data pointer that should be passed to be used as needed
+ * 
+ * @return random uint64_t
+*/
+typedef uint64_t (*ftk_rand64_f)(void *);
 
 /**
  * @brief Number of bits in maximum FTK mask

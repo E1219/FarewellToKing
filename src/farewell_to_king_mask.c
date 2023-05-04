@@ -116,7 +116,7 @@ void ftk_build_all_masks(ftk_board_s *board)
   }
 }
 
-ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t board_mask, ftk_board_mask_t opponent_mask, ftk_square_e position, ftk_square_e *ep)
+static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t board_mask, ftk_board_mask_t opponent_mask, ftk_square_e position, ftk_square_e *ep)
 {
   ftk_board_mask_t mask = 0;
 

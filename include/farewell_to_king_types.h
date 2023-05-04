@@ -86,6 +86,8 @@ typedef enum
 
 #define FTK_DRAW_FULL_MOVES 50
 #define FTK_DRAW_HALF_MOVES FTK_FULL_MOVES_TO_HALF_MOVES(FTK_DRAW_FULL_MOVES)
+#define FTK_SEVENTY_FIVE_RULE_DRAW_FULL_MOVES 75
+#define FTK_SEVENTY_FIVE_RULE_DRAW_HALF_MOVES FTK_FULL_MOVES_TO_HALF_MOVES(FTK_SEVENTY_FIVE_RULE_DRAW_FULL_MOVES)
 
 /**
  * @brief Game end types enum
@@ -102,8 +104,15 @@ typedef enum
   FTK_END_DRAW_AGREED,
   FTK_END_DRAW_FIFTY_MOVE_RULE,
   FTK_END_DRAW_REPETITION,
+  FTK_END_DRAW_THREEFOLD_REPETITION = FTK_END_DRAW_REPETITION,
   FTK_END_DRAW_DEAD_POSITION,
   FTK_END_DRAW_ON_TIME,
+  FTK_END_DRAW_SEVENTY_FIVE_MOVE_RULE,
+  FTK_END_DRAW_FIVEFOLD_REPETITION,
+  FTK_END_DRAW_DEAD_POSITION_KK,
+  FTK_END_DRAW_DEAD_POSITION_KKB,
+  FTK_END_DRAW_DEAD_POSITION_KKN,
+  FTK_END_DRAW_DEAD_POSITION_KBKB,
 } ftk_game_end_e;
 
 #define FTK_END_DEFINITIVE(result) ((FTK_END_CHECKMATE   == (result)) || \
@@ -111,12 +120,18 @@ typedef enum
                                     (FTK_END_FORFEIT     == (result)) || \
                                     (FTK_END_WIN_ON_TIME == (result)))
 
-#define FTK_END_DRAW(result) ((FTK_END_DRAW_STALEMATE       == (result)) || \
-                              (FTK_END_DRAW_AGREED          == (result)) || \
-                              (FTK_END_DRAW_FIFTY_MOVE_RULE == (result)) || \
-                              (FTK_END_DRAW_REPETITION      == (result)) || \
-                              (FTK_END_DRAW_DEAD_POSITION   == (result)) || \
-                              (FTK_END_DRAW_ON_TIME         == (result)) )
+#define FTK_END_DRAW(result) ((FTK_END_DRAW_STALEMATE              == (result)) || \
+                              (FTK_END_DRAW_AGREED                 == (result)) || \
+                              (FTK_END_DRAW_FIFTY_MOVE_RULE        == (result)) || \
+                              (FTK_END_DRAW_REPETITION             == (result)) || \
+                              (FTK_END_DRAW_DEAD_POSITION          == (result)) || \
+                              (FTK_END_DRAW_ON_TIME                == (result)) || \
+                              (FTK_END_DRAW_SEVENTY_FIVE_MOVE_RULE == (result)) || \
+                              (FTK_END_DRAW_FIVEFOLD_REPETITION    == (result)) || \
+                              (FTK_END_DRAW_DEAD_POSITION_KK       == (result)) || \
+                              (FTK_END_DRAW_DEAD_POSITION_KKB      == (result)) || \
+                              (FTK_END_DRAW_DEAD_POSITION_KKN      == (result)) || \
+                              (FTK_END_DRAW_DEAD_POSITION_KBKB     == (result)) )
 
 /**
  * @brief Castle mask bit enum

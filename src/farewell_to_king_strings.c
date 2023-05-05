@@ -642,3 +642,159 @@ ftk_result_e ftk_move_to_xboard_string(ftk_move_s *move, char * output)
 
   return ret_val;
 }
+
+const char * ftk_game_end_string(ftk_game_end_e game_end, ftk_color_e turn)
+{
+  char * ret_val = NULL;
+
+  switch(game_end)
+  {
+    case FTK_END_NOT_OVER:
+    {
+      ret_val = "Game not over";
+      break;
+    }
+    case FTK_END_CHECKMATE:
+    {
+      if(FTK_COLOR_WHITE == turn)
+      {
+        ret_val = "Black checkmates";
+      }
+      else if(FTK_COLOR_BLACK == turn)
+      {
+        ret_val = "White checkmates";
+      }
+      else
+      {
+        ret_val = "Checkmate";
+      }
+      break;
+    }
+    case FTK_END_RESIGN:
+    {
+      if(FTK_COLOR_WHITE == turn)
+      {
+        ret_val = "White resigns";
+      }
+      else if(FTK_COLOR_BLACK == turn)
+      {
+        ret_val = "Black resigns";
+      }
+      else
+      {
+        ret_val = "Resignation";
+      }
+      break;
+    }
+    case FTK_END_FORFEIT:
+    {
+      if(FTK_COLOR_WHITE == turn)
+      {
+        ret_val = "White forfeits";
+      }
+      else if(FTK_COLOR_BLACK == turn)
+      {
+        ret_val = "Black forfeits";
+      }
+      else
+      {
+        ret_val = "Player forfeits";
+      }
+      break;
+    }
+    case FTK_END_WIN_ON_TIME:
+    {
+      if(FTK_COLOR_WHITE == turn)
+      {
+        ret_val = "Black wins on time";
+      }
+      else if(FTK_COLOR_BLACK == turn)
+      {
+        ret_val = "White wins on time";
+      }
+      else
+      {
+        ret_val = "Win on time";
+      }
+      break;
+    }
+    case FTK_END_DRAW_STALEMATE:
+    {
+      ret_val = "Stalemate";
+      break;
+    }
+    case FTK_END_DRAW_AGREED:
+    {
+      ret_val = "Draw by agreement";
+      break;
+    }
+    case FTK_END_DRAW_FIFTY_MOVE_RULE:
+    {
+      ret_val = "Draw by fifty-move rule";
+      break;
+    }
+    case FTK_END_DRAW_THREEFOLD_REPETITION:
+    {
+      ret_val = "Draw by threefold repetition";
+      break;
+    }
+    case FTK_END_DRAW_DEAD_POSITION:
+    {
+      ret_val = "Draw by dead position";
+      break;
+    }
+    case FTK_END_DRAW_ON_TIME:
+    {
+      if(FTK_COLOR_WHITE == turn)
+      {
+        ret_val = "Black draws on time";
+      }
+      else if(FTK_COLOR_BLACK == turn)
+      {
+        ret_val = "White draws on time";
+      }
+      else
+      {
+        ret_val = "Draw on time";
+      }
+      break;
+    }
+    case FTK_END_DRAW_SEVENTY_FIVE_MOVE_RULE:
+    {
+      ret_val = "Draw by seventy-five-move rule";
+      break;
+    }
+    case FTK_END_DRAW_FIVEFOLD_REPETITION:
+    {
+      ret_val = "Draw by fivefold repetition";
+      break;
+    }
+    case FTK_END_DRAW_DEAD_POSITION_KK:
+    {
+      ret_val = "Draw by dead position (king against king)";
+      break;
+    }
+    case FTK_END_DRAW_DEAD_POSITION_KKB:
+    {
+      ret_val = "Draw by dead position (king against king and bishop)";
+      break;
+    }
+    case FTK_END_DRAW_DEAD_POSITION_KKN:
+    {
+      ret_val = "Draw by dead position (king against king and knight)";
+      break;
+    }
+    case FTK_END_DRAW_DEAD_POSITION_KBKB:
+    {
+      ret_val = "Draw by dead position (king and bishop against king and bishop with bishops on same color squares)";
+      break;
+    }
+    default:
+    {
+      ret_val = "Unknown result";
+      break;
+    }
+  }
+
+  return ret_val;
+}

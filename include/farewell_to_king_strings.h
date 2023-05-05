@@ -156,4 +156,14 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen);
  */
 ftk_result_e ftk_move_to_xboard_string(ftk_move_s *move, char * output);
 
+/**
+ * @brief Returns string for given game end result
+ * 
+ * @param game_end Game end result to return string for
+ * @param turn     Current color's turn to modify string.  i.e. Checkmate on Black's Turn returns "White mates" string.  'Don't Care' turn generates a generic string.
+ * 
+ * @return  String describing game end or NULL if error
+ */
+const char * ftk_game_end_string(ftk_game_end_e game_end, ftk_color_e turn);
+
 #endif

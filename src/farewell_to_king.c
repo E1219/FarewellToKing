@@ -428,8 +428,55 @@ ftk_game_end_e ftk_check_for_game_end(const ftk_game_s *game)
   {
     game_end = (FTK_CHECK_IN_CHECK == ftk_check_for_check(game))?FTK_END_CHECKMATE:FTK_END_DRAW_STALEMATE;
   }
-  else if (game->half_move > FTK_DRAW_HALF_MOVES) {
+  else if (game->half_move > FTK_SEVENTY_FIVE_RULE_DRAW_HALF_MOVES) 
+  {
+    game_end = FTK_END_DRAW_SEVENTY_FIVE_MOVE_RULE;
+  }
+  else if (game->half_move > FTK_DRAW_HALF_MOVES) 
+  {
     game_end = FTK_END_DRAW_FIFTY_MOVE_RULE;
+  }
+  else if((game->board.pawn_mask  == 0 ) &&
+          (game->board.rook_mask  == 0 ) &&
+          (game->board.queen_mask == 0 ) )
+  {
+    /* No queens, rooks, or pawns left.  Check for dead position */
+    if( (game->board.bishop_mask == 0) &&
+        (game->board.knight_mask == 0) )
+    {
+      game_end = FTK_END_DRAW_DEAD_POSITION_KK;
+    }
+    else
+    {
+      uint_fast8_t knight_count = ftk_get_num_bits_set(game->board.knight_mask);
+      if( (knight_count == 1) &&
+          (game->board.bishop_mask == 0) )
+      {
+        game_end = FTK_END_DRAW_DEAD_POSITION_KKN;
+      }
+      else if(knight_count == 0)
+      {
+        uint_fast8_t bishop_count = ftk_get_num_bits_set(game->board.bishop_mask);
+        if(bishop_count == 1)
+        {
+          game_end = FTK_END_DRAW_DEAD_POSITION_KKB;
+        }
+        else if(bishop_count == 2)
+        {
+          const uint_fast8_t white_bishop_square = ftk_get_first_set_bit_idx(game->board.bishop_mask & game->board.white_mask);
+          if(white_bishop_square < FTK_STD_BOARD_SIZE)
+          {
+            const uint_fast8_t black_bishop_square = ftk_get_first_set_bit_idx(game->board.bishop_mask & game->board.black_mask);
+            if((black_bishop_square < FTK_STD_BOARD_SIZE) &&
+               ((white_bishop_square % 2) == (black_bishop_square % 2)))
+            {
+              /* King Bishop vs King Bishop with Bishops on same color square */
+              game_end = FTK_END_DRAW_DEAD_POSITION_KBKB;
+            }
+          }
+        }
+      }
+    }
   }
 
   return game_end;

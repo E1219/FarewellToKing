@@ -43,6 +43,25 @@ uint_fast8_t ftk_get_first_set_bit_idx(ftk_max_mask_size_t mask)
 
   if(mask != 0)
   {
+    if(0 == (mask & ((1ULL<<48)-1)))
+    {
+      /* Shortcut the first 48 bits */
+      ret_val   = 48;
+      mask    >>= 48;
+    }
+    else if(0 == (mask & ((1ULL<<32)-1)))
+    {
+      /* Shortcut the first 32 bits */
+      ret_val   = 32;
+      mask    >>= 32;
+    }
+    else if(0 == (mask & ((1ULL<<16)-1)))
+    {
+      /* Shortcut the first 16 bits */
+      ret_val   = 16;
+      mask    >>= 16;
+    }
+
     while(0 == (mask & 0x1))
     {
       ret_val++;

@@ -48,19 +48,15 @@ uint_fast8_t ftk_get_first_set_bit_idx(ftk_max_mask_size_t mask)
 
   #ifdef __GNUC__
 
-  uint_fast8_t ret_val = __builtin_ffsll(mask);
+  uint_fast8_t ret_val = 0xFF;
 
   /* __builtin_ffs returns 1+<index of LSB> or '0' if input is '0x0' */
-  if(ret_val > 0)
+  if(mask != 0)
   {
     /* Remove +1 offset */
-    ret_val -= 1;
+    ret_val = __builtin_ffsll(mask) - 1;
   }
-  else
-  {
-    /* Input mask is '0', return invalid */
-    ret_val = 0xFF;
-  }
+
   #else
   uint_fast8_t ret_val = 0xFF;
 

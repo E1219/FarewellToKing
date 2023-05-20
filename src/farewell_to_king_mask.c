@@ -542,39 +542,37 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
   return check;
 }
 
+/* Masks of King's Path for Castling */
+#define WHITE_QS_PATH (FTK_POSITION_TO_MASK(FTK_C1) | FTK_POSITION_TO_MASK(FTK_D1))
+#define WHITE_KS_PATH (FTK_POSITION_TO_MASK(FTK_F1) | FTK_POSITION_TO_MASK(FTK_G1))
+#define BLACK_QS_PATH (FTK_POSITION_TO_MASK(FTK_C8) | FTK_POSITION_TO_MASK(FTK_D8))
+#define BLACK_KS_PATH (FTK_POSITION_TO_MASK(FTK_F8) | FTK_POSITION_TO_MASK(FTK_G8))
+
 void ftk_add_castle(ftk_board_s *board, ftk_color_e turn) 
 {
-  ftk_castle_mask_t castle = FTK_CASTLE_NONE;
-  ftk_board_mask_t QS;
-  ftk_board_mask_t KS;
   ftk_square_e i = 0;
 
-  if(turn == FTK_COLOR_WHITE)
+  if ((turn == FTK_COLOR_WHITE) && (FTK_SQUARE_IS(board->square[FTK_E1], FTK_TYPE_KING, FTK_COLOR_WHITE, FTK_MOVED_NOT_MOVED)))
   {
-    if(FTK_SQUARE_IS(board->square[FTK_E1], FTK_TYPE_KING, FTK_COLOR_WHITE, FTK_MOVED_NOT_MOVED)){
-        /* White King has not moved, consider for castling */
-        castle = FTK_CASTLE_KING_SIDE_WHITE | FTK_CASTLE_QUEEN_SIDE_WHITE;
-    }
+    /* White King has not moved, consider for castling */
+    ftk_castle_mask_t castle = FTK_CASTLE_KING_SIDE_WHITE | FTK_CASTLE_QUEEN_SIDE_WHITE;
 
-    QS = FTK_POSITION_TO_MASK(FTK_C1) | FTK_POSITION_TO_MASK(FTK_D1);
-    KS = FTK_POSITION_TO_MASK(FTK_F1) | FTK_POSITION_TO_MASK(FTK_G1);
-
-    if (((FTK_POSITION_TO_MASK(FTK_B1) | QS) & (board->white_mask | board->black_mask)) != 0 ||
+    if (((FTK_POSITION_TO_MASK(FTK_B1) | WHITE_QS_PATH) & (board->white_mask | board->black_mask)) != 0 ||
         !FTK_SQUARE_IS(board->square[FTK_A1], FTK_TYPE_ROOK, FTK_COLOR_WHITE, FTK_MOVED_NOT_MOVED)) 
     {
       /* Rook has moved or squared between Rook and King are not emtpy (Queen
-       * side) */
+      * side) */
       castle &= ~FTK_CASTLE_QUEEN_SIDE_WHITE;
     }
-    if ((KS & (board->white_mask | board->black_mask)) != 0 ||
+    if ((WHITE_KS_PATH & (board->white_mask | board->black_mask)) != 0 ||
         !FTK_SQUARE_IS(board->square[FTK_H1], FTK_TYPE_ROOK, FTK_COLOR_WHITE, FTK_MOVED_NOT_MOVED))
     {
       /* Rook has moved or squared between Rook and King are not emtpy (King
-       * side) */
+      * side) */
       castle &= ~FTK_CASTLE_KING_SIDE_WHITE;
     }
 
-    for(i = 0; i < FTK_STD_BOARD_SIZE && castle != 0; i++)
+    for(i = 0; (i < FTK_STD_BOARD_SIZE) && (castle != 0); i++)
     {
       /* Check move mask of all black squares if they conflict with white castling */
       if(board->square[i].color == FTK_COLOR_BLACK)
@@ -585,46 +583,49 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
           castle &= ~FTK_CASTLE_KING_SIDE_WHITE;
           castle &= ~FTK_CASTLE_QUEEN_SIDE_WHITE;
         }
-        if (board->move_mask[i] & QS)
+        if (board->move_mask[i] & WHITE_QS_PATH)
         {
           /* King passes through check (Queen side) */
           castle &= ~FTK_CASTLE_QUEEN_SIDE_WHITE;
         }
-        if (board->move_mask[i] & KS)
+        if (board->move_mask[i] & WHITE_KS_PATH)
         {
           /* King passes through check (King side) */
           castle &= ~FTK_CASTLE_KING_SIDE_WHITE;
         }
       }
     }
-  }
-  else
-  {
-    if( FTK_SQUARE_IS(board->square[FTK_E8], FTK_TYPE_KING, FTK_COLOR_BLACK, FTK_MOVED_NOT_MOVED) )
+    /* Add castling to King's valid move masks if allowed (Rook already has mask set implicitly) */
+    if(castle & FTK_CASTLE_KING_SIDE_WHITE)
     {
-      /* Black King has not moved, consider for castling */
-      castle = FTK_CASTLE_KING_SIDE_BLACK | FTK_CASTLE_QUEEN_SIDE_BLACK;
+        board->move_mask[FTK_E1] |= FTK_POSITION_TO_MASK(FTK_G1);
     }
+    if(castle & FTK_CASTLE_QUEEN_SIDE_WHITE)
+    {
+        board->move_mask[FTK_E1] |= FTK_POSITION_TO_MASK(FTK_C1);
+    }
+  }
+  else if((turn == FTK_COLOR_BLACK) && ( FTK_SQUARE_IS(board->square[FTK_E8], FTK_TYPE_KING, FTK_COLOR_BLACK, FTK_MOVED_NOT_MOVED) ) )
+  {
+    /* Black King has not moved, consider for castling */
+    ftk_castle_mask_t castle = FTK_CASTLE_KING_SIDE_BLACK | FTK_CASTLE_QUEEN_SIDE_BLACK;
 
-    QS = FTK_POSITION_TO_MASK(FTK_C8) | FTK_POSITION_TO_MASK(FTK_D8);
-    KS = FTK_POSITION_TO_MASK(FTK_F8) | FTK_POSITION_TO_MASK(FTK_G8);
-
-    if (((FTK_POSITION_TO_MASK(FTK_B8) | QS) & (board->white_mask | board->black_mask)) != 0 ||
+    if (((FTK_POSITION_TO_MASK(FTK_B8) | BLACK_QS_PATH) & (board->white_mask | board->black_mask)) != 0 ||
         !FTK_SQUARE_IS(board->square[FTK_A8], FTK_TYPE_ROOK, FTK_COLOR_BLACK, FTK_MOVED_NOT_MOVED)) 
     {
       /* Rook has moved or squared between Rook and King are not emtpy (Queen
-       * side) */
+      * side) */
       castle &= ~FTK_CASTLE_QUEEN_SIDE_BLACK;
     }
-    if ((KS & (board->white_mask | board->black_mask)) != 0 ||
+    if ((BLACK_KS_PATH & (board->white_mask | board->black_mask)) != 0 ||
         !FTK_SQUARE_IS(board->square[FTK_H8], FTK_TYPE_ROOK, FTK_COLOR_BLACK, FTK_MOVED_NOT_MOVED))
     {
       /* Rook has moved or squared between Rook and King are not emtpy (King
-       * side) */
+      * side) */
       castle &= ~FTK_CASTLE_KING_SIDE_BLACK;
     }
 
-    for(i = 0; i < FTK_STD_BOARD_SIZE && castle != 0; i++)
+    for(i = 0; (i < FTK_STD_BOARD_SIZE) && (castle != 0); i++)
     {
       /* Check move mask of all white squares if they conflict with black castling */
       if(board->square[i].color == FTK_COLOR_WHITE)
@@ -635,35 +636,26 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
           castle &= ~FTK_CASTLE_KING_SIDE_BLACK;
           castle &= ~FTK_CASTLE_QUEEN_SIDE_BLACK;
         }
-        if (board->move_mask[i] & QS)
+        if (board->move_mask[i] & BLACK_QS_PATH)
         {
           /* King passes through check (Queen side) */
           castle &= ~FTK_CASTLE_QUEEN_SIDE_BLACK;
         }
-        if (board->move_mask[i] & KS)
+        if (board->move_mask[i] & BLACK_KS_PATH)
         {
           /* King passes through check (King side) */
           castle &= ~FTK_CASTLE_KING_SIDE_BLACK;
         }
       }
     }
-  }
-  /* Add castling to King's valid move masks if allowed (Rook already has mask set implicitly) */
-  if(castle & FTK_CASTLE_KING_SIDE_WHITE)
-  {
-      board->move_mask[FTK_E1] |= FTK_POSITION_TO_MASK(FTK_G1);
-  }
-  if(castle & FTK_CASTLE_QUEEN_SIDE_WHITE)
-  {
-      board->move_mask[FTK_E1] |= FTK_POSITION_TO_MASK(FTK_C1);
-  }
-  if(castle & FTK_CASTLE_KING_SIDE_BLACK)
-  {
-      board->move_mask[FTK_E8] |= FTK_POSITION_TO_MASK(FTK_G8);
-  }
-  if(castle & FTK_CASTLE_QUEEN_SIDE_BLACK)
-  {
-      board->move_mask[FTK_E8] |= FTK_POSITION_TO_MASK(FTK_C8);
+    if(castle & FTK_CASTLE_KING_SIDE_BLACK)
+    {
+        board->move_mask[FTK_E8] |= FTK_POSITION_TO_MASK(FTK_G8);
+    }
+    if(castle & FTK_CASTLE_QUEEN_SIDE_BLACK)
+    {
+        board->move_mask[FTK_E8] |= FTK_POSITION_TO_MASK(FTK_C8);
+    }
   }
 }
 

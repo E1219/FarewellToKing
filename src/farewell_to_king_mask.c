@@ -208,7 +208,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
       int test = position + 9; // up-right diagonal
       ftk_board_mask_t test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-             (test % 8) > (position % 8) &&
+             (test & 0x7) > (position & 0x7) &&
              ((test_mask & movable_mask) != 0))
       {
         mask |= test_mask;
@@ -220,7 +220,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
       test = position - 9; // down-left diagonal
       test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-             (test % 8) < (position % 8) &&
+             (test & 0x7) < (position & 0x7) &&
              ((test_mask & movable_mask) != 0))
       {
         mask |= test_mask;
@@ -232,7 +232,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
       test = position + 7; // up-left diagonal
       test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-             (test % 8) < (position % 8) &&
+             (test & 0x7) < (position & 0x7) &&
              ((test_mask & movable_mask) != 0))
       {
         mask |= test_mask;
@@ -244,7 +244,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
       test = position - 7; // down-right diagonal
       test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-             (test % 8) > (position % 8) &&
+             (test & 0x7) > (position & 0x7) &&
              ((test_mask & movable_mask) != 0))
       {
         mask |= test_mask;
@@ -258,7 +258,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
       int test = position + 1; // right horizontal
       ftk_board_mask_t test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-             (test % 8) > (position % 8) &&
+             (test & 0x7) > (position & 0x7) &&
              ((test_mask & movable_mask) != 0))
       {
         mask |= test_mask;
@@ -270,7 +270,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
       test = position - 1; // left horizontal
       test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-             (test % 8) < (position % 8) &&
+             (test & 0x7) < (position & 0x7) &&
              ((test_mask & movable_mask) != 0))
       {
         mask |= test_mask;

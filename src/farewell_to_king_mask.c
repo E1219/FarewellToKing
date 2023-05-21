@@ -450,6 +450,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
         ftk_board_mask_t path = ftk_build_path_mask(board->square[i], king_position, i, board->move_mask[i]);
         for (ftk_square_e j = 0; j < FTK_STD_BOARD_SIZE; j++) 
         {
+          /* TODO consider en-passant capture of pawn */
           if(board->square[j].type != FTK_TYPE_EMPTY && board->square[j].type != FTK_TYPE_KING && board->square[j].color == turn)
           {
             /* Walk entire board and clear all moves that do not clear check */

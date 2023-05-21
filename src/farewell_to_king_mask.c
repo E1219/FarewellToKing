@@ -414,11 +414,12 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s square, ftk_square_e target, f
   return mask;
 }
 
-ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
+ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn, ftk_square_e ep)
 {
-  ftk_check_e            check = FTK_CHECK_NO_CHECK;
-  const ftk_board_mask_t turn_mask = (FTK_COLOR_WHITE == turn) ? board->white_mask : board->black_mask;
+  ftk_check_e            check         = FTK_CHECK_NO_CHECK;
+  const ftk_board_mask_t turn_mask     = (FTK_COLOR_WHITE == turn) ? board->white_mask : board->black_mask;
   const ftk_board_mask_t opponent_mask = (FTK_COLOR_WHITE == turn) ? board->black_mask : board->white_mask;
+  const ftk_board_mask_t ep_mask       = FTK_POSITION_TO_MASK(ep);
   const ftk_square_e     king_position = ftk_mask_to_position(board->king_mask & turn_mask);
 
   /* Remove moves cause check or do not resolve check */
@@ -450,9 +451,13 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn)
         ftk_board_mask_t path = ftk_build_path_mask(board->square[i], king_position, i, board->move_mask[i]);
         for (ftk_square_e j = 0; j < FTK_STD_BOARD_SIZE; j++) 
         {
-          /* TODO consider en-passant capture of pawn */
           if(board->square[j].type != FTK_TYPE_EMPTY && board->square[j].type != FTK_TYPE_KING && board->square[j].color == turn)
           {
+            if( ((board->move_mask[j] & ep_mask) != 0) && (board->square[j].type == FTK_TYPE_PAWN) && ((i-ep) == ((turn==FTK_COLOR_WHITE)?-8:8)))
+            {
+              path |= ep_mask;
+            }
+
             /* Walk entire board and clear all moves that do not clear check */
             /* If piece is not the king, remove all moves that do not block check or capture attacker */
             board->move_mask[j] &= (path | FTK_POSITION_TO_MASK(i));

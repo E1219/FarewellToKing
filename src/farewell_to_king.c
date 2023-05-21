@@ -72,7 +72,7 @@ void ftk_update_board_masks(ftk_game_s *game)
       game->board.move_mask[i] = ftk_build_move_mask(&game->board, i, &game->ep);
     }
 
-    ftk_strip_check( &game->board, game->turn);
+    ftk_strip_check(&game->board, game->turn, game->ep);
 
     ftk_add_castle(&game->board, game->turn);
 

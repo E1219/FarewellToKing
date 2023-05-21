@@ -71,10 +71,11 @@ ftk_board_mask_t ftk_build_path_mask(ftk_square_s     square,
  * @brief Strips moves from the move mask for any piece whose movement would result in exposed check
  * 
  * @param board Board to strip check moves
- * @param turn Current turn player color
+ * @param turn  Current turn player color
+ * @param ep    Current en passant target square
  * @return ftk_check_e 
  */
-ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn);
+ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn, ftk_square_e ep);
 
 /**
  * @brief Adds castling to move masks for current player if castling is legal

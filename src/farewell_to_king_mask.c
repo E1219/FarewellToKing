@@ -75,9 +75,9 @@ void ftk_build_all_masks(ftk_board_s *board)
   board->king_mask = 0;
 
   int i;
-  ftk_board_mask_t biterator = 1ULL;
   for(i=0;i<FTK_STD_BOARD_SIZE;i++)
   {
+    ftk_board_mask_t biterator = FTK_POSITION_TO_MASK(i);
     if(board->square[i].type != FTK_TYPE_EMPTY)
     {
       board->board_mask |= biterator;
@@ -112,7 +112,6 @@ void ftk_build_all_masks(ftk_board_s *board)
             break;
       }
     }
-    biterator = biterator << 1;
   }
 }
 

@@ -86,7 +86,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn, ftk_square_e e
 void ftk_add_castle(ftk_board_s *board, ftk_color_e turn);
 
 /**
- * @brief Converts a mask bit to position index (Returns mask MSB if multiple bits are set)
+ * @brief Converts a mask bit to position index (Returns mask LSB if multiple bits are set)
  * 
  */
 ftk_square_e ftk_mask_to_position(ftk_board_mask_t mask);

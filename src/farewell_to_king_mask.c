@@ -170,9 +170,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
 
   if (square.type == FTK_TYPE_PAWN) 
   {
-    int direction = (square.color == FTK_COLOR_WHITE)
-                        ? 1
-                        : -1;             // change direction based on color
+    int direction = (square.color == FTK_COLOR_WHITE)?1:-1; // change direction based on color
     int test = position + (direction << 3); // forward/back 1
 
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
@@ -651,15 +649,5 @@ void ftk_add_castle(ftk_board_s *board, ftk_color_e turn)
 
 ftk_square_e ftk_mask_to_position(ftk_board_mask_t mask)
 { 
-  ftk_square_e position    = 0; 
-  ftk_board_mask_t temp_mask = mask; 
-  while(temp_mask)
-  {
-    temp_mask >>= 1; 
-    if(temp_mask)
-    {
-      position++;
-    } 
-  }
-  return position;
+  return ftk_get_first_set_bit_idx(mask);
 }

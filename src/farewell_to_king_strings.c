@@ -7,6 +7,7 @@
  Contains implementations of all methods that generate formatted strings for human readable output.
 */
 
+#include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include "farewell_to_king.h"
@@ -626,9 +627,10 @@ ftk_result_e ftk_move_to_xboard_string(const ftk_move_s *move, char * output)
 {
   ftk_result_e ret_val = FTK_SUCCESS;
 
+  assert(move != NULL);
   assert(output != NULL);
 
-  memset(output, 0, FTK_MOVE_STRING_SIZE*sizeof(char));
+  memset(output, '\0', FTK_MOVE_STRING_SIZE*sizeof(char));
 
   ftk_position_to_string(move->source, &output[0]);
   ftk_position_to_string(move->target, &output[2]);
@@ -638,6 +640,77 @@ ftk_result_e ftk_move_to_xboard_string(const ftk_move_s *move, char * output)
   if('X' == output[4])
   {
     output[4] = '\0';
+  }
+
+  return ret_val;
+}
+
+char ftk_get_san_piece_char(ftk_type_e type)
+{
+  char ret_char = '\0';
+
+  switch (type)
+  {
+    case FTK_TYPE_BISHOP:
+      ret_char = 'B';
+      break;
+    case FTK_TYPE_KNIGHT:
+      ret_char = 'N';
+      break;
+     case FTK_TYPE_ROOK:
+      ret_char = 'R';
+      break;
+     case FTK_TYPE_QUEEN:
+      ret_char = 'Q';
+      break;
+     case FTK_TYPE_KING:
+      ret_char = 'K';
+      break;
+     
+    case FTK_TYPE_PAWN:
+    default:
+      break;
+  }
+
+  return ret_char;
+}
+
+ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *move, char * output)
+{
+  ftk_result_e ret_val = FTK_SUCCESS;
+
+  assert(game   != NULL);
+  assert(move   != NULL);
+  assert(output != NULL);
+
+  memset(output, '\0', FTK_SAN_MOVE_STRING_SIZE*sizeof(char));
+
+  if(game->board.masks_valid)
+  {
+    if(FTK_MOVE_VALID(*move))
+    {
+      char type_string[2] = {'\0'};
+      type_string[0] = ftk_get_san_piece_char(game->board.square[move->source].type);
+      char capture_string[2] = {'\0'};
+      if((FTK_TYPE_EMPTY != game->board.square[move->target].type) || 
+         (move->target   == move->ep))
+      {
+        capture_string[0] = 'x';
+      }
+
+      snprintf(output, FTK_SAN_MOVE_STRING_SIZE, "%s%s%s", 
+        type_string, 
+        capture_string, 
+        ftk_position_to_string_lut[move->target]);
+    }
+    else
+    {
+      ret_val = FTK_MOVE_INVALID;
+    }
+  }
+  else
+  {
+    ret_val = FTK_BOARD_MASK_INVALID;
   }
 
   return ret_val;

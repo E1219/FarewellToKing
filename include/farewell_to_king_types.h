@@ -28,6 +28,8 @@ typedef enum
   FTK_SUCCESS,
   FTK_FAILURE,
   FTK_INVALID_ARGUMENT,
+  FTK_BOARD_MASK_INVALID,
+  FTK_MOVE_INVALID,
 } ftk_result_e;
 
 /**

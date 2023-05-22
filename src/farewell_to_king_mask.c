@@ -170,18 +170,18 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
 
   if (square.type == FTK_TYPE_PAWN) 
   {
-    int direction = (square.color == FTK_COLOR_WHITE)?1:-1; // change direction based on color
-    int test = position + (direction << 3); // forward/back 1
+    int test = position + ((square.color == FTK_COLOR_WHITE)?8:-8); // forward/back 1
 
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
-        ((board_mask & 1ULL << test) == 0)) {
-      mask |= (1ULL << test);
+        ((board_mask & FTK_POSITION_TO_MASK(test)) == 0)) 
+    {
+      mask |= FTK_POSITION_TO_MASK(test);
 
-      test = position + (direction << 4); // forward/back 2
+      test = position + ((square.color == FTK_COLOR_WHITE)?16:-16); // forward/back 2
 
       if ((square.moved == FTK_MOVED_NOT_MOVED) && test < FTK_STD_BOARD_SIZE &&
-          test >= 0 && ((board_mask & 1ULL << test) == 0)) {
-        mask |= (1ULL << test);
+          test >= 0 && ((board_mask & FTK_POSITION_TO_MASK(test)) == 0)) {
+        mask |= FTK_POSITION_TO_MASK(test);
       }
     }
 

@@ -16,6 +16,10 @@
  */
 uint_fast8_t ftk_get_num_bits_set(ftk_max_mask_size_t mask)
 {
+
+  #ifdef __GNUC__
+  uint_fast8_t ret_val = __builtin_popcountll(mask);
+  #else
   uint_fast8_t ret_val = 0;
 
   while(mask != 0)
@@ -27,6 +31,8 @@ uint_fast8_t ftk_get_num_bits_set(ftk_max_mask_size_t mask)
 
     mask >>= 1;
   }
+  #endif
+  
 
   return ret_val;
 }
@@ -39,7 +45,20 @@ uint_fast8_t ftk_get_num_bits_set(ftk_max_mask_size_t mask)
  */
 uint_fast8_t ftk_get_first_set_bit_idx(ftk_max_mask_size_t mask)
 {
-  uint_fast8_t ret_val = 0;
+
+  #ifdef __GNUC__
+
+  uint_fast8_t ret_val = 0xFF;
+
+  /* __builtin_ffs returns 1+<index of LSB> or '0' if input is '0x0' */
+  if(mask != 0)
+  {
+    /* Remove +1 offset */
+    ret_val = __builtin_ffsll(mask) - 1;
+  }
+
+  #else
+  uint_fast8_t ret_val = 0xFF;
 
   if(mask != 0)
   {
@@ -68,10 +87,7 @@ uint_fast8_t ftk_get_first_set_bit_idx(ftk_max_mask_size_t mask)
       mask >>= 1;
     }
   }
-  else
-  {
-    ret_val = 0xFF;
-  }
+  #endif
 
   return ret_val;
 }

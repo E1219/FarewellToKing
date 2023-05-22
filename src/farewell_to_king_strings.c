@@ -691,17 +691,33 @@ ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *mo
     {
       char type_string[2] = {'\0'};
       type_string[0] = ftk_get_san_piece_char(game->board.square[move->source].type);
+      char file_string[2] = {'\0'};
+      char row_string[2]  = {'\0'};
       char capture_string[2] = {'\0'};
       if((FTK_TYPE_EMPTY != game->board.square[move->target].type) || 
          (move->target   == move->ep))
       {
         capture_string[0] = 'x';
+        if(FTK_TYPE_PAWN == game->board.square[move->source].type)
+        {
+          file_string[0] = (move->source%8)+'a';
+        }
+      }
+      char check_string[2]  = {'\0'};
+      ftk_game_s move_applied_game = *game;
+      ftk_move_forward(&move_applied_game, move);
+      if(FTK_CHECK_IN_CHECK == ftk_check_for_check(&move_applied_game))
+      {
+        check_string[0] = (FTK_END_CHECKMATE == ftk_check_for_game_end(&move_applied_game))?'#':'+';
       }
 
-      snprintf(output, FTK_SAN_MOVE_STRING_SIZE, "%s%s%s", 
+      snprintf(output, FTK_SAN_MOVE_STRING_SIZE, "%s%s%s%s%s%s", 
         type_string, 
+        file_string, 
+        row_string, 
         capture_string, 
-        ftk_position_to_string_lut[move->target]);
+        ftk_position_to_string_lut[move->target],
+        check_string);
     }
     else
     {

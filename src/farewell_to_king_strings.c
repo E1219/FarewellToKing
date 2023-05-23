@@ -675,6 +675,23 @@ char ftk_get_san_piece_char(ftk_type_e type)
   return ret_char;
 }
 
+char ftk_get_san_check_char(const ftk_game_s *game, const ftk_move_s *move)
+{
+  char ret_char = '\0';
+
+  assert(game   != NULL);
+  assert(move   != NULL);
+
+  ftk_game_s move_applied_game = *game;
+  ftk_move_forward(&move_applied_game, move);
+  if(FTK_CHECK_IN_CHECK == ftk_check_for_check(&move_applied_game))
+  {
+    ret_char = (FTK_END_CHECKMATE == ftk_check_for_game_end(&move_applied_game))?'#':'+';
+  }
+
+  return ret_char;
+}
+
 ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *move, char * output)
 {
   ftk_result_e ret_val = FTK_SUCCESS;
@@ -689,35 +706,80 @@ ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *mo
   {
     if(FTK_MOVE_VALID(*move))
     {
-      char type_string[2] = {'\0'};
-      type_string[0] = ftk_get_san_piece_char(game->board.square[move->source].type);
-      char file_string[2] = {'\0'};
-      char row_string[2]  = {'\0'};
-      char capture_string[2] = {'\0'};
-      if((FTK_TYPE_EMPTY != game->board.square[move->target].type) || 
-         (move->target   == move->ep))
+      if((FTK_TYPE_KING == game->board.square[move->source].type) && 
+         ( ((FTK_E1 == move->source) && (FTK_G1 == move->target)) ||
+           ((FTK_E8 == move->source) && (FTK_G8 == move->target)) ))
       {
-        capture_string[0] = 'x';
-        if(FTK_TYPE_PAWN == game->board.square[move->source].type)
+        char check_string[2]  = {'\0'};
+        check_string[0] = ftk_get_san_check_char(game, move);
+        int ret = snprintf( output, FTK_SAN_MOVE_STRING_SIZE, "O-O%s", check_string );
+        assert(ret >= 0 && ret < FTK_SAN_MOVE_STRING_SIZE);
+      }
+      else if((FTK_TYPE_KING == game->board.square[move->source].type) && 
+         ( ((FTK_E1 == move->source) && (FTK_C1 == move->target)) ||
+           ((FTK_E8 == move->source) && (FTK_C8 == move->target)) ))
+      {
+        char check_string[2]  = {'\0'};
+        check_string[0] = ftk_get_san_check_char(game, move);
+        int ret = snprintf( output, FTK_SAN_MOVE_STRING_SIZE, "O-O-O%s", check_string );
+        assert(ret >= 0 && ret < FTK_SAN_MOVE_STRING_SIZE);
+      }
+      else
+      {
+        char type_string[2] = {'\0'};
+        type_string[0] = ftk_get_san_piece_char(game->board.square[move->source].type);
+        char file_string[2] = {'\0'};
+        char row_string[2]  = {'\0'};
+        char capture_string[2] = {'\0'};
+        if((FTK_TYPE_EMPTY != game->board.square[move->target].type) || 
+          (move->target   == move->ep))
         {
-          file_string[0] = (move->source%8)+'a';
+          capture_string[0] = 'x';
+          if(FTK_TYPE_PAWN == game->board.square[move->source].type)
+          {
+            file_string[0] = (move->source % 8)+'a';
+          }
         }
-      }
-      char check_string[2]  = {'\0'};
-      ftk_game_s move_applied_game = *game;
-      ftk_move_forward(&move_applied_game, move);
-      if(FTK_CHECK_IN_CHECK == ftk_check_for_check(&move_applied_game))
-      {
-        check_string[0] = (FTK_END_CHECKMATE == ftk_check_for_game_end(&move_applied_game))?'#':'+';
-      }
 
-      snprintf(output, FTK_SAN_MOVE_STRING_SIZE, "%s%s%s%s%s%s", 
-        type_string, 
-        file_string, 
-        row_string, 
-        capture_string, 
-        ftk_position_to_string_lut[move->target],
-        check_string);
+        char promote_string[3] = {'\0'};
+        promote_string[1] = ftk_get_san_piece_char(move->pawn_promotion);
+        if(promote_string[1] != '\0')
+        {
+          promote_string[0] = '=';
+        }
+
+        char check_string[2]  = {'\0'};
+        check_string[0] = ftk_get_san_check_char(game, move);
+
+        const ftk_board_mask_t target_mask = FTK_POSITION_TO_MASK(move->target);
+        for(ftk_square_e i = 0; i < FTK_STD_BOARD_SIZE; i++)
+        {
+          if( (game->board.square[move->source].type  == game->board.square[i].type) &&
+              (game->board.square[move->source].color == game->board.square[i].color) &&
+              ((target_mask & game->board.move_mask[i]) != 0) && (i != move->source) )
+          {
+            if((i % 8) == (move->source % 8))
+            {
+              row_string[0] = (move->source / 8)+'0';
+            }
+            else
+            {
+              file_string[0] = (move->source % 8)+'a';
+            }
+          }
+        }
+
+        int ret = snprintf( output, FTK_SAN_MOVE_STRING_SIZE, "%s%s%s%s%s%s%s", 
+                            type_string, 
+                            file_string, 
+                            row_string, 
+                            capture_string, 
+                            ftk_position_to_string_lut[move->target],
+                            promote_string,
+                            check_string );
+
+        assert(ret >= 0 && ret < FTK_SAN_MOVE_STRING_SIZE);
+      }
     }
     else
     {

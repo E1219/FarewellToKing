@@ -732,7 +732,7 @@ ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *mo
         char row_string[2]  = {'\0'};
         char capture_string[2] = {'\0'};
         if((FTK_TYPE_EMPTY != game->board.square[move->target].type) || 
-          (move->target   == move->ep))
+          ((FTK_TYPE_PAWN == game->board.square[move->source].type) && (move->target == move->ep)))
         {
           capture_string[0] = 'x';
           if(FTK_TYPE_PAWN == game->board.square[move->source].type)

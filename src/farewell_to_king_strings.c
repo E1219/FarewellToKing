@@ -714,6 +714,7 @@ ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *mo
         check_string[0] = ftk_get_san_check_char(game, move);
         int ret = snprintf( output, FTK_SAN_MOVE_STRING_SIZE, "O-O%s", check_string );
         assert(ret >= 0 && ret < FTK_SAN_MOVE_STRING_SIZE);
+        FTK_UNUSED(ret);
       }
       else if((FTK_TYPE_KING == game->board.square[move->source].type) && 
          ( ((FTK_E1 == move->source) && (FTK_C1 == move->target)) ||
@@ -723,6 +724,7 @@ ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *mo
         check_string[0] = ftk_get_san_check_char(game, move);
         int ret = snprintf( output, FTK_SAN_MOVE_STRING_SIZE, "O-O-O%s", check_string );
         assert(ret >= 0 && ret < FTK_SAN_MOVE_STRING_SIZE);
+        FTK_UNUSED(ret);
       }
       else
       {
@@ -779,6 +781,7 @@ ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *mo
                             check_string );
 
         assert(ret >= 0 && ret < FTK_SAN_MOVE_STRING_SIZE);
+        FTK_UNUSED(ret);
       }
     }
     else

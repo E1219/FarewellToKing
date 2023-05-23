@@ -14,6 +14,8 @@
 #include "farewell_to_king_mask.h"
 #include "farewell_to_king_types.h"
 
+#define FTK_UNUSED(x) {(void)(x);}
+
 /**
  * @brief Returns name string for Farewell to King Library
  * 

@@ -29,7 +29,8 @@ int main(int argc, char * const argv[]){
 
   int opt;
   bool print_hash = false;
-  while ((opt = getopt(argc, argv, "h")) != -1) 
+  bool print_move = false;
+  while ((opt = getopt(argc, argv, "hm")) != -1) 
   {
     switch (opt) {
       case 'h':
@@ -37,7 +38,12 @@ int main(int argc, char * const argv[]){
         print_hash = true;
         break;
       }
-      default:
+      case 'm':
+      {
+        print_move = true;
+        break;
+      }
+       default:
       {
         exit(-1);
       }
@@ -112,6 +118,12 @@ int main(int argc, char * const argv[]){
 
       move = ftk_move_piece(&game, target, source, pawn_promo_type);
       ftk_move_backward(&game, &move);
+      char san_string[FTK_SAN_MOVE_STRING_SIZE] = "";
+      ftk_move_to_san_string(&game, &move, san_string);
+      if(print_move)
+      {
+        printf("%s\n", san_string);
+      }
       incremental_hash_key = ftk_hash_game_zobrist_incremental_polyglot_book(&game, &move, incremental_hash_key);
       ftk_move_forward(&game, &move);
     }

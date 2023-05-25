@@ -65,7 +65,8 @@ ftk_square_s ftk_char_to_square(char input);
  */
 char ftk_square_to_char(ftk_square_s piece);
 
-#define FTK_MOVE_STRING_SIZE 6
+#define FTK_MOVE_STRING_SIZE     6
+#define FTK_SAN_MOVE_STRING_SIZE 8
 
 /**
  * @brief Parses a long algebraic move string 
@@ -150,11 +151,21 @@ ftk_result_e ftk_create_game_from_fen_string(ftk_game_s *game, const char *fen);
 /**
  * @brief Converts move to xboard string
  * 
- * @param move 
+ * @param move Move to convert to string
  * @param output buffer for output string (expect size >= FTK_MOVE_STRING_SIZE)
  * @return ftk_result_e 
  */
 ftk_result_e ftk_move_to_xboard_string(const ftk_move_s *move, char * output);
+
+/**
+ * @brief Converts move to Standard Algebraic Notation (PGN flavor SAN) string
+ * 
+ * @param move Current game state
+ * @param move Move to convert to string
+ * @param output buffer for output string (expect size >= FTK_SAN_MOVE_STRING_SIZE)
+ * @return ftk_result_e 
+ */
+ftk_result_e ftk_move_to_san_string(const ftk_game_s *game, const ftk_move_s *move, char * output);
 
 /**
  * @brief Returns string for given game end result

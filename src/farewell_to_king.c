@@ -281,7 +281,7 @@ ftk_move_s ftk_move_piece(ftk_game_s *game, ftk_square_e target, ftk_square_e so
   return move;
 }
 
-ftk_result_e ftk_move_forward_quick(ftk_game_s *game, ftk_move_s *move) 
+ftk_result_e ftk_move_forward_quick(ftk_game_s *game, const ftk_move_s *move) 
 {
   if(move->target >= FTK_XX || move->source >= FTK_XX)
   {
@@ -298,7 +298,7 @@ ftk_result_e ftk_move_forward_quick(ftk_game_s *game, ftk_move_s *move)
   return FTK_SUCCESS;
 }
 
-ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move) 
+ftk_result_e ftk_move_forward(ftk_game_s *game, const ftk_move_s *move) 
 {
   ftk_result_e result;
 
@@ -312,7 +312,7 @@ ftk_result_e ftk_move_forward(ftk_game_s *game, ftk_move_s *move)
   return result;
 }
 
-ftk_result_e ftk_move_backward_quick(ftk_game_s *game, ftk_move_s *move) 
+ftk_result_e ftk_move_backward_quick(ftk_game_s *game, const ftk_move_s *move) 
 {
   game->board.masks_valid = false;
 
@@ -369,7 +369,7 @@ ftk_result_e ftk_move_backward_quick(ftk_game_s *game, ftk_move_s *move)
   return FTK_SUCCESS;
 }
 
-ftk_result_e ftk_move_backward(ftk_game_s *game, ftk_move_s *move) 
+ftk_result_e ftk_move_backward(ftk_game_s *game, const ftk_move_s *move) 
 {
   ftk_result_e result;
 

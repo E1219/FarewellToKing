@@ -7,6 +7,7 @@
  Contains implementation of all methods used to generate and manipulate board masks.
 */
 
+#include <assert.h>
 #include <stdlib.h>
 
 #include "farewell_to_king_bitops.h"
@@ -163,44 +164,46 @@ static const ftk_board_mask_t king_move_mask[FTK_STD_BOARD_SIZE] =
   0x0203000000000000, 0x0507000000000000, 0x0a0e000000000000, 0x141c000000000000, 0x2838000000000000, 0x5070000000000000, 0xa0e0000000000000, 0x40c0000000000000, 
 };
 
-static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_board_mask_t board_mask, ftk_board_mask_t opponent_mask, ftk_square_e position, ftk_square_e *ep)
+static inline ftk_board_mask_t ftk_build_move_mask_raw(const ftk_square_s *square, ftk_board_mask_t board_mask, ftk_board_mask_t opponent_mask, ftk_square_e position, ftk_square_e *ep)
 {
   ftk_board_mask_t mask = 0;
 
-  if (square.type == FTK_TYPE_PAWN) 
+  assert(square != NULL);
+
+  if (square->type == FTK_TYPE_PAWN) 
   {
-    int test = position + ((square.color == FTK_COLOR_WHITE)?8:-8); // forward/back 1
+    int test = position + ((square->color == FTK_COLOR_WHITE)?8:-8); // forward/back 1
 
     if (test < FTK_STD_BOARD_SIZE && test >= 0 &&
         ((board_mask & FTK_POSITION_TO_MASK(test)) == 0)) 
     {
       mask |= FTK_POSITION_TO_MASK(test);
 
-      test = position + ((square.color == FTK_COLOR_WHITE)?16:-16); // forward/back 2
+      test = position + ((square->color == FTK_COLOR_WHITE)?16:-16); // forward/back 2
 
-      if ((square.moved == FTK_MOVED_NOT_MOVED) && test < FTK_STD_BOARD_SIZE &&
+      if ((square->moved == FTK_MOVED_NOT_MOVED) && test < FTK_STD_BOARD_SIZE &&
           test >= 0 && ((board_mask & FTK_POSITION_TO_MASK(test)) == 0)) {
         mask |= FTK_POSITION_TO_MASK(test);
       }
     }
 
-    const ftk_board_mask_t capture_mask = (square.color == FTK_COLOR_WHITE)?white_pawn_capture_mask[position]:black_pawn_capture_mask[position];
+    const ftk_board_mask_t capture_mask = (square->color == FTK_COLOR_WHITE)?white_pawn_capture_mask[position]:black_pawn_capture_mask[position];
     mask |= (capture_mask & (opponent_mask | FTK_POSITION_TO_MASK(*ep)));
   } 
-  else if (square.type == FTK_TYPE_KNIGHT) 
+  else if (square->type == FTK_TYPE_KNIGHT) 
   {
     mask |= (knight_move_mask[position] & ((~board_mask) | opponent_mask));
   } 
-  else if (square.type == FTK_TYPE_KING)
+  else if (square->type == FTK_TYPE_KING)
   {
     mask |= (king_move_mask[position] & ((~board_mask) | opponent_mask));
   }
-  else if ( (square.type == FTK_TYPE_BISHOP) ||
-            (square.type == FTK_TYPE_ROOK)   ||
-            (square.type == FTK_TYPE_QUEEN) )
+  else if ( (square->type == FTK_TYPE_BISHOP) ||
+            (square->type == FTK_TYPE_ROOK)   ||
+            (square->type == FTK_TYPE_QUEEN) )
   {
     const ftk_board_mask_t movable_mask = ((~board_mask) | opponent_mask);
-    if (square.type != FTK_TYPE_ROOK) 
+    if (square->type != FTK_TYPE_ROOK) 
     {
       int test = position + 9; // up-right diagonal
       ftk_board_mask_t test_mask = FTK_POSITION_TO_MASK(test);
@@ -251,7 +254,7 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
         test_mask = FTK_POSITION_TO_MASK(test);
       }
     }
-    if (square.type != FTK_TYPE_BISHOP) {
+    if (square->type != FTK_TYPE_BISHOP) {
       int test = position + 1; // right horizontal
       ftk_board_mask_t test_mask = FTK_POSITION_TO_MASK(test);
       while (test < FTK_STD_BOARD_SIZE && test >= 0 &&
@@ -303,12 +306,14 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(ftk_square_s square, ftk_
 
   return mask;
 }
+#define FTK_BUILD_MOVE_MASK_INT(board_ptr, position, ep_ptr) \
+  ftk_build_move_mask_raw(&(board_ptr)->square[position], board->board_mask,  \
+                                 ((FTK_COLOR_WHITE == (board_ptr)->square[position].color) ? board->black_mask : board->white_mask),  \
+                                 position, (ep_ptr));
+
 ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_square_e position, ftk_square_e *ep)
 {
-  ftk_square_s     square        = board->square[position];
-  ftk_board_mask_t opponent_mask = (FTK_COLOR_WHITE == square.color) ? board->black_mask : board->white_mask;
-
-  return ftk_build_move_mask_raw(square, board->board_mask, opponent_mask, position, ep);
+  return FTK_BUILD_MOVE_MASK_INT(board, position, ep);
 }
 
 static const ftk_board_mask_t path_mask[FTK_STD_BOARD_SIZE][FTK_STD_BOARD_SIZE] = 
@@ -463,7 +468,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn, ftk_square_e e
       }
       /*Build opponents move mask as if current-turn player's pieces do not exist */
       ftk_square_e ep = FTK_SQUARE_INVALID;
-      ftk_board_mask_t move_mask_no_opponent = ftk_build_move_mask_raw(board->square[i], opponent_mask, turn_mask, i, &ep);
+      ftk_board_mask_t move_mask_no_opponent = ftk_build_move_mask_raw(&board->square[i], opponent_mask, turn_mask, i, &ep);
 
       if(move_mask_no_opponent & FTK_POSITION_TO_MASK(king_position))
       {
@@ -517,7 +522,7 @@ ftk_check_e ftk_strip_check(ftk_board_s *board, ftk_color_e turn, ftk_square_e e
     for(ftk_square_e j = 0; j < FTK_STD_BOARD_SIZE; j++)
     {
       ftk_square_e ep = FTK_SQUARE_INVALID;
-      board_copy.move_mask[j] = ftk_build_move_mask(&board_copy, j, &(ep));
+      board_copy.move_mask[j] = FTK_BUILD_MOVE_MASK_INT(&board_copy, j, &(ep));
       if(board_copy.move_mask[j] & FTK_POSITION_TO_MASK(move_under_test))
       {
         /* If opponent can move to test square, remove it from King's legal moves */

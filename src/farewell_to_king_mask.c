@@ -307,8 +307,8 @@ static inline ftk_board_mask_t ftk_build_move_mask_raw(const ftk_square_s *squar
   return mask;
 }
 #define FTK_BUILD_MOVE_MASK_INT(board_ptr, position, ep_ptr) \
-  ftk_build_move_mask_raw(&(board_ptr)->square[position], board->board_mask,  \
-                                 ((FTK_COLOR_WHITE == (board_ptr)->square[position].color) ? board->black_mask : board->white_mask),  \
+  ftk_build_move_mask_raw(&(board_ptr)->square[position], (board_ptr)->board_mask,  \
+                                 ((FTK_COLOR_WHITE == (board_ptr)->square[position].color) ? (board_ptr)->black_mask : (board_ptr)->white_mask),  \
                                  position, (ep_ptr));
 
 ftk_board_mask_t ftk_build_move_mask(const ftk_board_s *board, ftk_square_e position, ftk_square_e *ep)
